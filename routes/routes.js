@@ -18,7 +18,38 @@ app.get('/', function(req, res)
 {
     res.render('index.ejs');
 });
-//renders the enter-your-email page
+//renders
+//DELETE FORM
+app.get('/deleteReport', function(req, res)
+{
+  res.render('deleteReport.ejs');
+
+});
+//CHECKS IF USER PASSWORD MATCHES ID IN QUERY STRING AND THEN DELETES THE REPORT ACCORDING TO THE REPORT ID
+app.post('/deleteReport', function(req, res)
+{
+ var query = require('../models/query');
+ query.newQuery("SELECT password FROM user WHERE user.ID = '" + req.query.userID + "' ; ", function(err, userPassword)
+ {
+   if(userPassword.length !=1)
+   {
+     console.log("WE Have a problem")
+   }
+   else
+   {
+     console.log("hello");
+     console.log(userPassword[0]);
+     console.log(userPassword[0].password);
+     console.log(req.body.passwordProvided);
+      if(userPassword[0].password == req.body.passwordProvided)
+      {
+        console.log("success!");
+      }
+   }
+ })
+
+});
+
 app.get('/enter-your-email', function(req, res)
 {
   console.log("enter email address initiated")
@@ -71,10 +102,7 @@ app.post('/emailResetLink', function(req,res)
 
     }
   } )
-}
-)
-
-
+});
 
 
 
@@ -178,13 +206,15 @@ app.post('/emailResetLink', function(req,res)
   // =====================================
   // LOGIN ===============================
   // =====================================
-  app.get('/login', function(req, res) {
+  app.get('/login', function(req, res)
+  {
     console.log("app get '/login'");
     res.render('login.ejs', {message: req.flash('loginMessage')});
   });
 
   // process the login form
-   app.post('/login', passport.authenticate('local-login', {
+   app.post('/login', passport.authenticate('local-login',
+   {
      successRedirect : '/profile',
      failureRedirect : '/login',
      failureFlash : true //allow flash messages
@@ -194,20 +224,23 @@ app.post('/emailResetLink', function(req,res)
    // =====================================
    // SIGNUP ==============================
    // =====================================
-  app.get('/signup', function(req, res) {
+  app.get('/signup', function(req, res)
+  {
     //DEBUGGING
     console.log("app get /signup");
     console.log(req.body);
     res.render('signup.ejs', {message: req.flash('signupMessage')});
   });
   // process the signup form
-  app.post('/signup', passport.authenticate('local-signup', {
+  app.post('/signup', passport.authenticate('local-signup',
+  {
       successRedirect : '/validate',
       failureRedirect : '/signup',
       failureFlash : true //allows flash messages
     }));
 
-  app.get('/validate', isLoggedIn, function(req, res) {
+  app.get('/validate', isLoggedIn, function(req, res)
+  {
 
 
     console.log("app get /validation-required");
@@ -216,9 +249,11 @@ app.post('/emailResetLink', function(req,res)
     var mail = require('../models/sendMail.js');
 
     //Now, let's generate a token
-    loginquery.generateTokenObject(req.user.ID, 10, function(tokenObject) {
+    loginquery.generateTokenObject(req.user.ID, 10, function(tokenObject)
+    {
       console.log(tokenObject);
-      query.newQuery("INSERT INTO token (UserId, TokenContent, Expiry) VALUES (" + tokenObject.ID + ", '" + tokenObject.token + "', '" + tokenObject.expiry + "');", function(err, data) {
+      query.newQuery("INSERT INTO token (UserId, TokenContent, Expiry) VALUES (" + tokenObject.ID + ", '" + tokenObject.token + "', '" + tokenObject.expiry + "');", function(err, data)
+      {
         console.log("SUCCESS!");
         console.log(data);
       });
@@ -309,20 +344,26 @@ app.post('/emailResetLink', function(req,res)
   // PROFILE =============================
   // =====================================
 
-  app.get('/profile', isLoggedIn, function(req, res) {
+  app.get('/profile', isLoggedIn, function(req, res)
+  {
     //DEBUGGING
     console.log(req.user);
     var query = require('../models/query.js');
     console.log("/GET PROFILE");
-    query.newQuery("SELECT * FROM funding f WHERE f.userId = " + req.user.ID + " ORDER BY ID", function(err, data) {
+    query.newQuery("SELECT * FROM funding f WHERE f.userId = " + req.user.ID + " ORDER BY ID", function(err, data)
+    {
       var isReport;
-      if (data.length > 0) {
+      if (data.length > 0)
+      {
         isReport = true;
       }
-      else {
+      else
+      {
         isReport = false;
       }
-      for (var i = 0; i < data.length; i++) {
+      for (var i = 0; i < data.length; i++)
+      {
+
         data[i]['link'] = "/view-report" + "?thisFundingId=" + data[i]['ID'];
         console.log("Data[i][link]: ");
         console.log(data[i]['link']);
@@ -330,13 +371,16 @@ app.post('/emailResetLink', function(req,res)
 
       //Prove if it's validated...
       var isValidated;
-      if (req.user.fnName === 'blank') {
+      if (req.user.fnName === 'blank')
+      {
         isValidated = false;
       }
-      else {
+      else
+      {
         isValidated = true;
       }
-      res.render('profile.ejs', {
+      res.render('profile.ejs',
+      {
         user : req.user, // get the user out of session and pass to template
         data: data,
         isReport : isReport,

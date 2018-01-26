@@ -1,0 +1,21 @@
+#bottompager
+{
+  text-align: center;
+}
+#deleteYourReport
+{
+  text-align: center;
+  margin-bottom: 5%;
+}
+#enterYourPassword
+{
+  font-size: 25px;
+  display: block;
+  text-align: center;
+}
+#passwordProvided
+{
+  margin-left: 42.5%;
+  width: 15%;
+  text-align: center;
+}

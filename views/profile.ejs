@@ -41,7 +41,7 @@
             <% if(isReport === true) { %>
               <h3> View Your Reports </h3> <br>
                 <% for (var i = 0; i < data.length; i++) { %>
-                    <a href="<%= data[i].link %>" class="btn btn-default"><span class="fa fa-user"></span> Report Date: <%= data[i].SubmitDate %> </a> <br>
+                    <a style "width = "7.5%"; href="<%= data[i].link %>" class="btn btn-default"><span class="fa fa-user"></span> Report Date: <%= data[i].SubmitDate %> </a> <a href ="deleteReport?fundingID=<%= data[i].ID %>&userID=<%= data[i].UserId %>" ><span class="glyphicon glyphicon-remove"></span> </a><br>
                 <% } %>
                 <br><br>
               <% } %>

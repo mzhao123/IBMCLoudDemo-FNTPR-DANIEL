@@ -110,7 +110,8 @@ module.exports = {
       // }
     //});
   },
-  createUserProfile: function(reqBody, reqUser, callback) {
+  createUserProfile: function(reqBody, reqUser, callback)
+  {
     console.log("CREATE USER PROFILE CALLED.");
       //Query 1: user
       /*
@@ -136,12 +137,15 @@ module.exports = {
                   + "ContactName = '" + reqBody.contactName + "', " + "PhoneNO = '" + reqBody.contactPhone + "' "
                   + " WHERE UserName = '" + reqUser.UserName + "';"; //UNFINISHED
 
-      query.newQuery(queryUser, function(err, data) {
+      query.newQuery(queryUser, function(err, data)
+      {
         console.log("USER QUERY UPDATE STARTED.");
-        if (err) {
+        if (err)
+        {
           console.log(err);
         }
-        else {
+        else
+        {
           console.log("DATA: ");
           console.log(data);
           callback();
