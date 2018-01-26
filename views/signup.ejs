@@ -8,26 +8,6 @@
     <style>
         body        { padding-top:80px; }
     </style>
-    <script>
-    // borrowed from https://codepen.io/diegoleme/pen/surIK
-    /*
-    var password = document.getElementById("password")
-      , confirm_password = document.getElementById("confirm_password");
-
-    function validatePassword(){
-      if(password.value != confirm_password.value) {
-        confirm_password.setCustomValidity("Passwords Don't Match");
-      } else {
-        confirm_password.setCustomValidity('');
-      }
-    }
-
-    password.onchange = validatePassword();
-    confirm_password.onkeyup = validatePassword();
-    */
-
-    // FIGGER THIS OUT LATER, THIS CODE BREAKS THE PROGRAM
-    </script>
 </head>
 <body>
 <div class="container">
@@ -50,10 +30,25 @@
         <div class="form-group">
             <label>Password</label>
             <input type="password" id = "password" class="form-control" name="password">
+
         </div>
         <div class="form-group">
             <label>Re-enter password</label>
-            <input type="password" id ="confirm_password" class="form-control" name="confirm_password">
+            <input type="password" id ="confirm_password" class="form-control" name="confirm_password" required = "required" oninput = "check(this)">
+            <script language = 'javascript' type = 'text/javascript'>
+            function check(input)
+            {
+              console.log("saysomethingplease!");
+              if(input.value != document.getElementById('password').value)
+              {
+                input.setCustomValidity('Password Must Match');
+              }
+              else
+              {
+                input.setCustomValidity('');
+              }
+            }
+            </script>
         </div>
         <fieldset>
           <br>

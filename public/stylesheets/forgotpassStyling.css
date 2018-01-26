@@ -1,0 +1,29 @@
+#passwordreset{
+
+}
+.inputbox{
+  width: 8%;
+}
+#password
+{
+     margin-left: 25%;
+     width: 15%;
+     float:left;
+}
+.enterpassword
+{
+  height: 2%;
+  margin-right: 10%;
+}
+
+#instructions{
+
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+#submitButton
+{
+  margin-right: -40%;
+}

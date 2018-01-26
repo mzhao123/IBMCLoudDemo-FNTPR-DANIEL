@@ -2,41 +2,11 @@
 <html>
 <head>
 	<title>First Nations Report Spending</title>
-	<link rel = "stylesheet" href = "stylesheets/formStyling.css">
-
+	<link rel = "stylesheet" href = "../public/stylesheets/formstyling.css">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
 <!--formatting for the first three labels on the form-->
-<style>
-
-</style>
 <head>
 	<body>
-		<script>
-		function updateOther()
-		{
-
-			if(document.getElementById("adminSpecify").required == true)
-			{
-				document.getElementById("adminSpecify").required = false;
-			}
-			else
-			{
-				document.getElementById("adminSpecify").required = true;
-			}
-
-		}
-		function updateAnother()
-		{
-			if(document.getElementById("useOther").required == true)
-			{
-				document.getElementById("useOther").required = false;
-			}
-			else
-			{
-				document.getElementById("useOther").required = true;
-			}
-		}
-		</script>
 <div class = "container">
 <h1 style = "text-align: center";> First Nations Report Spending </h1>
 <form action = "/make-report" , method = "POST">
@@ -66,8 +36,8 @@ and Long-Term Care will use this information to understand the service delivery 
 <input type="checkbox" name="adminDirect"/> Direct delivery by the community<br>
 <input type="checkbox" name="adminThirdParty" /> Third-party service delivery organization (please include the name below)<br>
 <input type="checkbox" name="adminCouncil" /> Tribal Council<br>
-<input  type="checkbox" name="adminLHIN" /> Local Health Integration Network<br>
-<input onclick= "updateOther()" type="checkbox" name="adminOther" /> Other (please specify below)<br>
+<input type="checkbox" name="adminLHIN" /> Local Health Integration Network<br>
+<input type="checkbox" name="adminOther" /> Other (please specify below)<br>
 <br>
 <input type = "text" id = "adminSpecify" name = "adminSpecify" placeholder = "Enter if you checked third party delivery organization or other" style = "width: 85%; text-align:center;"/>
 </p>
@@ -76,7 +46,7 @@ and Long-Term Care will use this information to understand the service delivery 
 <!-- I should probably think 0about the case where one checks both third party AND other :P -->
 
 <fieldset id = "otherFundingSources">
-<b><u>Other Funding Sources: </u></b>
+<b><p>Other Funding Sources: </p></b>
 <b><label for "fundNursing">Did the community also receive funding through the Homemaking and Nursing Services Act? </label></b>
 <input type="radio" name="fundNursing" value="on" checked> Yes
 <input type="radio" name="fundNursing" value="off"> No <br>
@@ -93,8 +63,7 @@ and Community Care program? </label></b>
 <br>
 <br>
 <b><label for "priorities">Please outline priorities for home and community care investment in the next five years:</label> <br></b>
-<br>
-<textarea id = "priorities" name = "priorities" style = "width: 99%" rows = "5"> </textarea>
+<textarea id = "priorities" name = "priorities" style = "width: 85%" rows = "5"> </textarea>
 </fieldset> <br>
 <fieldset id = "fundingSpent">
 <b><p>Please indicate how the funding was spent in 2017-18.<br> Please check all that apply: </p></b>
@@ -109,13 +78,11 @@ and Community Care program? </label></b>
  (directly employed by the First Nations)<br>
  <input type="checkbox" name="useDirectOther"/> Direct Services for home or community care and/or palliative and end-of-life care
  (provided by another organization)<br>
- <input onclick= "updateAnother()" type="checkbox" name="other" /> Other (please specify below)<br>
 
 
  <br>
  <b> <label for "useOther">Any other home and community care or palliative and end-of-care priorities: </label> <br></b>
- <br>
- <textarea id = "useOther" name = "useOther" style = "width: 85%" rows = "5"></textarea>
+ <textarea id = "useOther" name = "useOther" style = "width: 85%" rows = "5"> </textarea>
 </fieldset> <br>
 <fieldset id = "commentsAndConfirm">
 <b><label for "comments">Please provide any other comments: </label> </b><br>
@@ -133,7 +100,7 @@ and Community Care program? </label></b>
   <br><br>
 </div>
 <!-- I could give this a seperate html page, and use include to add it in, just to modularize everything better. For now I'll just keep it here-->
-	<div style = "margin-left: 5%;" class = "container info">
+	<div style = "margin-left: 7%;" class = "container info">
 		<h2><center> Information and notes: </center></h2>
 		<br>
 		<h4>Eligible areas of Expenditure</h4>

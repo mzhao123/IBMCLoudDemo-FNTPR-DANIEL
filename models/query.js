@@ -8,7 +8,7 @@ var connectionPool = mysql.createPool(databasejs);
 
 module.exports = {
   newQuery: function(query, callback) {
-    // THIS NEW FUNCTION SHOULD THEORETICALLY STOP ANY 'SERVER CLOSED CONNECTION' ERRORS
+    // THIS NEW FUNCTION SHOULD THEORETICALLY STOP ANY SERVER CLOSED CONNECTION' ERRORS
     connectionPool.getConnection(function(err, connection) {
       if (err) return callback(err);
 

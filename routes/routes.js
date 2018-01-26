@@ -8,16 +8,173 @@
 //
 // //module.exports = router;
 
-module.exports = function(app, passport) {
+module.exports = function(app, passport)
+{
 
   // =====================================
   // HOME PAGE (with login links) ========
   // =====================================
-  app.get('/', function(req, res) {
-      res.render('index.ejs');
+app.get('/', function(req, res)
+{
+    res.render('index.ejs');
+});
+//renders the enter-your-email page
+app.get('/enter-your-email', function(req, res)
+{
+  console.log("enter email address initiated")
+  res.render('emailResetLink.ejs');
+});
+//whatever information the user submits into the page will be processed here(resetting by email)
+app.post('/emailResetLink', function(req,res)
+{
+  //declare all the requires
+  var query = require('../models/query');
+  var loginquery = require('../models/loginquery.js');
+  var mail = require('../models/sendMail.js');
+  var userEmail = req.body.userEmail;
+  console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+  query.newQuery("SELECT * FROM user WHERE user.Email = '" +   userEmail + "'  ;", function(err, emailLength) {
+    if(emailLength.length !=1)
+    {
+        console.log("email address not found!");
+        res.render('invalidEmail.ejs');
+    }
+    else
+    {
+      console.log("lets send the user a password reset link!") ;
+      //selects the userID with the email entered in by the user
+      query.newQuery("SELECT user.ID FROM user WHERE user.Email = '" +   userEmail + "' ;", function(err, queriedID)
+      {
+        console.log(queriedID);
+        //generates token object and then uses it as a parameter in the anonymous function below
+        loginquery.generateTokenObject(queriedID, 10, function(tokenObject)
+        {
+          console.log(tokenObject);
+          console.log("@@@@@@@@@");
+          console.log(tokenObject.ID[0].ID);
+          //inserts the token into the tokens database
+          query.newQuery("INSERT INTO token (UserId, TokenContent, Expiry) VALUES (" + tokenObject.ID[0].ID + ", '" + tokenObject.token + "', '" + tokenObject.expiry + "');", function(err, data)
+          {
+            console.log("SUCCESS!");
+            console.log(data);
+          });
+          console.log("Let's asynchronously also send the email");
+          //sends the email message out with the link with the unique token address
+          mail.sendFromHaodasMail(userEmail, "First Nations Online Income Reports: Password Reset Link!",
+          "Please click on the following link: \n https://demo-fntpr-2.mybluemix.net/forgotten-password?token=" + tokenObject.token + " to validate yourself: "
+          );
+       });
+      })
+//creates a new token for the user so he or she can reset the password
+
+    res.render('linksent.ejs');
+
+    }
+  } )
+}
+)
+
+
+
+
+
+
+  // FORGOT PASSWORD +++++++++++++++++++++++++++++
+  //+++++++++++++++++++++++++++++++++++++++++++++
+  //+++++++++++++++++++++++++++++++++++++++++++++++
+
+  app.get('/forgotten-password', function(req, res)
+  {
+    console.log("app reset password starts");
+    console.log(req.query.token);
+    var query = require('../models/query');
+    query.newQuery("SELECT * FROM token WHERE token.TokenContent = '" + req.query.token + "';", function(err, tokenData)
+    {
+      if (tokenData.length != 1)
+      {
+        //The user's token does not exist or has expired
+        console.log("TOKEN NOT FOUND!");
+        res.render('ResetFailure.ejs');
+      }
+      else
+      {
+          //check to see if the user's token is still valid or not (expiry date will be used for this)
+          var currentDate = new Date();
+          console.log("CURRENT TIME: ");
+          console.log(currentDate);
+          console.log("EXPIRY TIME: ");
+          console.log(tokenData[0].Expiry);
+          if (currentDate.getTime() > tokenData[0].Expiry)
+          {
+            console.log("TOKEN EXPIRED!");
+            res.render('ResetFailure.ejs', {});
+          }
+          else
+          {
+            res.render("forgotpass.ejs" );
+          }
+      }
+        //apparently everything looks good so the program proceeds to reset your password
+    })
+});
+  app.post('/forgotten-password', function(req, res)
+  {
+
+    var query = require('../models/query'); //needed exports
+    var loginquery = require('../models/loginquery.js'); //needed exports
+
+    var userInfo = req.body;
+
+    console.log(userInfo.password1);
+    console.log(userInfo.password2);
+    console.log(req.query.token);
+    if(userInfo.password1 == userInfo.password2)
+    {
+
+      query.newQuery("SELECT * FROM token WHERE token.TokenContent = '" + req.query.token + "';", function(err, tokenData)
+      { console.log("yoooo!");
+        loginquery.generateResetHash(userInfo.password1, function (hashedPassword)
+        {
+          console.log("hello?");
+          query.newQuery("UPDATE user SET password = '" + hashedPassword + "' WHERE ID = " + tokenData[0].UserId + ";", function(err, data)  //query the database to change the password
+          {
+              console.log("password changed?");
+              if(err)
+              {
+                console.log(err);
+              }
+              else
+              {
+                //Second, let's get rid of the useless token
+                  query.newQuery("DELETE FROM token WHERE TokenContent = '" + tokenData[0].TokenContent + "';", function(err, data)
+                  {
+                    if (err)
+                    {
+                      console.log(err);
+                    }
+                    else
+                    {
+                      console.log("JUST CHECKING TO SEE IF TOKEN LINK REDIRECTS TO LOGIN");
+                    }
+                 });
+              }
+          }       );
+        } );   //encrpt the password...for security reasons...and then pass the return result into a callback
+
+
+        //successfully changed the password so you are redirected to another page
+        res.render("passwordchanged.ejs");
+      })
+
+    }
+    else
+    {
+      console.log("passwords didn't match")
+    }
+
   });
-
-
+//  ++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++
   // =====================================
   // LOGIN ===============================
   // =====================================
@@ -32,6 +189,7 @@ module.exports = function(app, passport) {
      failureRedirect : '/login',
      failureFlash : true //allow flash messages
     }));
+
 
    // =====================================
    // SIGNUP ==============================
@@ -73,7 +231,7 @@ module.exports = function(app, passport) {
 
 
   });
-
+//CHANES TOKEN STATUS
   // JUST V URSELF
   app.get('/validate-now', function(req, res) {
     console.log(req.query.tok);
@@ -110,6 +268,7 @@ module.exports = function(app, passport) {
                   console.log(err);
                 }
                 else {
+                  console.log("JUST CHECKING TO SEE IF TOKEN LINK REDIRECTS TO LOGIN");
                   res.redirect('/login');
                 }
               });

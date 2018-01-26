@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>First Nations Report Spending</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+//formatting for the first three labels on the form
+<style>
+
+.firstThreeLabels
+{
+	display:inline-block;
+	width: 140px;
+	text-align: left;
+}
+
+</style>
+</head>
+<body>
+
+	<div class = "container">
+	<h1>First Nations Report Spending</h1>
+	<form action = "/make-report" , method = "POST">
+	<fieldset>
+		<label class="firstThreeLabels" for "fundProvided">Funding Provided: </label>
+		<input type = "number" id = "fundProvided" name = "fundProvided" placeholder = "25000"/ required>
+		<br>
+		<label class="firstThreeLabels" for "fundSpent">Funding Spent: </label>
+		<input type = "number" id = "fundSpent" name = "fundSpent" placeholder = "20000"/ required>
+		<br>
+		<label class="firstThreeLabels" for "fundRecovered">Funding to be Recovered (Funding provided minus funding spent): </label>
+		<input type = "number" id = "fundRecovered" name = "fundRecovered" placeholder = "5000"/>
+
+	</fieldset> <br>
+	<fieldset>
+		<p> Who administered home and community care services in your community in 2017-18? The Ministry of Health
+		and Long-Term Care will use this information to understand the service delivery network in your community.
+		<br>Check all that apply: </p>
+		<input type="checkbox" name="adminDirect"/> Direct delivery by the community<br>
+		<input type="checkbox" name="adminThirdParty" /> Third-party service delivery organization (please include the name below)<br>
+		<input type="checkbox" name="adminCouncil" /> Tribal Council<br>
+		<input type="checkbox" name="adminLHIN" /> Local Health Integration Network<br>
+		<input type="checkbox" name="adminOther" /> Other (please specify below)<br>
+		<input type = "text" id = "adminSpecify" name = "adminSpecify" placeholder = "Enter if you checked third party delivery organization or other" style = "width: 85%"/>
+		<!-- I should probably think about the case where one checks both third party AND other :P -->
+	</fieldset> <br>
+	<fieldset>
+		<p>Other Funding Sources... </p>
+		<label for "fundNursing">Did the community also receive funding through the Homemaking and Nursing Services Act? </label>
+		<input type="radio" name="fundNursing" value="on" checked> Yes
+		<input type="radio" name="fundNursing" value="off"> No <br>
+
+		<label for "fundGov">Did the community also receive or benefit from funding through the Government of Canada’s First Nations and Inuit Home
+		and Community Care program? </label>
+		<input type="radio" name="fundGov" value="on" checked> Yes
+		<input type="radio" name="fundGov" value="off"> No <br>
+	</fieldset> <br>
+	<fieldset>
+		<label for "numClients">Please outline how many clients the home and community care program served in 2017-2018 with all funding sources</label>
+		<input type = "number" id = "numClients" name = "numClients" placeholder = "850" required/>
+		<br>
+		<label for "priorities">Please outline priorities for home and community care investment in the next five years</label> <br>
+		<textarea id = "priorities" name = "priorities" style = "width: 85%" rows = "5"> </textarea>
+<!-- YOU ARE HERE -->
+	<fieldset>
+		<p>Please indicate how the funding was spent in 2017-18.<br> Please check all that apply: </p>
+		<input type="checkbox" name="useDirectFirstNations"/> Direct Services for home or community care and/or palliative care
+		(directly employed by the First Nations)<br>
+		<input type="checkbox" name="useDirectOther"/> Direct Services for home or community care and/or palliative and end-of-life care
+		(provided by another organization)<br>
+		<input type="checkbox" name="useTraining"/> Training, education<br>
+		<input type="checkbox" name="useAdmin"/> Operational, oversight or administrative expensive<br>
+		<input type="checkbox" name="useRecruit"/> Recruitment<br>
+		<input type="checkbox" name="useSupplies"/> Supplies/equipment for clients/patients<br>
+		<input type="checkbox" name="useOfficeSupplies"/> Office supplies/equipment/IT solutions for administering the home and
+		community care program<br>
+		<input type="checkbox" name="useTravel"/> Travel<br>
+
+		<label for "useOther">Any other home and community care or palliative and end-of-care priorities: </label> <br>
+		<textarea id = "useOther" name = "useOther" style = "width: 85%" rows = "5"> </textarea>
+	</fieldset> <br>
+	<fieldset>
+		<label for "comments">Please provide any other comments: </label> <br>
+		<textarea id = "comments" name = "comments" style = "width: 85%" rows = "5"> </textarea>
+		<br>
+		<input type="checkbox" name="approval" required/> Check if the above information is approved by the Chief or the Chief's delegated authority
+		to approve reports to the ministry. <br>
+	</fieldset> <br>
+
+	<br>
+	<input type = "submit" value = "Submit"/>
+	<br>
+	</form>
+<br><br>
+</div>
+<!-- I could give this a seperate html page, and use include to add it in, just to modularize everything better. For now I'll just keep it here-->
+	<div class = "container info">
+		<h2><center> Information and notes: </center></h2>
+		<br>
+		<h4>Eligible areas of Expenditure</h4>
+		<p>Funding is for home and community care, including palliative and end-of-life care, based on each First Nations community’s priorities.
+		<br>Eligible direct and indirect expenditure areas are outlined below, based on the Home Care and Community Services Act.
+		Implicit in this list are costs related to cultural and spiritual components of service delivery. </p>
+		<br>
+		<h4>Examples of Direct Services</h4>
+		<u>Community Support Services</u>
+		<ol>
+			<li>Meal Services</li>
+			<li>Transportation Services</li>
+			<li>Caregiver support services</li>
+			<li>Adult day programs</li>
+			<li>Home maintenance and repair services</li>
+			<li>Friendly visiting services</li>
+			<li>Security checks or reassurance services</li>
+			<li>Social or recreational services</li>
+			<li>First Nations/Indigenous support</li>
+			<li>Client intervention and assistance</li>
+			<li>Emergency response</li>
+			<li>Foot care</li>
+			<li>Home help referral</li>
+			<li>Independence training</li>
+			<li>Palliative care education and consultation</li>
+			<li>Psycho-geriatric consulting services related to Alzheimer disease and dementia</li>
+			<li>Public education services relating to Alzheimer disease and dementia</li>
+			<li>Services for persons with blindness/visual impairment</li>
+			<li>Services for persons with deafness/congenital/acquired hearing loss</li>
+			<1i> <1i>
+		</ol>
+
+	</div>
+</body>
+
+
+</html>

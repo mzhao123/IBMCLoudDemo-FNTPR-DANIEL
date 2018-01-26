@@ -1,0 +1,42 @@
+#resetPass
+{
+  border: 24px solid gray;
+  background: gray;
+  color: black;
+}
+#linkmessage
+{
+  margin-top: 1%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+}
+#title
+{
+  height: 40%;
+  width: 100%;
+  position: absolute;
+}
+#theanchor
+{
+    text-align: center;
+    padding-top: 10%;
+}
+#gohome
+{
+
+  font-size: 30px;
+  color: #00008b
+  text-align: center;
+  font-weight: bold;
+
+}
+#topblock
+{
+  margin-bottom: 3%;
+}
+#bottompager
+{
+  margin-top: 3%;
+  text-align: center;
+}

@@ -1,0 +1,16 @@
+#invalidMessage
+{
+  font-size: 35px;
+  text-align: center;
+
+}
+#reEnterAddress
+{
+  text-decoration: underline;
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  text decoration: underline;
+  margin-top: 5%;
+  color: #00008b
+}

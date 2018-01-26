@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang = "en">
+<head>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel = "stylesheet" href = "stylesheets/enterEmailPage.css">
+    <title> Password-Reset  </title>
+</head>
+<body>
+  <div id = "topblock" class = "jumbotron text-center">
+  <h1 id = "bottompager"> <span class="fa fa-cloud"></span>  First Nations' Online Funding Reports <span class="fa fa-cloud"></span>  </h1>
+
+<div id = "thebiggraybox">
+  <h1 style = "text-align: center";> Reset Password </h1>
+  <br>
+  <p id = "emailthelink"> Please enter the email address associated with your account. We will send you a link to click so you can reset your password</p>
+  <br>
+  <br>
+  <br>
+    <form action= "/emailResetLink" method = "post">
+      <div class="form-group">
+        <label for="usr">Email:</label id = "emailbox">
+        <input type="text" class="form-control" id="email" name = "userEmail">
+     </div>
+        <input type = "submit" class = "btn btn-info" value = "Submit">
+      <br>
+    </form>
+
+</div>
+</div>
+    </body>
+    </html>

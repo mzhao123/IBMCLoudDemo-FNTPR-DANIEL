@@ -4,6 +4,7 @@ module.exports = {
   returnTable: function(tableName, callback) {
     query.newQuery("SELECT * FROM " + schema + "." + tableName + ";", function(err, data) {
       if (err) {
+        //if there is an error from the query
         console.log(err);
       }
       else {
@@ -72,55 +73,38 @@ module.exports = {
          doneUser = true;
          */
          //SECOND QUERY!
-         query.newQuery(queryFunding, function(err, data) {
+         query.newQuery(queryFunding, function(err, data)
+         {
            console.log("FUNDING QUERY STARTED!")
-           if (err) {
+           if (err)
+           {
              console.log(err);
            }
-           else {
+           else
+           {
              console.log("DATA 2: ");
              console.log(data);
 
              //Now we deal with USE OF FUNDING tables and ADMINISTRATOR tables.
              // A D M I N   T A B L E
-             checkAndInsert("funding_administor", "adminDirect", reqBody.adminDirect, data.insertId, function () {
-               checkAndInsert("funding_administor", "adminThirdParty", reqBody.adminThirdParty, data.insertId, function () {
-                 checkAndInsert("funding_administor", "adminCouncil", reqBody.adminCouncil, data.insertId, function () {
-                   checkAndInsert("funding_administor", "adminLHIN", reqBody.adminLHIN, data.insertId, function () {
-                     checkAndInsert("funding_administor", "adminOther", reqBody.adminOther, data.insertId, function () {
-                       checkAndInsert("funding_administor", "adminSpecify", reqBody.adminSpecify, data.insertId, function () {
-
-                         // U S E   T A B L E
-                         checkAndInsert("funding_use", "useDirectFirstNations", reqBody.useDirectFirstNations, data.insertId, function () {
-                           checkAndInsert("funding_use", "useDirectOther", reqBody.useDirectOther, data.insertId, function () {
-                             checkAndInsert("funding_use", "useTraining", reqBody.useTraining, data.insertId, function () {
-                               checkAndInsert("funding_use", "useAdmin", reqBody.useAdmin, data.insertId, function () {
-                                 checkAndInsert("funding_use", "useRecruit", reqBody.useRecruit, data.insertId, function () {
-                                   checkAndInsert("funding_use", "useSupplies", reqBody.useSupplies, data.insertId, function () {
-                                     checkAndInsert("funding_use", "useOfficeSupplies", reqBody.useOfficeSupplies, data.insertId, function () {
-                                       checkAndInsert("funding_use", "useTravel", reqBody.useTravel, data.insertId, function () {
-                                         checkAndInsert("funding_use", "useOther", reqBody.useOther, data.insertId, function () {
-
-                                           // THE NIGHTMARE IS FINALLY OVER
-                                           callback();
-
-                                         });
-                                       });
-                                     });
-                                   });
-                                 });
-                               });
-                             });
-                           });
-                         });
-
-                       });
-                     });
-                   });
-                 });
-               });
-             });
-
+             checkAndInsert("funding_administor", "adminDirect", reqBody.adminDirect, data.insertId)
+              .then(function(){checkAndInsert("funding_administor", "adminThirdParty", reqBody.adminThirdParty, data.insertId)})
+                .then(function(){checkAndInsert("funding_administor", "adminCouncil", reqBody.adminCouncil, data.insertId)})
+                  .then(function(){checkAndInsert("funding_administor", "adminLHIN", reqBody.adminLHIN, data.insertId)})
+                    .then(function(){checkAndInsert("funding_administor", "adminOther", reqBody.adminOther, data.insertId)})
+                      .then(function(){checkAndInsert("funding_administor", "adminSpecify", reqBody.adminSpecify, data.insertId)})
+                        //USE TABLE
+                        .then(function(){checkAndInsert("funding_use", "useDirectFirstNations", reqBody.useDirectFirstNations, data.insertId)})
+                          .then(function(){checkAndInsert("funding_use", "useDirectOther", reqBody.useDirectOther, data.insertId)})
+                            .then(function(){checkAndInsert("funding_use", "useTraining", reqBody.useTraining, data.insertId)})
+                              .then(function(){checkAndInsert("funding_use", "useAdmin", reqBody.useAdmin, data.insertId)})
+                                .then(function(){checkAndInsert("funding_use", "useRecruit", reqBody.useRecruit, data.insertId)})
+                                  .then(function(){checkAndInsert("funding_use", "useSupplies", reqBody.useSupplies, data.insertId)})
+                                    .then(function(){checkAndInsert("funding_use", "useOfficeSupplies", reqBody.useOfficeSupplies, data.insertId)})
+                                      .then(function(){checkAndInsert("funding_use", "useTravel", reqBody.useTravel, data.insertId)})
+                                        .then(function(){checkAndInsert("funding_use", "useOther", reqBody.useOther, data.insertId)})
+                                        //No more callback hell tyvm Daniel
+                                        callback();
            }
          });
       // }
@@ -169,56 +153,73 @@ module.exports = {
 /*
  * This function is meant for the tables that reference the LOOKUP tables.
  */
-function checkAndInsert(table, fieldName, field, fundingID, callback) {
-  console.log("CHECK AND INSERT FUNCTION CALLED.");
-  if (field === "on" || fieldName === "useOther" || fieldName === "adminSpecify") {
+ function checkAndInsert(table, fieldName, field, fundingID)
+ {
+ 	if (field === "on" || fieldName === "useOther" || fieldName === "adminSpecify")
+ 	{
+ 	  console.log("CHECK AND INSERT FUNCTION CALLED.");
+ 	  if (table === "funding_administor")
+ 	  {
+ 		query.newQuery("SELECT ID FROM lkp_administor l WHERE l.Administor = '" + fieldName + "';", function(err, data1)
+ 		{
+ 			if (err)
+ 			{
+ 				throw err;
+ 			}
+ 			console.log(data1);
+ 			var insertQuery;
+ 			if (fieldName === "adminSpecify")
+ 			{
+ 			    editedField = field.replace(/'/g, '&rsquo;');
+ 			    insertQuery = "INSERT INTO funding_administor (FundingID, LKPFundingAdministorID, Comments) VALUES (" + fundingID + ", " + data1[0].ID + ", '" + editedField + "');";
+ 			}
+ 			else
+ 			{
+ 				var insertQuery = "INSERT INTO funding_administor (FundingID, LKPFundingAdministorID) VALUES (" + fundingID + ", " + data1[0].ID + ");";
+ 			}
+ 			query.newQuery(insertQuery, function(err, data2)
+ 			{
+ 				console.log("INSERT SUCCESS.");
+ 				console.log(data2);
+ 			});
+ 	   });
 
-    console.log("FIELD " + fieldName + " IS ON");
-
-    if (table === "funding_administor") {
-      query.newQuery("SELECT ID FROM lkp_administor l WHERE l.Administor = '" + fieldName + "';", function(err, data1) {
-        if (err) throw err;
-        console.log(data1);
-        var insertQuery;
-
-        //If it's the 'other'
-        if (fieldName === "adminSpecify") {
-          editedField = field.replace(/'/g, '&rsquo;');
-          insertQuery = "INSERT INTO funding_administor (FundingID, LKPFundingAdministorID, Comments) VALUES (" + fundingID + ", " + data1[0].ID + ", '" + editedField + "');";
-        }
-        else {
-          var insertQuery = "INSERT INTO funding_administor (FundingID, LKPFundingAdministorID) VALUES (" + fundingID + ", " + data1[0].ID + ");";
-        }
-        query.newQuery(insertQuery, function(err, data2) {
-          console.log("INSERT SUCCESS.");
-          console.log(data2);
-          callback();
-        });
-      });
     }
-    else if (table === "funding_use") {
-      query.newQuery("SELECT ID FROM lkp_use_of_funding l WHERE l.UseOfFunding = '" + fieldName + "';", function(err, data1) {
-        if (err) throw err;
-        console.log(data1);
-        var insertQuery;
-        //If it's the 'other'
-        if (fieldName === "useOther") {
-          editedField = field.replace(/'/g, '&rsquo;');
-          insertQuery = "INSERT INTO funding_use (FundingID, LKPFundingUseID, Comments) VALUES (" + fundingID + ", " + data1[0].ID + ", '" + editedField + "');";
-        }
-        else {
-          insertQuery = "INSERT INTO funding_use (FundingID, LKPFundingUseID) VALUES (" + fundingID + ", " + data1[0].ID + ");";
-        }
-        query.newQuery(insertQuery, function(err, data2) {
-          console.log("INSERT SUCCESS.");
-          console.log(data2);
-          callback();
-        });
-      });
+ 	    else if (table === "funding_use")
+ 	   {
+ 			query.newQuery("SELECT ID FROM lkp_use_of_funding l WHERE l.UseOfFunding = '" + fieldName + "';", function(err, data1)
+ 			{
+ 				if (err)
+ 				{
+ 					throw err;
+ 				}
+ 				console.log(data1);
+ 				var insertQuery;
+ 				//If it's the 'other'
+ 				if (fieldName === "useOther")
+ 				{
+ 					editedField = field.replace(/'/g, '&rsquo;');
+ 					insertQuery = "INSERT INTO funding_use (FundingID, LKPFundingUseID, Comments) VALUES (" + fundingID + ", " + data1[0].ID + ", '" + editedField + "');";
+ 				}
+ 				else
+ 				{
+ 					insertQuery = "INSERT INTO funding_use (FundingID, LKPFundingUseID) VALUES (" + fundingID + ", " + data1[0].ID + ");";
+ 				}
+ 				query.newQuery(insertQuery, function(err, data2)
+        {
+ 				     console.log("INSERT SUCCESS.");
+ 				     console.log(data2);
+ 				});
+ 			});
     }
-  }
-  else {
-    console.log("NOTHING HAPPENS.");
-    callback();
-  }
-}
+
+ 	}
+ 	else
+ 	{
+ 		console.log("Nothing Happens.");
+ 	}
+    return new Promise(function (resolve, reject)
+    {
+      resolve();
+    });
+ }
