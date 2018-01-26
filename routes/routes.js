@@ -28,6 +28,7 @@ app.get('/deleteReport', function(req, res)
 //CHECKS IF USER PASSWORD MATCHES ID IN QUERY STRING AND THEN DELETES THE REPORT ACCORDING TO THE REPORT ID
 app.post('/deleteReport', function(req, res)
 {
+ var bcrypt = require('bcrypt-nodejs');
  var query = require('../models/query');
  query.newQuery("SELECT password FROM user WHERE user.ID = '" + req.query.userID + "' ; ", function(err, userPassword)
  {
@@ -37,14 +38,40 @@ app.post('/deleteReport', function(req, res)
    }
    else
    {
+
      console.log("hello");
      console.log(userPassword[0]);
      console.log(userPassword[0].password);
      console.log(req.body.passwordProvided);
-      if(userPassword[0].password == req.body.passwordProvided)
-      {
-        console.log("success!");
-      }
+     bcrypt.compare(req.body.passwordProvided, userPassword[0].password, function(err, res)
+     {
+       if(err)
+       {
+         console.log("error in functoni");
+       }
+       if(res)
+       {
+         //callbacks to delete from database the ID mentioned
+         console.log("passwords match")
+         query.newQuery("DELETE FROM funding_administor WHERE FundingID = '" + req.query.fundingID + "'; ", function(err, thingDeleted)
+         {
+           console.log(thingDeleted);
+           query.newQuery("DELETE FROM funding_use WHERE FundingID = '" + req.query.fundingID + "'; ", function (err, theThingDeleted)
+           {
+             console.log(theThingDeleted);
+             query.newQuery("DELETE FROM funding WHERE ID = '" + req.query.fundingID + "' AND UserId = '" + req.query.userID + "' ; ", function(err, reportDeleted)
+             {
+               console.log("deleted!")
+               console.log(reportDeleted);
+             });
+          });
+        });
+       }
+       else
+       {
+         console.log("passwords don't match");
+       }
+     });
    }
  })
 
