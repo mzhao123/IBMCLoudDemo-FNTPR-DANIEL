@@ -56,7 +56,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use(app.router);
 //index.initialize(app);
 
-
 //Required for passport...
 app.use(session( {secret: 'thenamesovbyeahyouknowmeimtheironchancellorofgermanyyeahyoubetterbringthegameifyousteptomecauseimthemasterofforeignpolicywhat',
                   resave: true,
