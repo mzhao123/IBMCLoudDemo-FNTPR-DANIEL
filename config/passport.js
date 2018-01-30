@@ -45,20 +45,23 @@ module.exports = function(passport) {
   // =========================================================================
   // we are using named strategies since we have one for login and one for signup
   // by default, if there was no name, it would just be called 'local'
-  passport.use('local-signup', new LocalStrategy({
+  passport.use('local-signup', new LocalStrategy(
+  {
     //by default, local strategy uses username and password, we will override with email
     usernameField : 'userName',
     passwordField : 'password',
     passReqToCallback : true // allows us to pass back the entire request to the callback
   },
-  function(req, userName, password, done) {
+  function(req, userName, password, done)
+  {
     console.log(" ---------------- PASSPORT REQUEST ---------------------");
     console.log(req);
     console.log(" -------------------------------------------------------");
 
     //asynchronuous :P
     //User.findOne won't fire unless data is sent back
-    process.nextTick(function() {
+    process.nextTick(function()
+    {
       //find u user whose email is the same as the forms email
       //we are checking to see if the user is trying to login already exists
       /* OLD MONGOOSE FUNCTION
@@ -85,7 +88,8 @@ module.exports = function(passport) {
         }
       });
       */
-      query.newQuery("SELECT UserName FROM user u WHERE u.UserName LIKE '" + userName + "';", function(error, data) {
+      query.newQuery("SELECT UserName FROM user u WHERE u.UserName LIKE '" + userName + "';", function(error, data)
+      {
         if (error) return done(error);
 
         //Checks if the user already exists
@@ -93,38 +97,53 @@ module.exports = function(passport) {
         console.log(data);
         var statement = (data.length > 0);
         console.log(statement);
-        if (statement) {
+        if (statement)
+        {
           return done(null, false, req.flash('signupMessage', 'That username is already in use'));
         }
-        else {
-          var queryUser;
-          var hashedPassword = loginquery.generateHash(password);
+        else
+        {
+          query.newQuery("SELECT Email FROM user u WHERE u.Email = '" + req.body.contactEmail + "'; ", function (error, data1)
+          {
+            if (error) return done(error);
+            if(data1.length > 0)
+            {
+              return done(null, false, req.flash('signupMessage1', 'That email is already in use'));
+            }
+            else
+            {
+              var queryUser;
+              var hashedPassword = loginquery.generateHash(password);
 
-          queryUser = "INSERT INTO user (UserName, FirstNationName, ChiefName, ContactName, PhoneNO, Email, CreateDate, password, validated) "
+              queryUser = "INSERT INTO user (UserName, FirstNationName, ChiefName, ContactName, PhoneNO, Email, CreateDate, password, validated) "
                     + " VALUES ('" + userName + "', '" +  req.body.fnName + "', '" + req.body.chiefName + "', '" + req.body.contactName
                     + "', '" + req.body.contactPhone + "', '" + req.body.contactEmail + "', NOW(), '" + hashedPassword + "', 0);";
 
-          query.newQuery(queryUser, function(err, data) {
-            console.log("Insert function completed.");
-            console.log("data variable contains: ");
-            console.log(data);
-            if (err) throw err;
+              query.newQuery(queryUser, function(err, data)
+              {
+                console.log("Insert function completed.");
+                console.log("data variable contains: ");
+                console.log(data);
+                if (err) throw err;
 
-            //To make it identical to a login...
-            query.newQuery("SELECT * FROM user u WHERE u.UserName LIKE '" + userName + "';", function(err, data) {
+                //To make it identical to a login...
+                query.newQuery("SELECT * FROM user u WHERE u.UserName LIKE '" + userName + "';", function(err, data)
+                {
               //data should contain the password
-              console.log("Data: ");
-              console.log(data);
-              console.log(data[0].password);
-              console.log("Your password: " + password);
+                console.log("Data: ");
+                console.log(data);
+                console.log(data[0].password);
+                console.log("Your password: " + password);
 
-              console.log("Correct password. Data: ");
-              return done(null, data[0]);
+                console.log("Correct password. Data: ");
+                return done(null, data[0]);
+                });
+              });
+             }
             });
-          });
         }
-      });
 
+      });
     });
   }));
 
@@ -139,7 +158,8 @@ module.exports = function(passport) {
       passwordField : 'password',
       passReqToCallback : true
     },
-    function(req, userName, password, done) {// callback with email and password from our form
+    function(req, userName, password, done)
+    { // callback with email and password from our form
 
       // find u user whose email is the same as the form's email
       // we are checking to see if the user trying to login exists

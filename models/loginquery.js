@@ -4,8 +4,10 @@ var bcrypt = require('bcrypt-nodejs');
 
 var db = require('./query');
 
-module.exports = {
-  generateHash: function(password) {
+module.exports =
+{
+  generateHash: function(password)
+  {
     console.log("hash function is called");
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
   },
@@ -16,7 +18,8 @@ module.exports = {
     callback(resetPass);
   },
 
-  validPassword: function(email, password, data) {
+  validPassword: function(email, password, data)
+  {
     //db.newQuery("SELECT password FROM users u WHERE u.email LIKE '" + email + "';", function(err, data) {
       // //data should contain the password
       // console.log("Data: ");
@@ -32,7 +35,8 @@ module.exports = {
 
   // This will create an object with THREE VALUES
   // {token, userID, expiry}
-  generateTokenObject: function(userID, countdownMinutes, callback) {
+  generateTokenObject: function(userID, countdownMinutes, callback)
+  {
     var currentDate = new Date(); //How to get current datetime??? :'(
 
     var expiryMiliseconds = countdownMinutes * 60 * 1000;
@@ -65,7 +69,8 @@ module.exports = {
   },
 
   //This will go through the token table, deleting all expired tokens
-  purgeTokens: function(callback) {
+  purgeTokens: function(callback)
+  {
     rightNow = new Date();
 
     //Select every date where the expiry date is smaller (earlier) than right now
@@ -112,30 +117,35 @@ module.exports = {
       }
       console.log(data.length);
       for (var i = 0; i < data.length; i++)
-        {
+      {
           //Find out if each one has a token
-          (function(cntr)
-          {
+        (function(cntr)
+        {
 
-            db.newQuery("SELECT * FROM token WHERE UserID = " + data[cntr].ID, function(err, data2)
+          db.newQuery("SELECT * FROM token WHERE UserID = " + data[cntr].ID, function(err, data2)
+          {
+            console.log(data2);
+            if(data2 === undefined || data2.length < 1)
             {
-              console.log(data2);
-              if(data2 === undefined || data2.length < 1)
-              {
                 //That means there's no token! DELETE DIS
-                console.log("second data object " + data[cntr].ID );
-                var deleteDIS = "DELETE FROM user WHERE ID = " + data[cntr].ID + ";";
-                db.newQuery(deleteDIS, function(err, data3)
+              console.log("second data object " + data[cntr].ID );
+              var deleteDIS = "DELETE FROM user WHERE ID = " + data[cntr].ID + ";";
+              db.newQuery(deleteDIS, function(err, data3)
+              {
+                console.log("USER DELETED!!!");
+                console.log(data2);
+                if (cntr == data.length - 1)
                 {
-                  console.log("USER DELETED!!!");
-                  console.log(data2);
-                  if (cntr == data.length - 1)
-                  {
-                    callback();
-                  }
-                });
-              }
+                  callback();
+                }
+              });
+            }
+            else if (cntr == data.length - 1)
+            {
+              callback();
+            }
           });
+
          })(i);
        }
      });

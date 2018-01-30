@@ -9,7 +9,58 @@
         body        { padding-top:80px; }
     </style>
 </head>
-<body>
+<body onload="loadForm()">
+
+  <script>
+  function saveForm()
+  {
+
+    if(typeof(Storage) !== "undefined")
+    {
+      sessionStorage.UserName = document.getElementById("userName").value;
+      sessionStorage.FirstNationName = document.getElementById('fnName').value;
+      sessionStorage.ChiefName = document.getElementById('chiefName').value;
+      sessionStorage.ContactName = document.getElementById('contactName').value;
+      sessionStorage.ContactPhone = document.getElementById('contactPhone').value;
+      sessionStorage.ContactEmail = document.getElementById('contactEmail').value;
+    }
+
+  }
+  function loadForm()
+  {
+    if(sessionStorage.UserName)
+    {
+      document.getElementById('userName').value = sessionStorage.UserName;
+    }
+
+    if(sessionStorage.FirstNationName)
+    {
+      document.getElementById('fnName').value = sessionStorage.FirstNationName;
+    }
+
+    if(sessionStorage.ChiefName)
+    {
+    document.getElementById('chiefName').value = sessionStorage.ChiefName;
+    }
+
+    if(sessionStorage.ContactName)
+    {
+      document.getElementById('contactName').value = sessionStorage.ContactName;
+    }
+
+    if(sessionStorage.ContactPhone)
+    {
+      document.getElementById('contactPhone').value = sessionStorage.ContactPhone;
+    }
+
+    if(sessionStorage.ContactEmail)
+    {
+      document.getElementById('contactEmail').value = sessionStorage.ContactEmail;
+    }
+    loadform();
+
+  }
+</script>
 <div class="container">
 
 <div class="col-sm-6 col-sm-offset-3">
@@ -19,6 +70,9 @@
     <!-- show any messages that come back with authentication -->
     <% if (message.length > 0) { %>
         <div class="alert alert-danger"><%= message %></div>
+    <% } %>
+    <% if (message1.length > 0) { %>
+        <div class="alert alert-danger"><%= message1 %></div>
     <% } %>
 
     <!-- LOGIN FORM -->
@@ -71,7 +125,7 @@
           <input type = "email" id = "contactEmail" name = "contactEmail" placeholder = "contact@haodafan.com" class="form-control"/>
         </div>
 
-        <button type="submit" class="btn btn-warning btn-lg">Next</button>
+        <button type="submit" onclick="saveForm()" class="btn btn-warning btn-lg">Next</button>
     </form>
 
     <hr>
