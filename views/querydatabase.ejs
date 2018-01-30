@@ -17,7 +17,7 @@
       <form action="/make-query" method="post" id = "qform">
           <div class="form-group">
               <label>Insert your query here: </label> <br>
-              <textarea name = "userQuery" rows = "8" cols = "64">SELECT * FROM user; </textarea>
+              <textarea name = "userQuery" rows = "8" cols = "64"><%= prev %>; </textarea>
           </div>
           <button type="submit" class="btn btn-warning btn-lg">Make Query</button>
       </form>
