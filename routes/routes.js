@@ -16,18 +16,23 @@ module.exports = function(app, passport)
   // =====================================
 app.get('/', function(req, res)
 {
+
     res.render('index.ejs');
 });
 //renders
 //DELETE FORM
 app.get('/deleteReport', function(req, res)
 {
-  res.render('deleteReport.ejs');
+  console.log("Just testing to see if the req.user things works!!!!");
+  console.log(req.user.ID);
+  res.render('deleteReport.ejs', {messages: 'undefined'});
 
 });
 //CHECKS IF USER PASSWORD MATCHES ID IN QUERY STRING AND THEN DELETES THE REPORT ACCORDING TO THE REPORT ID
 app.post('/deleteReport', function(req, res)
 {
+ req.flash('invalid password', 'Invalid Password!');
+ var bcrypt = require('bcrypt-nodejs');
  var query = require('../models/query');
  query.newQuery("SELECT password FROM user WHERE user.ID = '" + req.query.userID + "' ; ", function(err, userPassword)
  {
@@ -37,14 +42,44 @@ app.post('/deleteReport', function(req, res)
    }
    else
    {
+
      console.log("hello");
      console.log(userPassword[0]);
      console.log(userPassword[0].password);
      console.log(req.body.passwordProvided);
-      if(userPassword[0].password == req.body.passwordProvided)
-      {
-        console.log("success!");
-      }
+     bcrypt.compare(req.body.passwordProvided, userPassword[0].password, function(err, pass)
+     {
+       if(err)
+       {
+         console.log("error in functoni");
+       }
+       if(pass)
+       {
+         //callbacks to delete from database the ID mentioned
+         console.log("passwords match")
+         query.newQuery("DELETE FROM funding_administor WHERE FundingID = '" + req.query.fundingID + "'; ", function(err, thingDeleted)
+         {
+           console.log(thingDeleted);
+           query.newQuery("DELETE FROM funding_use WHERE FundingID = '" + req.query.fundingID + "'; ", function (err, theThingDeleted)
+           {
+             console.log(theThingDeleted);
+             query.newQuery("DELETE FROM funding WHERE ID = '" + req.query.fundingID + "' AND UserId = '" + req.query.userID + "' ; ", function(err, reportDeleted)
+             {
+               res.redirect('/profile');
+               console.log("deleted!");
+               console.log(reportDeleted);
+             });
+          });
+        });
+
+       }
+       else
+       {
+        res.render('deleteReport.ejs',
+        { messages: req.flash('invalid password')});
+         console.log("passwords don't match");
+       };
+     });
    }
  })
 
@@ -268,41 +303,53 @@ app.post('/emailResetLink', function(req,res)
   });
 //CHANES TOKEN STATUS
   // JUST V URSELF
-  app.get('/validate-now', function(req, res) {
+  app.get('/validate-now', function(req, res)
+  {
     console.log(req.query.tok);
     var query = require('../models/query');
-    query.newQuery("SELECT * FROM token WHERE token.TokenContent = '" + req.query.tok + "';", function(err, tokenData) {
+    query.newQuery("SELECT * FROM token WHERE token.TokenContent = '" + req.query.tok + "';", function(err, tokenData)
+    {
       //First, check if it exists
-      if (tokenData.length != 1) {
+      if (tokenData.length != 1)
+      {
         //The user's token does not exist or has expired
         console.log("TOKEN NOT FOUND!");
         res.render('validationFailure.ejs', {});
       }
-      else {
+      else
+      {
         //Now, we check if this token is still valid...
         var currentDate = new Date();
         console.log("CURRENT TIME: ");
         console.log(currentDate);
         console.log("EXPIRY TIME: ");
         console.log(tokenData[0].Expiry);
-        if (currentDate.getTime() > tokenData[0].Expiry) {
+        if (currentDate.getTime() > tokenData[0].Expiry)
+        {
           console.log("TOKEN EXPIRED!");
           res.render('validationFailure.ejs', {});
         }
-        else {
+        else
+        {
           //EVERYTHING IS VALIDATED!
           //First, let's update the valid column for this user
-          query.newQuery("UPDATE user SET validated = 1 WHERE ID = " + tokenData[0].UserId + ";", function(err, data) {
-            if(err) {
+          query.newQuery("UPDATE user SET validated = 1 WHERE ID = " + tokenData[0].UserId + ";", function(err, data)
+          {
+            if(err)
+            {
               console.log(err);
             }
-            else {
+            else
+            {
               //Second, let's get rid of the useless token
-              query.newQuery("DELETE FROM token WHERE TokenContent = '" + tokenData[0].TokenContent + "';", function(err, data) {
-                if (err) {
+              query.newQuery("DELETE FROM token WHERE TokenContent = '" + tokenData[0].TokenContent + "';", function(err, data)
+              {
+                if (err)
+                {
                   console.log(err);
                 }
-                else {
+                else
+                {
                   console.log("JUST CHECKING TO SEE IF TOKEN LINK REDIRECTS TO LOGIN");
                   res.redirect('/login');
                 }
@@ -393,13 +440,15 @@ app.post('/emailResetLink', function(req,res)
   // =====================================
   // NEW FORM ============================
   // =====================================
-  app.get('/make-report', isLoggedIn, function(req, res) {
+  app.get('/make-report', isLoggedIn, function(req, res)
+  {
     console.log("/make-report get route function INVOKED");
     console.log("Let's make a new report.");
     res.render('form.ejs', {user: req.user});
   });
 
-  app.post('/make-report', isLoggedIn, function(req, res) {
+  app.post('/make-report', isLoggedIn, function(req, res)
+  {
     console.log("/make-report post route function INVOKED");
     var make = require('../models/make-report.js');
 
@@ -407,7 +456,8 @@ app.post('/emailResetLink', function(req,res)
     console.log(req.body);
     console.log("Pass in this variable as well: ");
     console.log(req.user);
-    make.createReport(req.body, req.user, function() {
+    make.createReport(req.body, req.user, function()
+    {
       console.log("SUCCESS!");
       res.redirect('/profile');
     });
@@ -415,20 +465,24 @@ app.post('/emailResetLink', function(req,res)
   // =====================================
   // VIEW FORM ===========================
   // =====================================
-  app.get('/view-report', isLoggedIn, function(req, res) {
+  app.get('/view-report', isLoggedIn, function(req, res)
+  {
     console.log("get /view-report")
     // TBH THIS COULD PROBABLY BE ITS OWN MODULE BUT FOR NOW I'LL LEAVE IT HERE
     //var display = require('../models/displayall.js');
     var display = require('../models/displayall.js');
 
-    display.displayReport(req, function(arrayOfSix) {
+    display.displayReport(req, function(arrayOfSix)
+    {
       console.log("HERE IS THE RETURNED ARRAY");
       console.log(arrayOfSix);
-      if (arrayOfSix.length === 0) {
+      if (arrayOfSix.length === 0)
+      {
         res.redirect('/profile');
       }
       else {
-        res.render('view-report.ejs', {
+        res.render('view-report.ejs',
+        {
           user : arrayOfSix[0],
           rep : arrayOfSix[1],
           admin : arrayOfSix[2],
@@ -445,7 +499,8 @@ app.post('/emailResetLink', function(req,res)
   // =====================================
   // LOGOUT ==============================
   // =====================================
-  app.get('/logout', function(req, res) {
+  app.get('/logout', function(req, res)
+  {
       req.logout();
       res.redirect('/');
   });
@@ -459,10 +514,12 @@ app.post('/emailResetLink', function(req,res)
   // ======================================
   // DEBUGGING ROUTES =====================
   // ======================================
-  app.get('/make-query', function(req, res) {
+  app.get('/make-query', function(req, res)
+  {
     res.render('querydatabase.ejs', {data: "no data"});
   });
-  app.post('/make-query', function(req, res) {
+  app.post('/make-query', function(req, res)
+  {
     console.log("/make-query post route function INVOKER");
 
     /*
@@ -476,8 +533,10 @@ app.post('/emailResetLink', function(req,res)
      */
     var query = require('../models/query');
     console.log(req.body.userQuery);
-    query.newQuery(req.body.userQuery, function(err, result) {
-      if (err) {
+    query.newQuery(req.body.userQuery, function(err, result)
+    {
+      if (err)
+      {
         console.log(err);
       }
       strResult = JSON.stringify(result);
@@ -487,35 +546,41 @@ app.post('/emailResetLink', function(req,res)
   });
 
 
-  app.get('/test', function(req, res) {
+  app.get('/test', function(req, res)
+  {
     //COMMENT OUT AFTER DEBUGGING TABLES
     res.render('test.ejs', {data: "no data"});
   });
 
-  app.post('/test', function(req, res) {
+  app.post('/test', function(req, res)
+  {
     console.log("/test post route function INVOKED");
     //console.log(" =========================================== --- REQ --- =========================================== ");
     //console.log(req);
     //console.log(" =========================================== --- RES --- =========================================== ");
     //console.log(res);
     var displayAll = require('../models/displayall');
-    displayAll.returnTable(req.body.table, function(result) {
+    displayAll.returnTable(req.body.table, function(result)
+    {
       res.render('test.ejs', {data: result})
     });
   });
 
-  app.get('/test-email', function(req, res) {
+  app.get('/test-email', function(req, res)
+  {
     console.log("/test-email GET function invoked");
     res.render('test-email.ejs', {data : "Click the Send Mail button to... well,  send the mail. Ya dip."});
   });
 
-  app.post('/test-email', function(req, res) {
+  app.post('/test-email', function(req, res)
+  {
     console.log("/test-email POST function invoked");
     console.log("BODY: ");
     console.log(req.body)
 
     var mail = require('../models/sendMail.js');
-    mail.sendFromHaodasMail(req.body.sendEmail, req.body.sendSubject, req.body.sendContent, function () {
+    mail.sendFromHaodasMail(req.body.sendEmail, req.body.sendSubject, req.body.sendContent, function ()
+    {
       console.log("EMAIL SENT.");
       res.render('test-email.ejs', {data: "Email message sent! Check your inbox!"});
     });
@@ -525,35 +590,44 @@ app.post('/emailResetLink', function(req,res)
     //COMMENT OUT IN FINAL DEMO
     /*
     */
-    app.get('/delete-all-data-from-table-user', function(req, res) {
+    app.get('/delete-all-data-from-table-user', function(req, res)
+    {
       var query = require('../models/query.js');
-      query.newQuery("DELETE FROM user", function(req, res) {
-        if (err) {
+      query.newQuery("DELETE FROM user", function(req, res)
+      {
+        if (err)
+        {
           console.log(err);
         }
-        else {
+        else
+        {
           console.log("DELETED.");
           res.redirect('/');
         }
       });
     });
-    app.get('/delete-all-data-from-table-funding', function(req, res) {
+    app.get('/delete-all-data-from-table-funding', function(req, res)
+    {
       var query = require('../models/query.js');
-      query.newQuery("DELETE FROM funding", function(req, res) {
+      query.newQuery("DELETE FROM funding", function(req, res)
+      {
         console.log("DELETED.");
         res.redirect('/');
       });
     });
     // DEBUGGING
 
-    app.get('/purge', function(req, res) {
+    app.get('/purge', function(req, res)
+    {
       console.log("I-I-It's the Purge, Morty! We're in The Purge!!");
 
       //This will delete all expired tokens and unvalidated users without valid tokens!
       var darkLogin = require('../models/loginquery.js');
-      darkLogin.purgeTokens(function () {
+      darkLogin.purgeTokens(function ()
+      {
         console.log("The tokens have been purged!");
-        darkLogin.purgeAccounts(function () {
+        darkLogin.purgeAccounts(function ()
+        {
           console.log("The users have been purged!");
           res.redirect('/');
         });
@@ -562,7 +636,8 @@ app.post('/emailResetLink', function(req,res)
 
 };
 
-function isLoggedIn(req, res, next) {
+function isLoggedIn(req, res, next)
+{
 
   // if the user is authenticated in the session, carry on
   if (req.isAuthenticated()) return next();
