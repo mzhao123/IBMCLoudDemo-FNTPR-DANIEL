@@ -520,7 +520,7 @@ app.post('/emailResetLink', function(req,res)
   // ======================================
   app.get('/make-query', function(req, res)
   {
-    res.render('querydatabase.ejs', {data: "no data"});
+    res.render('querydatabase.ejs', {data: "no data", prev: 'SELECT * FROM user;'});
   });
   app.post('/make-query', function(req, res)
   {
@@ -544,7 +544,7 @@ app.post('/emailResetLink', function(req,res)
         console.log(err);
       }
       strResult = JSON.stringify(result);
-      res.render('querydatabase.ejs', {data: strResult});
+      res.render('querydatabase.ejs', {data: strResult, prev: req.body.userQuery});
     });
 
   });
