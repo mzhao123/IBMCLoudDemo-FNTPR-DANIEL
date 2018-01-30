@@ -38,7 +38,10 @@ app.post('/deleteReport', function(req, res)
  {
    if(userPassword.length !=1)
    {
-     console.log("WE Have a problem")
+     res.render('deleteReport.ejs',
+     { messages: req.flash('invalid password')});
+       console.log("WE Have a problem")
+       console.log("USER MESSED WITH THE QUERY STRING@@@@@");
    }
    else
    {
@@ -264,7 +267,8 @@ app.post('/emailResetLink', function(req,res)
     //DEBUGGING
     console.log("app get /signup");
     console.log(req.body);
-    res.render('signup.ejs', {message: req.flash('signupMessage')});
+    console.log("ABOVE IS APP.GET SIGNUP ^^^^^!!!");
+    res.render('signup.ejs', {message: req.flash('signupMessage'), message1: req.flash('signupMessage1') });
   });
   // process the signup form
   app.post('/signup', passport.authenticate('local-signup',
