@@ -556,6 +556,8 @@ The email token validation part is the last feature I added.
 
 The idea is that after the user 'signs up', an email with a link is sent to their inputted email. Before he/she can access their account, they must click on the email link to validate their account.
 
+An added feature that I (Daniel Zhao) Implemented is the option for the user to reset their password. The idea behind this is similar to the email token validation: the user simply enters the email address his/her account is linked to and a link with instructions to reset the password will be send through an email.
+
 I did THREE major things for this.
 
 **First** is, using my '/make-query' online, I query'd a new table called 'token', with columns for identifying the associated user, the token itself, and the expiry date (which is in [Unix Time](https://en.wikipedia.org/wiki/Unix_time)).
@@ -598,7 +600,7 @@ smtpTransport.sendMail(mailConfig, function(err, response) {
 
 ## 4.5 Things I'm too dumb to figure out
 
-The main thing I have yet to implement successfully is a way to **get rid of unvalidated users** and their **expired tokens**. If you look in the file 'loginquery.js', you'll find a pair of purge functions. Neither of these really function properly. If you are continuing to work on this project, and can solve the token problem, then that would be **awesome**.
+~~The main thing I have yet to implement successfully is a way to **get rid of unvalidated users** and their **expired tokens**. If you look in the file 'loginquery.js', you'll find a pair of purge functions. Neither of these really function properly. If you are continuing to work on this project, and can solve the token problem, then that would be **awesome**.~~ **This feature was completed**
 
 ## 4.6 Other areas of improvement
 
@@ -607,6 +609,7 @@ There are a few other things I would've liked to improve on my program.
 2. My program is blank and ugly! I did not spend much effort at all in the front end UI design.
 3. Although passport is great and all, I think (correct me if I'm wrong) the IBM Cloud has its own service for authentication, which is much more secure than anything my naive lil brain can think up.
 4. Embedded JavaScript (ejs) is an okay templating system for the front end views, but I kind of wish I used something a little fancier, like **React or Angular**. Perhaps that's something you could do?
+5. We would like to figure out how to allow reports to be downloaded as a pdf file.
 
 # 5.0 Conclusion
 
