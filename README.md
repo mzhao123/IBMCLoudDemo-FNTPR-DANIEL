@@ -1,5 +1,5 @@
 # First Nations' Online Reporting Form
-By Haoda Fan, Ontario Ministry of Health and Long Term Care
+By Haoda Fan, Daniel Zhao, Yuting Shen, Ontario Ministry of Health and Long Term Care
 
 # Purpose
 The purpose of this application is to demonstrate the capabilities of development on the IBM Cloud (also known as IBM Bluemix).
