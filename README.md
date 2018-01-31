@@ -49,7 +49,9 @@ Note that an 'auth' table still exists, but it is an obsolete table that is no l
 - Basic funding report form that saves to a database
 - A page to view your own report
 - The ability to make multiple reports under the same user
-
+- The ability to reset a user's password through email validation
+- The ability to delete reports after a confirmation page
+- Delete users that have not been validated
 ### Development features (to be removed in final release):
 - Make any query to any database
 - Delete all rows from both the user and funding tables
