@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>First Nations Report Spending</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
 	<link rel = "stylesheet" href = "stylesheets/formStyling.css">
 
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
@@ -12,7 +13,7 @@
 <head>
 	<body>
 		<script>
-		function updateOther()
+		function updateOther() //makes sure that certain text boxes are required if a certain checkbox is filled
 		{
 
 			if(document.getElementById("adminSpecify").required == true)
@@ -37,10 +38,13 @@
 			}
 		}
 		</script>
-<div class = "container">
+<div class = "col-sm-10 col-sm-offset-1">
 <h1 style = "text-align: center";> First Nations Report Spending </h1>
+<br>
+<br>
 <form action = "/make-report" , method = "POST">
 <fieldset id = "theFirstThreeLinesCombined" >
+	<legend> </legend>
     <p class = "theFirstThreeLines">
     <b><label class = "hello" for "fundProvided">Funding Provided:    </label></b>
 <input class = "centerTextAllign" type = "number" id = "fundProvided" name = "fundProvided" placeholder = "25000"/ required>
@@ -52,13 +56,13 @@
     <p class = "theFirstThreeLines">
     <b><label class = "hello" for "fundRecovered">Funding to be Recovered : </label></b>
 <input class = "centerTextAllign" type = "number" id = "fundRecovered" name = "fundRecovered" placeholder = "5000">
-<p style = "margin-top : -15px; font-size: 14px; margin-left: 25px;">
-(Funding provided minus funding spent)
-</p>
+<p style= "font-size: 12px; margin-top: -0.75%; ">(Funding Provided Minus Funding Spent)</p>
     </p>
-</fieldset>  <br>
+</fieldset>
+<br>
 <fieldset id = "whoGaveService">
-<b><p style = "margin-right: 125px; margin-left: 25px;"> Who administered home and community care services in your community in 2017-18? The Ministry of Health
+	<legend> </legend>
+<b><p> Who administered home and community care services in your community in 2017-18? The Ministry of Health
 and Long-Term Care will use this information to understand the service delivery network in your community.
 <br>
 <br>Check all that apply: </p></b>
@@ -69,34 +73,36 @@ and Long-Term Care will use this information to understand the service delivery 
 <input  type="checkbox" name="adminLHIN" /> Local Health Integration Network<br>
 <input onclick= "updateOther()" type="checkbox" name="adminOther" /> Other (please specify below)<br>
 <br>
-<input type = "text" id = "adminSpecify" name = "adminSpecify" placeholder = "Enter if you checked third party delivery organization or other" style = "width: 85%; text-align:center;"/>
+<input type = "text" id = "adminSpecify" name = "adminSpecify" placeholder = "Enter if you checked third party delivery organization or other" style = "width: 100%; text-align:center;"/>
 </p>
 </fieldset>
 <br>
 <!-- I should probably think 0about the case where one checks both third party AND other :P -->
 
 <fieldset id = "otherFundingSources">
-<b><u>Other Funding Sources: </u></b>
+	<legend> </legend>
+<b>Other Funding Sources: </b>
 <b><label for "fundNursing">Did the community also receive funding through the Homemaking and Nursing Services Act? </label></b>
-<input type="radio" name="fundNursing" value="on" checked> Yes
-<input type="radio" name="fundNursing" value="off"> No <br>
+<input style = "margin-left: 1%;" type="radio" name="fundNursing" value="on" checked> Yes
+<input style = "margin-left: 1%;" type="radio" name="fundNursing" value="off"> No <br>
 <br>
 <b><label for "fundGov">Did the community also receive or benefit from funding through the Government of Canada’s First Nations and Inuit Home
-and Community Care program? </label></b>
-<input type="radio" name="fundGov" value="on" checked> Yes
-<input type="radio" name="fundGov" value="off"> No <br>
+and Community Care program?  </label></b>
+<input style = "margin-left: 1%;" type="radio" name="fundGov" value="on" checked> Yes
+<input style = "margin-left: 1%;" type="radio" name="fundGov" value="off"> No <br>
 </fieldset> <br>
 <!--NEW FIELDSET!!!!!!!! -->
 <fieldset id = "clientsAndPriorities">
 <b><label for "numClients">Please outline how many clients the home and community care program served in 2017-2018 with all funding sources:</label></b>
-<input style = "text-align: center; margin-left: 4em;" type = "number" id = "numClients" name = "numClients" placeholder = "850" required/>
+<input style = "text-align: center; margin-left: 2%;" type = "number" id = "numClients" name = "numClients" placeholder = "850" required/>
 <br>
 <br>
 <b><label for "priorities">Please outline priorities for home and community care investment in the next five years:</label> <br></b>
 <br>
-<textarea id = "priorities" name = "priorities" style = "width: 99%" rows = "5"> </textarea>
+<textarea id = "priorities" name = "priorities" style = "width: 100%" rows = "5"> </textarea>
 </fieldset> <br>
 <fieldset id = "fundingSpent">
+	<legend> </legend>
 <b><p>Please indicate how the funding was spent in 2017-18.<br> Please check all that apply: </p></b>
  <input type="checkbox" name="useTravel"/> Travel<br>
  <input type="checkbox" name="useRecruit"/> Recruitment<br>
@@ -115,12 +121,12 @@ and Community Care program? </label></b>
  <br>
  <b> <label for "useOther">Any other home and community care or palliative and end-of-care priorities: </label> <br></b>
  <br>
- <textarea id = "useOther" name = "useOther" style = "width: 85%" rows = "5"></textarea>
+ <textarea id = "useOther" name = "useOther" style = "width: 100%" rows = "5"></textarea>
 </fieldset> <br>
 <fieldset id = "commentsAndConfirm">
 <b><label for "comments">Please provide any other comments: </label> </b><br>
 <br>
-		<textarea id = "comments" name = "comments" style = "width: 85%" rows = "5"> </textarea>
+		<textarea id = "comments" name = "comments" style = "width: 100%" rows = "5"> </textarea>
 		<br>
 		<b><input type="checkbox" name="approval" required/> Check if the above information is approved by the Chief or the Chief's delegated authority
     to approve reports to the ministry. </b><br>
@@ -133,7 +139,8 @@ and Community Care program? </label></b>
   <br><br>
 </div>
 <!-- I could give this a seperate html page, and use include to add it in, just to modularize everything better. For now I'll just keep it here-->
-	<div style = "margin-left: 5%;" class = "container info">
+	<div class = "col-sm-10 col-sm-offset-1">
+		<div style = "margin-left: 5%; margin-right: 5%;">
 		<h2><center> Information and notes: </center></h2>
 		<br>
 		<h4>Eligible areas of Expenditure</h4>
@@ -165,7 +172,7 @@ and Community Care program? </label></b>
 			<li>Services for persons with deafness/congenital/acquired hearing loss</li>
 			<br><br>
 		</ol>
-
+		</div>
 	</div>
 </body
 

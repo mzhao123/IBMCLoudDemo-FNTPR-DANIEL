@@ -1,28 +1,44 @@
-#whoGaveService{
-     margin-left: 5%; margin-right: 5%;
-  }
-#whoAdministeredCheckBox{
-   margin-left: 25px;
-  }
-  #otherFundingSources{
-   margin-left: 5%; margin-right:5%;
-  }
-#theFirstThreeLinesCombined{
-    margin-left: 5%; margin-right:5%;
-  }
-#clientsAndPriorities{
-     margin-left: 5%; margin-right: 5%;
-  }
-#fundingSpent{
-     margin-left:5%; margin-right: 5%;
- }
-#commentsAndConfirm{
-     margin-left: 5%; margin-right: 5%;
-  }
+#whoGaveService
+{
+   margin-left: 5%; margin-right: 5%;
+}
+#whoAdministeredCheckBox
+{
 
-.centerTextAllign {
+}
+  #otherFundingSources
+{
+   margin-left: 5%; margin-right:5%;
+}
+#theFirstThreeLinesCombined
+{
+   margin-left: 5%; margin-right:5%;
+}
+#clientsAndPriorities
+{
+   margin-left: 5%; margin-right: 5%;
+}
+#fundingSpent
+{
+    margin-left:5%; margin-right: 5%;
+}
+#commentsAndConfirm
+{
+    margin-left: 5%; margin-right: 5%;
+}
+.centerTextAllign
+{
   text-align: center;
-  }
-.hello{
-  margin-left: 25px;  float:left;   width: 10em; margin-right: -5em; width: 350px;
-  }
+}
+.hello
+{
+ float:left;   width: 10em;  width: 350px;
+}
+body
+{
+  font-family: Helvetica, arial,  sans-serif;
+}
+.theContainer
+{
+  margin-left: 5%; margin-right: 5%;
+}

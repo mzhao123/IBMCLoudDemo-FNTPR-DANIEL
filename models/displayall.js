@@ -84,13 +84,13 @@ module.exports = {
                     for (var i = 0; i < dataUse.length; i++) {
                       use[(dataUse[i].LKPFundingUseID - 1) / 10] = true;
                       if (dataUse[i].LKPFundingUseID === 81) {
-                        useComments = dataUse[i].Comments;
+                        comments = dataUse[i].Comments;
                       }
                     }
                     console.log("Use: ");
                     console.log(use);
 
-                    var superArray = [dataUser[0], dataFunding[0], admin, adminComments, use, useComments];
+                    var superArray = [dataUser[0], dataFunding[0], admin, adminComments, use, comments];
                     callback(superArray);
                   }
                 });
