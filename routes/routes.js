@@ -25,6 +25,11 @@ app.get('/deleteReport', function(req, res)
 {
   console.log("Just testing to see if the req.user things works!!!!");
   console.log(req.user.ID);
+  if(req.user.ID != req.query.userID)
+  {
+    console.log("ERROR YOU MESSED WITH THE QUERY STRING!");
+    res.render('deleteError.ejs');
+  }
   res.render('deleteReport.ejs', {messages: 'undefined'});
 
 });
@@ -34,58 +39,75 @@ app.post('/deleteReport', function(req, res)
  req.flash('invalid password', 'Invalid Password!');
  var bcrypt = require('bcrypt-nodejs');
  var query = require('../models/query');
- query.newQuery("SELECT password FROM user WHERE user.ID = '" + req.query.userID + "' ; ", function(err, userPassword)
+ if(req.user.ID != req.query.userID)
  {
-   if(userPassword.length !=1)
+   console.log("ERROR YOU MESSED WITH THE QUERY STRING!");
+   res.render('deleteError.ejs');
+ }
+ else
+ {
+   query.newQuery("SELECT password FROM user WHERE user.ID = '" + req.query.userID + "' ; ", function(err, userPassword)
    {
-     res.render('deleteReport.ejs',
-     { messages: req.flash('invalid password')});
-       console.log("WE Have a problem")
-       console.log("USER MESSED WITH THE QUERY STRING@@@@@");
-   }
-   else
-   {
-
-     console.log("hello");
-     console.log(userPassword[0]);
-     console.log(userPassword[0].password);
-     console.log(req.body.passwordProvided);
-     bcrypt.compare(req.body.passwordProvided, userPassword[0].password, function(err, pass)
+     if(userPassword.length !=1)
      {
-       if(err)
-       {
-         console.log("error in functon!");
-       }
-       if(pass)
-       {
-         //callbacks to delete from database the ID mentioned
-         console.log("passwords match")
-         query.newQuery("DELETE FROM funding_administor WHERE FundingID = '" + req.query.fundingID + "'; ", function(err, thingDeleted)
-         {
-           console.log(thingDeleted);
-           query.newQuery("DELETE FROM funding_use WHERE FundingID = '" + req.query.fundingID + "'; ", function (err, theThingDeleted)
-           {
-             console.log(theThingDeleted);
-             query.newQuery("DELETE FROM funding WHERE ID = '" + req.query.fundingID + "' AND UserId = '" + req.query.userID + "' ; ", function(err, reportDeleted)
-             {
-               res.redirect('/profile');
-               console.log("deleted!");
-               console.log(reportDeleted);
-             });
+       res.render('deleteReport.ejs',
+       { messages: req.flash('invalid password')});
+        console.log("WE Have a problem")
+        console.log("USER MESSED WITH THE QUERY STRING@@@@@");
+      }
+      else
+      {
+        console.log("hello");
+        console.log(userPassword[0]);
+        console.log(userPassword[0].password);
+        console.log(req.body.passwordProvided);
+        bcrypt.compare(req.body.passwordProvided, userPassword[0].password, function(err, pass)
+      {
+        if(err)
+        {
+           console.log("error in functon!");
+        }
+        if(pass)
+        {
+          //callbacks to delete from database the ID mentioned
+          console.log("passwords match")
+          query.newQuery("SELECT * FROM funding WHERE ID = '" + req.query.fundingID + "';", function (err, theUserID)
+          {
+            if(theUserID[0].UserId === req.query.userID)
+            {
+              query.newQuery("DELETE FROM funding_administor WHERE FundingID = '" + req.query.fundingID + "'; ", function(err, thingDeleted)
+              {
+                console.log(thingDeleted);
+                query.newQuery("DELETE FROM funding_use WHERE FundingID = '" + req.query.fundingID + "'; ", function (err, theThingDeleted)
+                {
+                  console.log(theThingDeleted);
+                  query.newQuery("DELETE FROM funding WHERE ID = '" + req.query.fundingID + "' AND UserId = '" + req.query.userID + "' ; ", function(err, reportDeleted)
+                  {
+                    res.redirect('/profile');
+                    console.log("deleted!");
+                    console.log(reportDeleted);
+                  });
+                });
+              });
+            }
+            else
+            {
+                  res.redirect('/profile');
+                  console.log("some suspicious activity has occured, or someone just accidentally messed with the query strings!");
+            }
           });
-        });
 
-       }
-       else
-       {
-        res.render('deleteReport.ejs',
-        { messages: req.flash('invalid password')});
-         console.log("passwords don't match");
-       };
-     });
-   }
- })
-
+        }
+        else
+        {
+         res.render('deleteReport.ejs',
+          {   messages: req.flash('invalid password')});
+          console.log("passwords don't match");
+        };
+      });
+    }
+  })
+}
 });
 
 app.get('/enter-your-email', function(req, res)
@@ -499,6 +521,11 @@ app.post('/emailResetLink', function(req,res)
   });
   app.get('/editReportPasswordConfirmation', isLoggedIn, function(req, res)
   {
+    if(req.user.ID != req.query.userID)
+    {
+      console.log("ERROR YOU MESSED WITH THE QUERY STRING!");
+      res.render('deleteError.ejs');
+    }
       var display = require('../models/displayall.js');
       console.log("get edit report");
     display.getOtherFundingSources(req, function(otherFunding)
@@ -532,6 +559,11 @@ app.post('/emailResetLink', function(req,res)
   });
   app.post('/editReportPasswordConfirmation', isLoggedIn, function(req, res)
   {
+    if(req.user.ID != req.query.userID)
+    {
+      console.log("ERROR YOU MESSED WITH THE QUERY STRING!");
+      res.render('deleteError.ejs');
+    }
     req.flash('invalid password', 'Invalid Password!');
     var bcrypt = require('bcrypt-nodejs');
     var query = require('../models/query');
