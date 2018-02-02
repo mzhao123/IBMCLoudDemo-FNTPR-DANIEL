@@ -1,5 +1,5 @@
 var query = require('./query.js');
-var schema = "ibmx_7c3d0b86c1998ef"
+var schema = "ibmx_7c3d0b86c1998ef";
 module.exports = {
   returnTable: function(tableName, callback) {
     query.newQuery("SELECT * FROM " + schema + "." + tableName + ";", function(err, data) {
@@ -74,7 +74,7 @@ module.exports = {
            */
            //SECOND QUERY!
            query.newQuery(queryFunding, function(err, data) {
-             console.log("FUNDING QUERY STARTED!")
+             console.log("FUNDING QUERY STARTED!");
              if (err) {
                console.log(err);
              }
@@ -267,7 +267,7 @@ module.exports = {
           }
         });
     }
-  }
+  };
 
 
   /*
@@ -291,7 +291,7 @@ module.exports = {
             insertQuery = "INSERT INTO funding_administor (FundingID, LKPFundingAdministorID, Comments) VALUES (" + fundingID + ", " + data1[0].ID + ", '" + editedField + "');";
           }
           else {
-            var insertQuery = "INSERT INTO funding_administor (FundingID, LKPFundingAdministorID) VALUES (" + fundingID + ", " + data1[0].ID + ");";
+            insertQuery = "INSERT INTO funding_administor (FundingID, LKPFundingAdministorID) VALUES (" + fundingID + ", " + data1[0].ID + ");";
           }
           query.newQuery(insertQuery, function(err, data2) {
             console.log("INSERT SUCCESS.");

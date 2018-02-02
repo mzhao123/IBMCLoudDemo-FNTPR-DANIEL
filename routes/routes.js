@@ -459,7 +459,7 @@ app.post('/emailResetLink', function(req,res)
         isReport : isReport,
         isValidated: isValidated
       });
-    })
+    });
 
   });
 
@@ -493,7 +493,7 @@ app.post('/emailResetLink', function(req,res)
   // =====================================
   app.get('/view-report', isLoggedIn, function(req, res)
   {
-    console.log("get /view-report")
+    console.log("get /view-report");
     // TBH THIS COULD PROBABLY BE ITS OWN MODULE BUT FOR NOW I'LL LEAVE IT HERE
     //var display = require('../models/displayall.js');
     var display = require('../models/displayall.js');
@@ -676,7 +676,7 @@ app.post('/emailResetLink', function(req,res)
     var displayAll = require('../models/displayall');
     displayAll.returnTable(req.body.table, function(result)
     {
-      res.render('test.ejs', {data: result})
+      res.render('test.ejs', {data: result});
     });
   });
 
@@ -690,7 +690,7 @@ app.post('/emailResetLink', function(req,res)
   {
     console.log("/test-email POST function invoked");
     console.log("BODY: ");
-    console.log(req.body)
+    console.log(req.body);
 
     var mail = require('../models/sendMail.js');
     mail.sendFromHaodasMail(req.body.sendEmail, req.body.sendSubject, req.body.sendContent, function ()
