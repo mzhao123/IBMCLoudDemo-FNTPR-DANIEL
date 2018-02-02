@@ -15,6 +15,7 @@ module.exports = {
       }
     });
   },
+
   // THIS FUNCTION RETURNS A CALLBACK WITH ALL THE REQUIRED INFORMATION IN AN ARRAY
   displayReport: function(req, callback) {
     // This is a several step process:
@@ -98,6 +99,40 @@ module.exports = {
             });
 
           }
+        });
+      }
+    });
+  },
+  // the display report function does not give us adequate data so I am forced to create a new function just to extract two new things : source from homemaking/nurse act and
+  //source from the government's first nations and inuit home and community care programs
+  //this will be used when editting reports to have certain data already filled out. yay!
+  getOtherFundingSources: function(req, callback)
+  {
+    console.log("HELLO@@@@@");
+    query.newQuery("SELECT * FROM funding WHERE funding.ID = " + req.query.thisFundingId + ";", function(err, dataFunding)
+    {
+      if (err)
+      {
+        console.log(err);
+      }
+      //security measure to prevent users from tampering with other users...
+      else if(dataFunding[0].UserId != req.user.ID)
+      {
+        console.log(" ----- HEY! YOU'RE NOT SUPPOSED TO BE HERE!! ----- ");
+        var blankArray = [];
+        callback(blankArray);
+      }
+      else
+      {
+        query.newQuery("SELECT SourceFromHomeMaking FROM funding WHERE ID = " + req.query.thisFundingId + "; ", function(err, data)
+        {
+          console.log("gettingfrom homemaking");
+          console.log(data);
+          query.newQuery("SELECT SourceFromFirstNation FROM funding WHERE ID = " + req.query.thisFundingId + "; ", function(err, data1)
+          {
+            var smallArray = [data[0].SourceFromHomeMaking, data1[0].SourceFromFirstNation];
+            callback(smallArray);
+          });
         });
       }
     });

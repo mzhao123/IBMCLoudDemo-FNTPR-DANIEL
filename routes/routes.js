@@ -54,7 +54,7 @@ app.post('/deleteReport', function(req, res)
      {
        if(err)
        {
-         console.log("error in functoni");
+         console.log("error in functon!");
        }
        if(pass)
        {
@@ -496,8 +496,80 @@ app.post('/emailResetLink', function(req,res)
         });
       }
     });
-
   });
+  app.get('/editReportPasswordConfirmation', isLoggedIn, function(req, res)
+  {
+      var display = require('../models/displayall.js');
+      console.log("get edit report");
+    display.getOtherFundingSources(req, function(otherFunding)
+    { console.log("get edit report1");
+      display.displayReport(req, function(arrayOfSix)
+      {
+        console.log("get edit report2");
+        //if nothing, redirect to homepage, shouldn't happen though
+        if (arrayOfSix.length === 0)
+        {
+          res.redirect('/profile');
+        }
+        else
+        {
+          console.log("getting the edit report page");
+          res.render('editReportPasswordConf.ejs',
+          {
+            messages: "undefined",
+            user : arrayOfSix[0],
+            rep : arrayOfSix[1],
+            admin : arrayOfSix[2],
+            adminOther : arrayOfSix[3],
+            use : arrayOfSix[4],
+            useOther: arrayOfSix[5],
+            SourceFromHomeMaking: otherFunding[0],
+            SourceFromFirstNation: otherFunding[1]
+          });
+        }
+      });
+    });
+  });
+  app.post('/editReportPasswordConfirmation', isLoggedIn, function(req, res)
+  {
+    req.flash('invalid password', 'Invalid Password!');
+    var bcrypt = require('bcrypt-nodejs');
+    var query = require('../models/query');
+    //getting password from database
+    query.newQuery("SELECT password FROM user WHERE user.ID = '" + req.query.userID + "' ; ", function(err, userPassword)
+    {
+      if(userPassword.length !=1)
+      {
+        res.render('deleteReport.ejs',
+        { messages: req.flash('invalid password')});
+          console.log("WE Have a problem")
+          console.log("USER MESSED WITH THE QUERY STRING@@@@@");
+      }
+      else
+      {
+        //comparing the password entered on the form and the user's password
+         bcrypt.compare(req.body.passwordconfirm, userPassword[0].password, function(err, pass)
+         {
+           if(err)
+           {
+             console.log("error in the compare password function!")
+           }
+           if(pass)
+           {
+             console.log("passwords match!");
+           }
+           else
+           {
+             res.render('editReportPasswordConf.ejs',
+             {messages: req.flash('invalid password')});
+              console.log("passwords don't match");
+           }
+         });
+      }
+    });
+  });
+
+
 
 
   // =====================================

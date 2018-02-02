@@ -127,6 +127,108 @@ module.exports = {
         // }
       //});
     },
+    editReport: function(fundID, reqBody, reqUser, callback)
+    {
+      //This will ALSO take SEVERAL queries but we will update tables already in existence.
+      console.log("Updating Report.");
+       //Query 2: funding
+       /*
+        * Year
+        * FundingProvided
+        * FundingSpent
+        * SourceFromHomeMaking
+        * SourceFromFirstNation
+        * NumberOfClientServed
+        * HomeCarePriorities
+        * Comments
+        * Approved
+        * SubmitDate
+        */
+        var queryFunding;
+        var sourcefromhome = "0";
+        var sourcefromgov = "0";
+        var approved = "0";
+        if (reqBody.fundNursing === "on") {
+          sourcefromhome = "1";
+        }
+        if (reqBody.fundGov === "on") {
+          sourcefromgov = "1";
+        }
+        if (reqBody.approval ===  "on") {
+          approved = "1";
+        }
+
+        var editedPriorities = reqBody.priorities.replace(/"/g, '&quot;');
+        editedPriorities = editedPriorities.replace(/'/g, '&rsquo;');
+
+        var editedComments = reqBody.comments.replace(/"/g, '&quot;');
+        editedComments = editedComments.replace(/'/g, '&rsquo;');
+//updating the funding table
+        queryFunding = "UPDATE funding SET FundingProvided = " + reqBody.fundProvided + ", FundingSpent = " + reqBody.fundSpent + ", SourceFromHomeMaking = " + sourcefromhome
+       + ", SourceFromFirstNation = " + sourcefromgov + ", NumberOfClientServed = " + reqBody.numClients + ", HomeCarePriorities = '" + editedPriorities + "', Comments = '"
+       + editedComments + "', Approved = " + approved + ", SubmitDate = NOW() WHERE ID = '" + fundID + "';";
+
+        query.newQuery(queryFunding, function(err, data) {
+          console.log("FUNDING QUERY STARTED!")
+          if (err) {
+            console.log(err);
+          }
+          else {
+            console.log("DATA 2: ");
+            console.log(data);
+            //deleting funding use and funding administor so I can re-insert the edited data in, personally, I think the database can and should be restructured so I can update the table instead
+            //of deleting from it in order to update it
+            query.newQuery("DELETE FROM funding_administor WHERE FundingID = fundID", function (err, data){
+              console.log("funding administor deleted!")
+              console.log(data);
+            query.newQuery("DELETE FROM funding_use WHERE FundingID = fundID", function(err, data1){
+              console.log("funding use deleted!")
+              console.console.log(data1);
+
+              //now we must re-check and insert!
+
+              checkAndInsert("funding_administor", "adminDirect", reqBody.adminDirect, data.insertId, function () {
+                checkAndInsert("funding_administor", "adminThirdParty", reqBody.adminThirdParty, data.insertId, function () {
+                  checkAndInsert("funding_administor", "adminCouncil", reqBody.adminCouncil, data.insertId, function () {
+                    checkAndInsert("funding_administor", "adminLHIN", reqBody.adminLHIN, data.insertId, function () {
+                      checkAndInsert("funding_administor", "adminOther", reqBody.adminOther, data.insertId, function () {
+                        checkAndInsert("funding_administor", "adminSpecify", reqBody.adminSpecify, data.insertId, function () {
+
+                          // U S E   T A B L E
+                          checkAndInsert("funding_use", "useDirectFirstNations", reqBody.useDirectFirstNations, data.insertId, function () {
+                            checkAndInsert("funding_use", "useDirectOther", reqBody.useDirectOther, data.insertId, function () {
+                              checkAndInsert("funding_use", "useTraining", reqBody.useTraining, data.insertId, function () {
+                                checkAndInsert("funding_use", "useAdmin", reqBody.useAdmin, data.insertId, function () {
+                                  checkAndInsert("funding_use", "useRecruit", reqBody.useRecruit, data.insertId, function () {
+                                    checkAndInsert("funding_use", "useSupplies", reqBody.useSupplies, data.insertId, function () {
+                                      checkAndInsert("funding_use", "useOfficeSupplies", reqBody.useOfficeSupplies, data.insertId, function () {
+                                        checkAndInsert("funding_use", "useTravel", reqBody.useTravel, data.insertId, function () {
+                                          checkAndInsert("funding_use", "useOther", reqBody.useOther, data.insertId, function () {
+
+                                            // THE NIGHTMARE IS FINALLY OVER
+                                            callback();
+
+                                          });
+                                        });
+                                      });
+                                    });
+                                  });
+                                });
+                              });
+                            });
+                          });
+                        });
+                      });
+                    });
+                  });
+                });
+              });
+            });
+          });
+
+          }
+        });
+    },
     createUserProfile: function(reqBody, reqUser, callback) {
       console.log("CREATE USER PROFILE CALLED.");
         //Query 1: user
@@ -166,6 +268,7 @@ module.exports = {
         });
     }
   }
+
 
   /*
    * This function is meant for the tables that reference the LOOKUP tables.
