@@ -52,13 +52,14 @@ Note that an 'auth' table still exists, but it is an obsolete table that is no l
 - The ability to reset a user's password through email validation
 - The ability to delete reports after a confirmation page
 - Delete users that have not been validated
+- Ability to edit reports already created by the user
 ### Development features (to be removed in final release):
 - Make any query to any database
 - Delete all rows from both the user and funding tables
 - The fact that it shows your hashed password in your profile (that would be a bit of a security nightmare, I imagine)
 
 ### Features to be completed:
-- A way to edit the contents of your report
+- ~~A way to edit the contents of your report~~ **Already Completed**
 
 ### Possible far-fetched future features:
 - Two types of users: first nations' users who create reports, and admin users who moniter them and have advanced priviledges

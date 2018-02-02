@@ -96,7 +96,7 @@ To accomplish this is very simple. You'll simply need to run JMeter through the 
 2. Shift + Right Click on the 'bin' folder
 3. Click 'Open command window here'. It should open up command prompt at that location.
 4. Enter the following command:
-``` jmeter.bat -H 204.40.130.129 -P 3128 -N localhost,127.0.0.1 -u -a ```
+` jmeter.bat -H 204.40.130.129 -P 3128 -N localhost,127.0.0.1 -u -a `
 
 With that, JMeter should be running through a proxy server and able to load test any website you desire!
 
@@ -197,13 +197,13 @@ As someone who has never really done work with backend programming before this j
 
 Okay... not very helpful, let me just ctrl+shift+I ...
 
-```Error 500 Internal Server Error```
+'Error 500 Internal Server Error'
 
 What the ... ?? How am I supposed to know what's wrong if this is all the info you give me??? ARGHHHGHHH
 
 I know. I'll just write some console.logs to tell me which parts work and which parts don't. Now, when I go into the browser console, I see...
 
-```Error 500 Internal Server Error```
+`Error 500 Internal Server Error`
 
 WHAT??? (╯°□°）╯︵ ┻━┻
 
@@ -227,11 +227,11 @@ with applicationName being whatever name you gave to your application (in the ca
 
 ## 2.5 UNSOLVED ISSUES
 
-### 2.5.1 Building some applications on Java EE 
+### 2.5.1 Building some applications on Java EE
 
 Note that some applications require more than just Apache Maven to build it (namingly, the [dayTrader7](https://github.com/WASdev/sample.daytrader7) program I was asked to port to the cloud. Even after setting up the proxy for Apache Maven, it still returned connection-related errors for me whenever I tried building it. I eventually gave up on this, as I could not find what exactly was causing the problem and how to fix it.
 
-Maybe you could figure this one out? 
+Maybe you could figure this one out?
 
 ### 2.5.2 'Proxy Authentication Required'
 
@@ -255,8 +255,8 @@ Here, I'll show you how to run and edit it.
 
 ## 3.1 Before starting...
 
-Make sure you have the following installed: 
-- [NodeJS (version 8 or higher)](https://nodejs.org/en/) 
+Make sure you have the following installed:
+- [NodeJS (version 8 or higher)](https://nodejs.org/en/)
 - [Bluemix Command Line Interface](https://console.bluemix.net/docs/cli/index.html#downloads)
 
 Remember to enlist the help of your administratively-talented coworker/manager, and to set up a proxy (Refer to Section 2)
@@ -267,13 +267,13 @@ To download the source files for my project, simply open command prompt in the f
 
 `git clone https://github.com/haodafan/IBMCloudDemo-FNTPR.git`
 
-After you cloned the source files, you'll have to download the **dependencies**. For the sake of conserving space, I have omitted the dependencies in my git repository, but you can easily download them by running the node command: 
+After you cloned the source files, you'll have to download the **dependencies**. For the sake of conserving space, I have omitted the dependencies in my git repository, but you can easily download them by running the node command:
 
-`npm install` 
+`npm install`
 
 (if you're doing this at work, make sure to have the proxy setup! See 2.2.4 and 2.2.5)
 
-With those two simple commands, you should have all the source files necessary for my project. 
+With those two simple commands, you should have all the source files necessary for my project.
 
 ## 3.3 Setting up the app locally and connecting it to the Cloud
 

@@ -27,6 +27,9 @@ var morgan = require('morgan');
 var configDB = require('./config/database.js');
 //var users = require('./routes/users'); //We don't need tHIS anymore.
 
+var helmet = require('helmet')
+//sets http headers for security
+
 var app = express(); //Sets up the express application
 //var port = /* process.env.PORT || */8081;
 
@@ -47,6 +50,9 @@ require('./config/passport')(passport); // pass passport for configuration
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev')); //log every request to the CONSOLE.
+
+app.use(helmet());//default helmet settings.
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
