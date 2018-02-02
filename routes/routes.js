@@ -39,6 +39,7 @@ app.post('/deleteReport', function(req, res)
  req.flash('invalid password', 'Invalid Password!');
  var bcrypt = require('bcrypt-nodejs');
  var query = require('../models/query');
+ //security measure, matches userID
  if(req.user.ID != req.query.userID)
  {
    console.log("ERROR YOU MESSED WITH THE QUERY STRING!");
@@ -73,7 +74,8 @@ app.post('/deleteReport', function(req, res)
           console.log("passwords match")
           query.newQuery("SELECT * FROM funding WHERE ID = '" + req.query.fundingID + "';", function (err, theUserID)
           {
-            if(theUserID[0].UserId === req.query.userID)
+            //matches user and funding ID (security) "==" for type conversion
+            if(theUserID[0].UserId == req.query.userID)
             {
               query.newQuery("DELETE FROM funding_administor WHERE FundingID = '" + req.query.fundingID + "'; ", function(err, thingDeleted)
               {
@@ -521,6 +523,7 @@ app.post('/emailResetLink', function(req,res)
   });
   app.get('/editReportPasswordConfirmation', isLoggedIn, function(req, res)
   {
+    //checks to see if the userid in query matches with the userid in session
     if(req.user.ID != req.query.userID)
     {
       console.log("ERROR YOU MESSED WITH THE QUERY STRING!");
@@ -528,6 +531,7 @@ app.post('/emailResetLink', function(req,res)
     }
       var display = require('../models/displayall.js');
       console.log("get edit report");
+      //retrieving necessary info
     display.getOtherFundingSources(req, function(otherFunding)
     { console.log("get edit report1");
       display.displayReport(req, function(arrayOfSix)
@@ -559,11 +563,13 @@ app.post('/emailResetLink', function(req,res)
   });
   app.post('/editReportPasswordConfirmation', isLoggedIn, function(req, res)
   {
+    //just some security precautions
     if(req.user.ID != req.query.userID)
     {
       console.log("ERROR YOU MESSED WITH THE QUERY STRING!");
       res.render('deleteError.ejs');
     }
+    //IRON MAN BTW
     req.flash('invalid password', 'Invalid Password!');
     var bcrypt = require('bcrypt-nodejs');
     var query = require('../models/query');
@@ -586,6 +592,7 @@ app.post('/emailResetLink', function(req,res)
            {
              console.log("error in the compare password function!")
            }
+           //works!
            if(pass)
            {
              var make = require('../models/make-report.js');
@@ -596,6 +603,7 @@ app.post('/emailResetLink', function(req,res)
                res.redirect('/profile');
              });
            }
+           //entered invalid password
            else
            {
              res.render('editReportPasswordConf.ejs',

@@ -1,6 +1,6 @@
 #invalidMessage
 {
-  font-size: 35px;
+  font-size: 20px;
   text-align: center;
 
 }
@@ -8,9 +8,10 @@
 {
   text-decoration: underline;
   text-align: center;
-  font-size: 30px;
+  font-size: 25px;
   font-weight: bold;
   text decoration: underline;
   margin-top: 5%;
-  color: #00008b
+  color: #01a1b5;
+
 }

@@ -14,13 +14,16 @@
   <h3 id= "deleteYourReport">Please enter your password below to confirm the deletion of your report. Please note that you will not be able to access the report you have just deleted.</h3>
 
   <% if (messages != "undefined") { %>
-      <div class="alert alert-danger"><%= messages %></div>
+    <% var message = "Invalid Password!"%>
+      <div class="alert alert-danger"><%= message %></div>
   <% } %>
 
   <form method = "POST">
     <b><label id = "enterYourPassword" for "confirmYourPassword">Your Password:</label></b><br>
-    <input type = "password" id = "passwordProvided" name = "passwordProvided" required><br>
-      <button type="submit" class="btn btn-default">Submit</button>
+    <br>
+    <input type = "password" id = "passwordProvided" name = "passwordProvided" style = "text-align: center;" required><br>
+    <br>
+      <button type="submit" class="btn btn-info" style "color: blue;">Submit</button>
   </form>
 </div>
 </body>
