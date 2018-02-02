@@ -556,7 +556,13 @@ app.post('/emailResetLink', function(req,res)
            }
            if(pass)
            {
+             var make = require('../models/make-report.js');
              console.log("passwords match!");
+             make.editReport(req.query.thisFundingId, req.body, req.user, function()
+             {
+               console.log("report updated!");
+               res.redirect('/profile');
+             });
            }
            else
            {

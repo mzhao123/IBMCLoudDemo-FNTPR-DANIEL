@@ -178,32 +178,32 @@ module.exports = {
             console.log(data);
             //deleting funding use and funding administor so I can re-insert the edited data in, personally, I think the database can and should be restructured so I can update the table instead
             //of deleting from it in order to update it
-            query.newQuery("DELETE FROM funding_administor WHERE FundingID = fundID", function (err, data){
+            query.newQuery("DELETE FROM funding_administor WHERE FundingID = '" + fundID + "' ", function (err, data){
               console.log("funding administor deleted!")
               console.log(data);
-            query.newQuery("DELETE FROM funding_use WHERE FundingID = fundID", function(err, data1){
+            query.newQuery("DELETE FROM funding_use WHERE FundingID = '" + fundID + "' ", function(err, data1){
               console.log("funding use deleted!")
-              console.console.log(data1);
+              console.log("data1");
 
               //now we must re-check and insert!
 
-              checkAndInsert("funding_administor", "adminDirect", reqBody.adminDirect, data.insertId, function () {
-                checkAndInsert("funding_administor", "adminThirdParty", reqBody.adminThirdParty, data.insertId, function () {
-                  checkAndInsert("funding_administor", "adminCouncil", reqBody.adminCouncil, data.insertId, function () {
-                    checkAndInsert("funding_administor", "adminLHIN", reqBody.adminLHIN, data.insertId, function () {
-                      checkAndInsert("funding_administor", "adminOther", reqBody.adminOther, data.insertId, function () {
-                        checkAndInsert("funding_administor", "adminSpecify", reqBody.adminSpecify, data.insertId, function () {
+              checkAndInsert("funding_administor", "adminDirect", reqBody.adminDirect, fundID, function () {
+                checkAndInsert("funding_administor", "adminThirdParty", reqBody.adminThirdParty, fundID, function () {
+                  checkAndInsert("funding_administor", "adminCouncil", reqBody.adminCouncil, fundID, function () {
+                    checkAndInsert("funding_administor", "adminLHIN", reqBody.adminLHIN, fundID, function () {
+                      checkAndInsert("funding_administor", "adminOther", reqBody.adminOther, fundID, function () {
+                        checkAndInsert("funding_administor", "adminSpecify", reqBody.adminSpecify, fundID, function () {
 
                           // U S E   T A B L E
-                          checkAndInsert("funding_use", "useDirectFirstNations", reqBody.useDirectFirstNations, data.insertId, function () {
-                            checkAndInsert("funding_use", "useDirectOther", reqBody.useDirectOther, data.insertId, function () {
-                              checkAndInsert("funding_use", "useTraining", reqBody.useTraining, data.insertId, function () {
-                                checkAndInsert("funding_use", "useAdmin", reqBody.useAdmin, data.insertId, function () {
-                                  checkAndInsert("funding_use", "useRecruit", reqBody.useRecruit, data.insertId, function () {
-                                    checkAndInsert("funding_use", "useSupplies", reqBody.useSupplies, data.insertId, function () {
-                                      checkAndInsert("funding_use", "useOfficeSupplies", reqBody.useOfficeSupplies, data.insertId, function () {
-                                        checkAndInsert("funding_use", "useTravel", reqBody.useTravel, data.insertId, function () {
-                                          checkAndInsert("funding_use", "useOther", reqBody.useOther, data.insertId, function () {
+                          checkAndInsert("funding_use", "useDirectFirstNations", reqBody.useDirectFirstNations, fundID, function () {
+                            checkAndInsert("funding_use", "useDirectOther", reqBody.useDirectOther, fundID, function () {
+                              checkAndInsert("funding_use", "useTraining", reqBody.useTraining, fundID, function () {
+                                checkAndInsert("funding_use", "useAdmin", reqBody.useAdmin, fundID, function () {
+                                  checkAndInsert("funding_use", "useRecruit", reqBody.useRecruit, fundID, function () {
+                                    checkAndInsert("funding_use", "useSupplies", reqBody.useSupplies, fundID, function () {
+                                      checkAndInsert("funding_use", "useOfficeSupplies", reqBody.useOfficeSupplies, fundID, function () {
+                                        checkAndInsert("funding_use", "useTravel", reqBody.useTravel, fundID, function () {
+                                          checkAndInsert("funding_use", "useOther", reqBody.useOther, fundID, function () {
 
                                             // THE NIGHTMARE IS FINALLY OVER
                                             callback();
