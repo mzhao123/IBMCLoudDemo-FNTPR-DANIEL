@@ -32,84 +32,14 @@ app.get('/deleteReport', function(req, res)
   }
   res.render('deleteReport.ejs', {messages: 'undefined'});
 
-});
+  });
 //CHECKS IF USER PASSWORD MATCHES ID IN QUERY STRING AND THEN DELETES THE REPORT ACCORDING TO THE REPORT ID
 app.post('/deleteReport', function(req, res)
 {
- req.flash('invalid password', 'Invalid Password!');
- var bcrypt = require('bcrypt-nodejs');
- var query = require('../models/query');
- //security measure, matches userID
- if(req.user.ID != req.query.userID)
- {
-   console.log("ERROR YOU MESSED WITH THE QUERY STRING!");
-   res.render('deleteError.ejs');
- }
- else
- {
-   query.newQuery("SELECT password FROM user WHERE user.ID = '" + req.query.userID + "' ; ", function(err, userPassword)
-   {
-     if(userPassword.length !=1)
-     {
-       res.render('deleteReport.ejs',
-       { messages: req.flash('invalid password')});
-        console.log("WE Have a problem")
-        console.log("USER MESSED WITH THE QUERY STRING@@@@@");
-      }
-      else
-      {
-        console.log("hello");
-        console.log(userPassword[0]);
-        console.log(userPassword[0].password);
-        console.log(req.body.passwordProvided);
-        bcrypt.compare(req.body.passwordProvided, userPassword[0].password, function(err, pass)
-      {
-        if(err)
-        {
-           console.log("error in functon!");
-        }
-        if(pass)
-        {
-          //callbacks to delete from database the ID mentioned
-          console.log("passwords match")
-          query.newQuery("SELECT * FROM funding WHERE ID = '" + req.query.fundingID + "';", function (err, theUserID)
-          {
-            //matches user and funding ID (security) "==" for type conversion
-            if(theUserID[0].UserId == req.query.userID)
-            {
-              query.newQuery("DELETE FROM funding_administor WHERE FundingID = '" + req.query.fundingID + "'; ", function(err, thingDeleted)
-              {
-                console.log(thingDeleted);
-                query.newQuery("DELETE FROM funding_use WHERE FundingID = '" + req.query.fundingID + "'; ", function (err, theThingDeleted)
-                {
-                  console.log(theThingDeleted);
-                  query.newQuery("DELETE FROM funding WHERE ID = '" + req.query.fundingID + "' AND UserId = '" + req.query.userID + "' ; ", function(err, reportDeleted)
-                  {
-                    res.redirect('/profile');
-                    console.log("deleted!");
-                    console.log(reportDeleted);
-                  });
-                });
-              });
-            }
-            else
-            {
-                  res.redirect('/profile');
-                  console.log("some suspicious activity has occured, or someone just accidentally messed with the query strings!");
-            }
-          });
+  console.log("deleting report functionaility activated");
+  var deleteReport = require('../models/deleteReport.js');
+  deleteReport.deleteTheReport(req, res);
 
-        }
-        else
-        {
-         res.render('deleteReport.ejs',
-          {   messages: req.flash('invalid password')});
-          console.log("passwords don't match");
-        };
-      });
-    }
-  });
-}
 });
 
 app.get('/enter-your-email', function(req, res)
@@ -154,7 +84,7 @@ app.post('/emailResetLink', function(req,res)
           console.log("Let's asynchronously also send the email");
           //sends the email message out with the link with the unique token address
           mail.sendFromHaodasMail(userEmail, "First Nations Online Income Reports: Password Reset Link!",
-          "Please click on the following link: \n https://demo-fntpr-2.mybluemix.net/forgotten-password?token=" + tokenObject.token + " to validate yourself: "
+          "Please click on the following link: \n https://demo-fntpr-2.mybluemix.net/forgotten-password?token=" + tokenObject.token + "&ID=RESETPASSWORD to validate yourself: "
           );
        });
       })
@@ -210,58 +140,10 @@ app.post('/emailResetLink', function(req,res)
   app.post('/forgotten-password', function(req, res)
   {
 
-    var query = require('../models/query'); //needed exports
-    var loginquery = require('../models/loginquery.js'); //needed exports
-
-    var userInfo = req.body;
-
-    console.log(userInfo.password1);
-    console.log(userInfo.password2);
-    console.log(req.query.token);
-    if(userInfo.password1 == userInfo.password2)
-    {
-
-      query.newQuery("SELECT * FROM token WHERE token.TokenContent = '" + req.query.token + "';", function(err, tokenData)
-      { console.log("yoooo!");
-        loginquery.generateResetHash(userInfo.password1, function (hashedPassword)
-        {
-          console.log("hello?");
-          query.newQuery("UPDATE user SET password = '" + hashedPassword + "' WHERE ID = " + tokenData[0].UserId + ";", function(err, data)  //query the database to change the password
-          {
-              console.log("password changed?");
-              if(err)
-              {
-                console.log(err);
-              }
-              else
-              {
-                //Second, let's get rid of the useless token
-                  query.newQuery("DELETE FROM token WHERE TokenContent = '" + tokenData[0].TokenContent + "';", function(err, data)
-                  {
-                    if (err)
-                    {
-                      console.log(err);
-                    }
-                    else
-                    {
-                      console.log("JUST CHECKING TO SEE IF TOKEN LINK REDIRECTS TO LOGIN");
-                    }
-                 });
-              }
-          }       );
-        } );   //encrpt the password...for security reasons...and then pass the return result into a callback
-
-
-        //successfully changed the password so you are redirected to another page
-        res.render("passwordchanged.ejs");
-      })
-
-    }
-    else
-    {
-      console.log("passwords didn't match")
-    }
-
+    var resetPass = require('../models/resetPassword.js');
+    //rests the password
+    console.log("password reset starts!");
+    resetPass.resetThePassword(req, res);
   });
 //  ++++++++++++++++++++++++++++++++++++
 //++++++++++++++++++++++++++++++++++++++++++
@@ -335,59 +217,8 @@ app.post('/emailResetLink', function(req,res)
   {
     console.log(req.query.tok);
     var query = require('../models/query');
-    query.newQuery("SELECT * FROM token WHERE token.TokenContent = '" + req.query.tok + "';", function(err, tokenData)
-    {
-      //First, check if it exists
-      if (tokenData.length != 1)
-      {
-        //The user's token does not exist or has expired
-        console.log("TOKEN NOT FOUND!");
-        res.render('validationFailure.ejs', {});
-      }
-      else
-      {
-        //Now, we check if this token is still valid...
-        var currentDate = new Date();
-        console.log("CURRENT TIME: ");
-        console.log(currentDate);
-        console.log("EXPIRY TIME: ");
-        console.log(tokenData[0].Expiry);
-        if (currentDate.getTime() > tokenData[0].Expiry)
-        {
-          console.log("TOKEN EXPIRED!");
-          res.render('validationFailure.ejs', {});
-        }
-        else
-        {
-          //EVERYTHING IS VALIDATED!
-          //First, let's update the valid column for this user
-          query.newQuery("UPDATE user SET validated = 1 WHERE ID = " + tokenData[0].UserId + ";", function(err, data)
-          {
-            if(err)
-            {
-              console.log(err);
-            }
-            else
-            {
-              //Second, let's get rid of the useless token
-              query.newQuery("DELETE FROM token WHERE TokenContent = '" + tokenData[0].TokenContent + "';", function(err, data)
-              {
-                if (err)
-                {
-                  console.log(err);
-                }
-                else
-                {
-                  console.log("JUST CHECKING TO SEE IF TOKEN LINK REDIRECTS TO LOGIN");
-                  res.redirect('/login');
-                }
-              });
-
-            }
-          });
-        }
-      }
-    });
+    var tokenAuthen = require('../models/tokenauth');
+    tokenAuthen.checkToken(res, req);
   });
 
 /*
