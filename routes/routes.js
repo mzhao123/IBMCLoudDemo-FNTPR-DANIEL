@@ -400,8 +400,9 @@ app.post('/emailResetLink', function(req,res)
       console.log("ERROR YOU MESSED WITH THE QUERY STRING!");
       res.render('deleteError.ejs');
     }
-    //IRON MAN BTW
+    //IRON MAN BTW I STAND ALONE...
     req.flash('invalid password', 'Invalid Password!');
+    var display = require('../models/displayall.js');
     var bcrypt = require('bcrypt-nodejs');
     var query = require('../models/query');
     //getting password from database
@@ -409,10 +410,8 @@ app.post('/emailResetLink', function(req,res)
     {
       if(userPassword.length !=1)
       {
-        res.render('deleteReport.ejs',
-        { messages: req.flash('invalid password')});
-          console.log("WE Have a problem")
-          console.log("USER MESSED WITH THE QUERY STRING@@@@@");
+        console.log("user messed with query string or user does not exist in database anymore");
+        res.redirect('/profile');
       }
       else
       {
@@ -435,14 +434,39 @@ app.post('/emailResetLink', function(req,res)
              });
            }
            //entered invalid password
-           else
-           {
-             res.render('editReportPasswordConf.ejs',
-             {messages: req.flash('invalid password')});
-              console.log("passwords don't match");
+          else
+          {
+            display.getOtherFundingSources(req, function(otherFunding)
+            {
+              display.displayReport(req, function(arrayOfSix)
+              {
+                if (arrayOfSix.length === 0)
+                {
+                  res.redirect('/profile');
+                }
+                else
+                {
+                  //renders all of the data in the report along with the invalid password message
+                  res.render('editReportPasswordConf.ejs',
+                  {
+                    messages: req.flash('invalid password'),
+                    user : arrayOfSix[0],
+                    rep : arrayOfSix[1],
+                    admin : arrayOfSix[2],
+                    adminOther : arrayOfSix[3],
+                    use : arrayOfSix[4],
+                    useOther: arrayOfSix[5],
+                    SourceFromHomeMaking: otherFunding[0],
+                    SourceFromFirstNation: otherFunding[1]
+                  });
+                }
+                console.log("WE Have a problem")
+                console.log("USER MESSED WITH THE QUERY STRING@@@@@ or user just entered invalid password...lol");
+              });
+            });
            }
          });
-      }
+       }
     });
   });
 
