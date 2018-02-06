@@ -20,6 +20,66 @@ app.get('/', function(req, res)
     res.render('index.ejs');
 });
 //renders
+//DOWNLOAD REPORT NOT SURE IF IT WORKS YET!!!!
+app.get('/downloadReport', function (req,res)
+{
+  var path = require('path');
+  var fs = require('fs');
+  var display = require('../models/displayall.js');
+  var ejs = require('ejs');
+  var pdf = require('html-pdf');
+  display.displayReport(req, function(arrayOfSix)
+  {
+
+    console.log("HERE IS THE RETURNED ARRAY");
+    console.log(arrayOfSix);
+    if (arrayOfSix.length === 0)
+    {
+      res.redirect('/profile');
+    }
+    else
+    {
+      console.log(process.cwd());
+      ejs.renderFile('/home/vcap/app/views/view-report.ejs',
+      {
+          user : arrayOfSix[0],
+          rep : arrayOfSix[1],
+          admin : arrayOfSix[2],
+          adminOther : arrayOfSix[3],
+          use : arrayOfSix[4],
+          useOther: arrayOfSix[5]
+      } , function(err, result)
+         {
+           if(err)
+           {
+             console.log(err);
+             console.log("an error has occured!");
+           }
+           else
+           {
+             var html = result;
+             pdf.create(html).toFile('/home/vcap/app/views/viewPDFReport.pdf',
+             function(error, success)
+             {
+               if(error)
+               {
+                 console.log(error);
+                 console.log("error has occured with converting to pdf");
+               }
+               else
+               {
+                 console.log("sucess while converting to pdf");
+                 res.set('Content-Type: application/pdf')
+                 res.sendFile('/home/vcap/app/views/viewPDFReport.pdf');
+               }
+             });
+           }
+
+         });
+
+    }
+ });
+});
 //DELETE FORM
 app.get('/deleteReport', function(req, res)
 {
