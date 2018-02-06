@@ -41,9 +41,9 @@
             <% if(isReport === true) { %>
               <h3> View Your Reports </h3> <br>
                 <% for (var i = 0; i < data.length; i++) { %>
-                    <a style "width = "7.5%"; href="<%= data[i].link %>" class="btn btn-default"><span class="fa fa-user"></span> Report Date: <%= data[i].SubmitDate %> </a> <a style = "margin-left: 1.5%"; href ="deleteReport?fundingID=<%= data[i].ID %>&userID=<%= data[i].UserId %>" ><span class="glyphicon glyphicon-remove"></span> </a>
-                    <a style "width = "2.5%"; margin-left = "1.5%";" href = "editReportPasswordConfirmation?thisFundingId=<%= data[i].ID %>&userID=<%= data[i].UserId %>" > <span class="fa fa-pencil"></span> </a>
-                    <a style "width = "2.5%"; margin-left = "1.5%";" href = "save-report?thisFundingId=<%= data[i].ID %>&userID=<%= data[i].UserId %>"> <span class="fa fa-pencil"></span> </a>
+                    <a style = "margin-left: 1.5%;" href="<%= data[i].link %>" class="btn btn-default"><span class="fa fa-user"></span> Report Date: <%= data[i].SubmitDate %> </a> <a style = "margin-left: 1.5%;" href ="deleteReport?fundingID=<%= data[i].ID %>&userID=<%= data[i].UserId %>" ><span class="glyphicon glyphicon-remove" style = "color: black;"></span> </a>
+                    <a style = "margin-left: 1.5%;" href = "editReportPasswordConfirmation?thisFundingId=<%= data[i].ID %>&userID=<%= data[i].UserId %>" > <span class="fa fa-pencil" style = "color: black;"></span> </a>
+                    <a style = "margin-left: 1.5%;" href = "downloadReport?thisFundingId=<%= data[i].ID %>&userID=<%= data[i].UserId %>"><span class = "glyphicon glyphicon-file" style = "color: black;"></span> </a>
                     <br>
                 <% } %>
                 <br><br>

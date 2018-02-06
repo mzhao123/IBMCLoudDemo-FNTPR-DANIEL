@@ -20,6 +20,70 @@ app.get('/', function(req, res)
     res.render('index.ejs');
 });
 //renders
+//DOWNLOAD REPORT NOT SURE IF IT WORKS YET!!!!
+app.get('/downloadReport', function (req,res)
+{
+  //requires
+  var path = require('path');
+  var fs = require('fs');
+  var display = require('../models/displayall.js');
+  var ejs = require('ejs');
+  var pdf = require('html-pdf');
+  //display report  displays the user's selected report based on the query string and the user's data in session
+  //(security so user does not modify query string) and returns an array of size 6 that has all of the user's report information
+  display.displayReport(req, function(arrayOfSix)
+  {
+    console.log("HERE IS THE RETURNED ARRAY");
+    console.log(arrayOfSix);
+    if (arrayOfSix.length === 0)
+    {
+      res.redirect('/profile');
+    }
+    else
+    {
+      console.log(process.cwd());
+      ejs.renderFile('/home/vcap/app/views/view-report.ejs',
+      {   //render the ejs file into a string so html-pdf can convert, parameters of the ejs file are below (the array of size 6 returned by display report is used)
+          user : arrayOfSix[0],
+          rep : arrayOfSix[1],
+          admin : arrayOfSix[2],
+          adminOther : arrayOfSix[3],
+          use : arrayOfSix[4],
+          useOther: arrayOfSix[5]
+      } , function(err, result)
+         {
+           if(err)
+           {
+             console.log(err);
+             console.log("an error has occured!");
+           }
+           else
+           {
+             var html = result;
+             //creating the pdf file, sending the file to the .pdf file in views
+             pdf.create(html, {border: {"left" : "0.5in", "right" : "0.5in"} } ).toFile('/home/vcap/app/views/viewPDFReport.pdf',
+             function(error, success)
+             {
+               if(error)
+               {
+                 console.log(error);
+                 console.log("error has occured with converting to pdf");
+               }
+               else
+               {
+                 console.log("sucess while converting to pdf");
+                //finally displaying the pdf file in res
+                 res.set('Content-Type: application/pdf')
+                 res.sendFile('/home/vcap/app/views/viewPDFReport.pdf');
+               }
+             });
+           }
+
+         });
+
+    }
+ });
+});
 //DELETE FORM
 app.get('/deleteReport', function(req, res)
 {
@@ -32,84 +96,14 @@ app.get('/deleteReport', function(req, res)
   }
   res.render('deleteReport.ejs', {messages: 'undefined'});
 
-});
+  });
 //CHECKS IF USER PASSWORD MATCHES ID IN QUERY STRING AND THEN DELETES THE REPORT ACCORDING TO THE REPORT ID
 app.post('/deleteReport', function(req, res)
 {
- req.flash('invalid password', 'Invalid Password!');
- var bcrypt = require('bcrypt-nodejs');
- var query = require('../models/query');
- //security measure, matches userID
- if(req.user.ID != req.query.userID)
- {
-   console.log("ERROR YOU MESSED WITH THE QUERY STRING!");
-   res.render('deleteError.ejs');
- }
- else
- {
-   query.newQuery("SELECT password FROM user WHERE user.ID = '" + req.query.userID + "' ; ", function(err, userPassword)
-   {
-     if(userPassword.length !=1)
-     {
-       res.render('deleteReport.ejs',
-       { messages: req.flash('invalid password')});
-        console.log("WE Have a problem")
-        console.log("USER MESSED WITH THE QUERY STRING@@@@@");
-      }
-      else
-      {
-        console.log("hello");
-        console.log(userPassword[0]);
-        console.log(userPassword[0].password);
-        console.log(req.body.passwordProvided);
-        bcrypt.compare(req.body.passwordProvided, userPassword[0].password, function(err, pass)
-      {
-        if(err)
-        {
-           console.log("error in functon!");
-        }
-        if(pass)
-        {
-          //callbacks to delete from database the ID mentioned
-          console.log("passwords match")
-          query.newQuery("SELECT * FROM funding WHERE ID = '" + req.query.fundingID + "';", function (err, theUserID)
-          {
-            //matches user and funding ID (security) "==" for type conversion
-            if(theUserID[0].UserId == req.query.userID)
-            {
-              query.newQuery("DELETE FROM funding_administor WHERE FundingID = '" + req.query.fundingID + "'; ", function(err, thingDeleted)
-              {
-                console.log(thingDeleted);
-                query.newQuery("DELETE FROM funding_use WHERE FundingID = '" + req.query.fundingID + "'; ", function (err, theThingDeleted)
-                {
-                  console.log(theThingDeleted);
-                  query.newQuery("DELETE FROM funding WHERE ID = '" + req.query.fundingID + "' AND UserId = '" + req.query.userID + "' ; ", function(err, reportDeleted)
-                  {
-                    res.redirect('/profile');
-                    console.log("deleted!");
-                    console.log(reportDeleted);
-                  });
-                });
-              });
-            }
-            else
-            {
-                  res.redirect('/profile');
-                  console.log("some suspicious activity has occured, or someone just accidentally messed with the query strings!");
-            }
-          });
+  console.log("deleting report functionaility activated");
+  var deleteReport = require('../models/deleteReport.js');
+  deleteReport.deleteTheReport(req, res);
 
-        }
-        else
-        {
-         res.render('deleteReport.ejs',
-          {   messages: req.flash('invalid password')});
-          console.log("passwords don't match");
-        };
-      });
-    }
-  });
-}
 });
 
 app.get('/enter-your-email', function(req, res)
@@ -154,7 +148,7 @@ app.post('/emailResetLink', function(req,res)
           console.log("Let's asynchronously also send the email");
           //sends the email message out with the link with the unique token address
           mail.sendFromHaodasMail(userEmail, "First Nations Online Income Reports: Password Reset Link!",
-          "Please click on the following link: \n https://demo-fntpr-2.mybluemix.net/forgotten-password?token=" + tokenObject.token + " to validate yourself: "
+          "Please click on the following link: \n https://demo-fntpr-2.mybluemix.net/forgotten-password?token=" + tokenObject.token + "&ID=RESETPASSWORD to validate yourself: "
           );
        });
       })
@@ -210,58 +204,10 @@ app.post('/emailResetLink', function(req,res)
   app.post('/forgotten-password', function(req, res)
   {
 
-    var query = require('../models/query'); //needed exports
-    var loginquery = require('../models/loginquery.js'); //needed exports
-
-    var userInfo = req.body;
-
-    console.log(userInfo.password1);
-    console.log(userInfo.password2);
-    console.log(req.query.token);
-    if(userInfo.password1 == userInfo.password2)
-    {
-
-      query.newQuery("SELECT * FROM token WHERE token.TokenContent = '" + req.query.token + "';", function(err, tokenData)
-      { console.log("yoooo!");
-        loginquery.generateResetHash(userInfo.password1, function (hashedPassword)
-        {
-          console.log("hello?");
-          query.newQuery("UPDATE user SET password = '" + hashedPassword + "' WHERE ID = " + tokenData[0].UserId + ";", function(err, data)  //query the database to change the password
-          {
-              console.log("password changed?");
-              if(err)
-              {
-                console.log(err);
-              }
-              else
-              {
-                //Second, let's get rid of the useless token
-                  query.newQuery("DELETE FROM token WHERE TokenContent = '" + tokenData[0].TokenContent + "';", function(err, data)
-                  {
-                    if (err)
-                    {
-                      console.log(err);
-                    }
-                    else
-                    {
-                      console.log("JUST CHECKING TO SEE IF TOKEN LINK REDIRECTS TO LOGIN");
-                    }
-                 });
-              }
-          }       );
-        } );   //encrpt the password...for security reasons...and then pass the return result into a callback
-
-
-        //successfully changed the password so you are redirected to another page
-        res.render("passwordchanged.ejs");
-      })
-
-    }
-    else
-    {
-      console.log("passwords didn't match")
-    }
-
+    var resetPass = require('../models/resetPassword.js');
+    //rests the password
+    console.log("password reset starts!");
+    resetPass.resetThePassword(req, res);
   });
 //  ++++++++++++++++++++++++++++++++++++
 //++++++++++++++++++++++++++++++++++++++++++
@@ -304,8 +250,6 @@ app.post('/emailResetLink', function(req,res)
 
   app.get('/validate', isLoggedIn, function(req, res)
   {
-
-
     console.log("app get /validation-required");
     var query = require('../models/query');
     var loginquery = require('../models/loginquery.js');
@@ -335,59 +279,8 @@ app.post('/emailResetLink', function(req,res)
   {
     console.log(req.query.tok);
     var query = require('../models/query');
-    query.newQuery("SELECT * FROM token WHERE token.TokenContent = '" + req.query.tok + "';", function(err, tokenData)
-    {
-      //First, check if it exists
-      if (tokenData.length != 1)
-      {
-        //The user's token does not exist or has expired
-        console.log("TOKEN NOT FOUND!");
-        res.render('validationFailure.ejs', {});
-      }
-      else
-      {
-        //Now, we check if this token is still valid...
-        var currentDate = new Date();
-        console.log("CURRENT TIME: ");
-        console.log(currentDate);
-        console.log("EXPIRY TIME: ");
-        console.log(tokenData[0].Expiry);
-        if (currentDate.getTime() > tokenData[0].Expiry)
-        {
-          console.log("TOKEN EXPIRED!");
-          res.render('validationFailure.ejs', {});
-        }
-        else
-        {
-          //EVERYTHING IS VALIDATED!
-          //First, let's update the valid column for this user
-          query.newQuery("UPDATE user SET validated = 1 WHERE ID = " + tokenData[0].UserId + ";", function(err, data)
-          {
-            if(err)
-            {
-              console.log(err);
-            }
-            else
-            {
-              //Second, let's get rid of the useless token
-              query.newQuery("DELETE FROM token WHERE TokenContent = '" + tokenData[0].TokenContent + "';", function(err, data)
-              {
-                if (err)
-                {
-                  console.log(err);
-                }
-                else
-                {
-                  console.log("JUST CHECKING TO SEE IF TOKEN LINK REDIRECTS TO LOGIN");
-                  res.redirect('/login');
-                }
-              });
-
-            }
-          });
-        }
-      }
-    });
+    var tokenAuthen = require('../models/tokenauth');
+    tokenAuthen.checkToken(res, req);
   });
 
 /*
@@ -605,8 +498,9 @@ app.post('/emailResetLink', function(req,res)
       console.log("ERROR YOU MESSED WITH THE QUERY STRING!");
       res.render('deleteError.ejs');
     }
-    //IRON MAN BTW
+    //IRON MAN BTW I STAND ALONE...
     req.flash('invalid password', 'Invalid Password!');
+    var display = require('../models/displayall.js');
     var bcrypt = require('bcrypt-nodejs');
     var query = require('../models/query');
     //getting password from database
@@ -614,10 +508,8 @@ app.post('/emailResetLink', function(req,res)
     {
       if(userPassword.length !=1)
       {
-        res.render('deleteReport.ejs',
-        { messages: req.flash('invalid password')});
-          console.log("WE Have a problem")
-          console.log("USER MESSED WITH THE QUERY STRING@@@@@");
+        console.log("user messed with query string or user does not exist in database anymore");
+        res.redirect('/profile');
       }
       else
       {
@@ -640,14 +532,39 @@ app.post('/emailResetLink', function(req,res)
              });
            }
            //entered invalid password
-           else
-           {
-             res.render('editReportPasswordConf.ejs',
-             {messages: req.flash('invalid password')});
-              console.log("passwords don't match");
+          else
+          {
+            display.getOtherFundingSources(req, function(otherFunding)
+            {
+              display.displayReport(req, function(arrayOfSix)
+              {
+                if (arrayOfSix.length === 0)
+                {
+                  res.redirect('/profile');
+                }
+                else
+                {
+                  //renders all of the data in the report along with the invalid password message
+                  res.render('editReportPasswordConf.ejs',
+                  {
+                    messages: req.flash('invalid password'),
+                    user : arrayOfSix[0],
+                    rep : arrayOfSix[1],
+                    admin : arrayOfSix[2],
+                    adminOther : arrayOfSix[3],
+                    use : arrayOfSix[4],
+                    useOther: arrayOfSix[5],
+                    SourceFromHomeMaking: otherFunding[0],
+                    SourceFromFirstNation: otherFunding[1]
+                  });
+                }
+                console.log("WE Have a problem")
+                console.log("USER MESSED WITH THE QUERY STRING@@@@@ or user just entered invalid password...lol");
+              });
+            });
            }
          });
-      }
+       }
     });
   });
 

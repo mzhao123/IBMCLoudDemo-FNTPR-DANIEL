@@ -38,12 +38,12 @@
 			}
 		}
 		</script>
-<div class = "col-sm-10 col-sm-offset-1">
-<h1 style = "text-align: center";> First Nations Report Spending </h1>
+<div class = "col-sm-10 col-sm-offset-1 jumbotron">
+<h1 style = "text-align: center";>  <span class="fa fa-cloud"></span> First Nations Report Spending  <span class="fa fa-cloud"></span> </h1>
 <br>
 <br>
-<form action = "/make-report" , method = "POST">
-<fieldset id = "theFirstThreeLinesCombined" >
+<form action = "/make-report" , method = "POST" >
+<fieldset id = "theFirstThreeLinesCombined" style = "border-color: 	#000000;" >
 	<legend> </legend>
     <p class = "theFirstThreeLines">
     <b><label class = "hello" for "fundProvided">Funding Provided:    </label></b>
@@ -60,7 +60,7 @@
     </p>
 </fieldset>
 <br>
-<fieldset id = "whoGaveService">
+<fieldset id = "whoGaveService" style = "border-color: 	#000000;">
 	<legend> </legend>
 <b><p> Who administered home and community care services in your community in 2017-18? The Ministry of Health
 and Long-Term Care will use this information to understand the service delivery network in your community.
@@ -79,7 +79,7 @@ and Long-Term Care will use this information to understand the service delivery 
 <br>
 <!-- I should probably think 0about the case where one checks both third party AND other :P -->
 
-<fieldset id = "otherFundingSources">
+<fieldset id = "otherFundingSources" style = "border-color: 	#000000;">
 	<legend> </legend>
 <b>Other Funding Sources: </b>
 <b><label for "fundNursing">Did the community also receive funding through the Homemaking and Nursing Services Act? </label></b>
@@ -92,7 +92,7 @@ and Community Care program?  </label></b>
 <input style = "margin-left: 1%;" type="radio" name="fundGov" value="off"> No <br>
 </fieldset> <br>
 <!--NEW FIELDSET!!!!!!!! -->
-<fieldset id = "clientsAndPriorities">
+<fieldset id = "clientsAndPriorities" style = "border-color: 	#000000;">
 <b><label for "numClients">Please outline how many clients the home and community care program served in 2017-2018 with all funding sources:</label></b>
 <input style = "text-align: center; margin-left: 2%;" type = "number" id = "numClients" name = "numClients" placeholder = "850" required/>
 <br>
@@ -101,7 +101,7 @@ and Community Care program?  </label></b>
 <br>
 <textarea id = "priorities" name = "priorities" style = "width: 100%" rows = "5"> </textarea>
 </fieldset> <br>
-<fieldset id = "fundingSpent">
+<fieldset id = "fundingSpent" style = "border-color: 	#000000;">
 	<legend> </legend>
 <b><p>Please indicate how the funding was spent in 2017-18.<br> Please check all that apply: </p></b>
  <input type="checkbox" name="useTravel"/> Travel<br>
@@ -123,7 +123,7 @@ and Community Care program?  </label></b>
  <br>
  <textarea id = "useOther" name = "useOther" style = "width: 100%" rows = "5"></textarea>
 </fieldset> <br>
-<fieldset id = "commentsAndConfirm">
+<fieldset id = "commentsAndConfirm" style = "border-color: 	#000000;">
 <b><label for "comments">Please provide any other comments: </label> </b><br>
 <br>
 		<textarea id = "comments" name = "comments" style = "width: 100%" rows = "5"> </textarea>
@@ -132,7 +132,7 @@ and Community Care program?  </label></b>
     to approve reports to the ministry. </b><br>
 	</fieldset> <br>
   	<br>
-	<input id = "submit" style = "margin-left: 5%; " type = "submit" onmouseover = changePointer() value = "Submit"/>
+	<input class="btn btn-warning" id = "submit" style = "margin-left: 5%; " type = "submit" onmouseover = changePointer() value = "Submit"/>
 	<br>
 	<script> function changePointer() { document.getElementById("submit").style.cursor = "pointer"} </script>
 	</form>

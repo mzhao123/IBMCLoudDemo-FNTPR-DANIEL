@@ -1,20 +1,26 @@
 var query = require('./query.js');
 var schema = "ibmx_7c3d0b86c1998ef";
-module.exports = {
-  returnTable: function(tableName, callback) {
-    query.newQuery("SELECT * FROM " + schema + "." + tableName + ";", function(err, data) {
-      if (err) {
+module.exports =
+{
+  returnTable: function(tableName, callback)
+  {
+    query.newQuery("SELECT * FROM " + schema + "." + tableName + ";", function(err, data)
+    {
+      if (err)
+      {
         //if there is an error from the query
         console.log(err);
       }
-      else {
+      else 
+      {
         console.log(data);
         return callback(data);
       }
     });
   },
 
-  createReport: function(reqBody, reqUser, callback) {
+  createReport: function(reqBody, reqUser, callback)
+  {
       //This will take SEVERAL queries to fill out every table.
       console.log("CREATE REPORT CALLED.");
        //Query 2: funding
@@ -36,13 +42,16 @@ module.exports = {
        var sourcefromhome = "0";
        var sourcefromgov = "0";
        var approved = "0";
-       if (reqBody.fundNursing === "on") {
+       if (reqBody.fundNursing === "on")
+       {
          sourcefromhome = "1";
        }
-       if (reqBody.fundGov === "on") {
+       if (reqBody.fundGov === "on")
+       {
          sourcefromgov = "1";
        }
-       if (reqBody.approval ===  "on") {
+       if (reqBody.approval ===  "on")
+       {
          approved = "1";
        }
 
@@ -73,12 +82,15 @@ module.exports = {
            doneUser = true;
            */
            //SECOND QUERY!
-           query.newQuery(queryFunding, function(err, data) {
+           query.newQuery(queryFunding, function(err, data)
+           {
              console.log("FUNDING QUERY STARTED!");
-             if (err) {
+             if (err)
+             {
                console.log(err);
              }
-             else {
+             else
+             {
                console.log("DATA 2: ");
                console.log(data);
 
@@ -148,13 +160,16 @@ module.exports = {
         var sourcefromhome = "0";
         var sourcefromgov = "0";
         var approved = "0";
-        if (reqBody.fundNursing === "on") {
+        if (reqBody.fundNursing === "on")
+        {
           sourcefromhome = "1";
         }
-        if (reqBody.fundGov === "on") {
+        if (reqBody.fundGov === "on")
+        {
           sourcefromgov = "1";
         }
-        if (reqBody.approval ===  "on") {
+        if (reqBody.approval ===  "on")
+        {
           approved = "1";
         }
 
@@ -168,12 +183,15 @@ module.exports = {
        + ", SourceFromFirstNation = " + sourcefromgov + ", NumberOfClientServed = " + reqBody.numClients + ", HomeCarePriorities = '" + editedPriorities + "', Comments = '"
        + editedComments + "', Approved = " + approved + ", SubmitDate = NOW() WHERE ID = '" + fundID + "';";
 
-        query.newQuery(queryFunding, function(err, data) {
+        query.newQuery(queryFunding, function(err, data)
+        {
           console.log("FUNDING QUERY STARTED!")
-          if (err) {
+          if (err)
+          {
             console.log(err);
           }
-          else {
+          else
+          {
             console.log("DATA 2: ");
             console.log(data);
             //deleting funding use and funding administor so I can re-insert the edited data in, personally, I think the database can and should be restructured so I can update the table instead
@@ -229,7 +247,8 @@ module.exports = {
           }
         });
     },
-    createUserProfile: function(reqBody, reqUser, callback) {
+    createUserProfile: function(reqBody, reqUser, callback)
+    {
       console.log("CREATE USER PROFILE CALLED.");
         //Query 1: user
         /*
@@ -255,12 +274,15 @@ module.exports = {
                     + "ContactName = '" + reqBody.contactName + "', " + "PhoneNO = '" + reqBody.contactPhone + "' "
                     + " WHERE UserName = '" + reqUser.UserName + "';"; //UNFINISHED
 
-        query.newQuery(queryUser, function(err, data) {
+        query.newQuery(queryUser, function(err, data)
+        {
           console.log("USER QUERY UPDATE STARTED.");
-          if (err) {
+          if (err)
+          {
             console.log(err);
           }
-          else {
+          else
+          {
             console.log("DATA: ");
             console.log(data);
             callback();
@@ -273,47 +295,57 @@ module.exports = {
   /*
    * This function is meant for the tables that reference the LOOKUP tables.
    */
-  function checkAndInsert(table, fieldName, field, fundingID, callback) {
+  function checkAndInsert(table, fieldName, field, fundingID, callback)
+  {
     console.log("CHECK AND INSERT FUNCTION CALLED.");
-    if (field === "on" || fieldName === "useOther" || fieldName === "adminSpecify") {
-
+    if (field === "on" || fieldName === "useOther" || fieldName === "adminSpecify")
+    {
       console.log("FIELD " + fieldName + " IS ON");
-
-      if (table === "funding_administor") {
-        query.newQuery("SELECT ID FROM lkp_administor l WHERE l.Administor = '" + fieldName + "';", function(err, data1) {
+      if (table === "funding_administor")
+      {
+        query.newQuery("SELECT ID FROM lkp_administor l WHERE l.Administor = '" + fieldName + "';", function(err, data1)
+        {
           if (err) throw err;
           console.log(data1);
           var insertQuery;
 
           //If it's the 'other'
-          if (fieldName === "adminSpecify") {
+          if (fieldName === "adminSpecify")
+          {
             editedField = field.replace(/'/g, '&rsquo;');
             insertQuery = "INSERT INTO funding_administor (FundingID, LKPFundingAdministorID, Comments) VALUES (" + fundingID + ", " + data1[0].ID + ", '" + editedField + "');";
           }
-          else {
+          else
+          {
             insertQuery = "INSERT INTO funding_administor (FundingID, LKPFundingAdministorID) VALUES (" + fundingID + ", " + data1[0].ID + ");";
           }
-          query.newQuery(insertQuery, function(err, data2) {
+          query.newQuery(insertQuery, function(err, data2)
+          {
             console.log("INSERT SUCCESS.");
             console.log(data2);
             callback();
           });
         });
       }
-      else if (table === "funding_use") {
-        query.newQuery("SELECT ID FROM lkp_use_of_funding l WHERE l.UseOfFunding = '" + fieldName + "';", function(err, data1) {
+      else if (table === "funding_use")
+      {
+        query.newQuery("SELECT ID FROM lkp_use_of_funding l WHERE l.UseOfFunding = '" + fieldName + "';", function(err, data1)
+        {
           if (err) throw err;
           console.log(data1);
           var insertQuery;
           //If it's the 'other'
-          if (fieldName === "useOther") {
+          if (fieldName === "useOther")
+          {
             editedField = field.replace(/'/g, '&rsquo;');
             insertQuery = "INSERT INTO funding_use (FundingID, LKPFundingUseID, Comments) VALUES (" + fundingID + ", " + data1[0].ID + ", '" + editedField + "');";
           }
-          else {
+          else
+          {
             insertQuery = "INSERT INTO funding_use (FundingID, LKPFundingUseID) VALUES (" + fundingID + ", " + data1[0].ID + ");";
           }
-          query.newQuery(insertQuery, function(err, data2) {
+          query.newQuery(insertQuery, function(err, data2)
+          {
             console.log("INSERT SUCCESS.");
             console.log(data2);
             callback();
