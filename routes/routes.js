@@ -23,14 +23,16 @@ app.get('/', function(req, res)
 //DOWNLOAD REPORT NOT SURE IF IT WORKS YET!!!!
 app.get('/downloadReport', function (req,res)
 {
+  //requires
   var path = require('path');
   var fs = require('fs');
   var display = require('../models/displayall.js');
   var ejs = require('ejs');
   var pdf = require('html-pdf');
+  //display report  displays the user's selected report based on the query string and the user's data in session
+  //(security so user does not modify query string) and returns an array of size 6 that has all of the user's report information
   display.displayReport(req, function(arrayOfSix)
   {
-
     console.log("HERE IS THE RETURNED ARRAY");
     console.log(arrayOfSix);
     if (arrayOfSix.length === 0)
@@ -41,7 +43,7 @@ app.get('/downloadReport', function (req,res)
     {
       console.log(process.cwd());
       ejs.renderFile('/home/vcap/app/views/view-report.ejs',
-      {
+      {   //render the ejs file into a string so html-pdf can convert, parameters of the ejs file are below (the array of size 6 returned by display report is used)
           user : arrayOfSix[0],
           rep : arrayOfSix[1],
           admin : arrayOfSix[2],
@@ -58,7 +60,8 @@ app.get('/downloadReport', function (req,res)
            else
            {
              var html = result;
-             pdf.create(html).toFile('/home/vcap/app/views/viewPDFReport.pdf',
+             //creating the pdf file, sending the file to the .pdf file in views
+             pdf.create(html, {border: {"left" : "0.5in", "right" : "0.5in"} } ).toFile('/home/vcap/app/views/viewPDFReport.pdf',
              function(error, success)
              {
                if(error)
@@ -69,6 +72,7 @@ app.get('/downloadReport', function (req,res)
                else
                {
                  console.log("sucess while converting to pdf");
+                //finally displaying the pdf file in res
                  res.set('Content-Type: application/pdf')
                  res.sendFile('/home/vcap/app/views/viewPDFReport.pdf');
                }
@@ -246,8 +250,6 @@ app.post('/emailResetLink', function(req,res)
 
   app.get('/validate', isLoggedIn, function(req, res)
   {
-
-
     console.log("app get /validation-required");
     var query = require('../models/query');
     var loginquery = require('../models/loginquery.js');

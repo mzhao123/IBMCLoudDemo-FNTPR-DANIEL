@@ -605,11 +605,9 @@ smtpTransport.sendMail(mailConfig, function(err, response) {
 ## 4.6 Other areas of improvement
 
 There are a few other things I would've liked to improve on my program.
-1. My token authentication is not modularized like the rest of my code! The logic for the token verification and stuff is in **'routes.js'**, which is **really bad form**. Better form would be to make a new javascript file in '/models/' and import it to routes.
-2. My program is blank and ugly! I did not spend much effort at all in the front end UI design.
-3. Although passport is great and all, I think (correct me if I'm wrong) the IBM Cloud has its own service for authentication, which is much more secure than anything my naive lil brain can think up.
-4. Embedded JavaScript (ejs) is an okay templating system for the front end views, but I kind of wish I used something a little fancier, like **React or Angular**. Perhaps that's something you could do?
-5. We would like to figure out how to allow reports to be downloaded as a pdf file.
+1. My program is blank and ugly! I did not spend much effort at all in the front end UI design.
+2. Although passport is great and all, I think (correct me if I'm wrong) the IBM Cloud has its own service for authentication, which is much more secure than anything my naive lil brain can think up.
+3. Embedded JavaScript (ejs) is an okay templating system for the front end views, but I kind of wish I used something a little fancier, like **React or Angular**. Perhaps that's something you could do?
 
 # 5.0 Conclusion
 
@@ -623,6 +621,6 @@ Hopefully this document will ~~secure my legacy~~ help you with your job here.
 
 If you have any questions at all about this document, about your job here, the program I made, or even if you just want to have a nice chat, you can **contact me**! In most jobs, you're supposed to work with a team and have a mentor, but if you're like me and working solo on a cloud project, you won't be getting that luxury. If need be, I can be your mentor... for a price. And that price is apparently nothing. So yeah just contact me I guess. :)
 
-My email is 'haoda.fan@outlook.com'. You can also find me through linkedin (http://linkedin.com/in/haodafan), or you can just text me that's fine too (226 979 9881).
-
+Contact Haoda via email at: 'haoda.fan@outlook.com'. You can also find Haoda through linkedin (http://linkedin.com/in/haodafan), or you can just text me that's fine too (226 979 9881).
+Contact Daniel via email at: 'mzhao8808@gmail.com'. You can also text Daniel at: (815-909-8761) but beware that my number is from the United States, so it might be best to just email me. (Daniel Zhao)
 Thank you! GL HF!
