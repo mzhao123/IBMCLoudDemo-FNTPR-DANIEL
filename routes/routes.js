@@ -366,16 +366,43 @@ app.post('/emailResetLink', function(req,res)
   //
   app.get('/admin-view', isLoggedIn, userIsAdmin, function(req, res){
     console.log(req.user.Admin);
-    query.newQuery("SELECT admin FROM user WHERE ID = " + req.user.ID, function(err, isAdmin){// a test query
-      console.log(isAdmin[0]);
-      if (isAdmin[0] != req.user.Admin){
+    var query = require('../models/query.js');
+    query.newQuery("SELECT admin FROM user WHERE ID = " + req.user.Admin + ";", function(err, isAdmin){// a test query
+      console.log(isAdmin[0].Admin);
+      if (isAdmin[0].Admin != req.user.Admin){
         console.log("Uhhhhhhhh wat?");
         res.redirect('/profile');
       }
       else{
-        res.render('admin-view.ejs',{username: req.user.UserName});
+        res.render('admin-view.ejs',
+        {
+          user : req.user, // get the user out of session and pass to template
+          data: [],
+          isReport : false,
+          isValidated: true,
+          isAdmin : req.user.Admin
+        });
       }
     });
+  });
+
+  app.post('/admin-view', isLoggedIn, userIsAdmin, function(req, res){
+    console.log(req.user.Admin);
+    var renderOptions = "";
+    var query = require('../models/query.js');
+    if (req.body.viewall) {
+      renderOptions = getProfileRenderOptions(req,"SELECT * FROM funding ORDER BY ID;");
+      res.render('admin-view.ejs',renderOptions);
+    }
+    else {
+      var queriedID = "";
+      query.newQuery("SELECT ID FROM user WHERE UserName = " + req.body.usernamesearch + " ORDER BY ID", function(err, data)
+      {
+        queriedID = data[0].ID;
+        renderOptions = getProfileRenderOptions(req,"SELECT * FROM funding f WHERE f.userId = " + queriedID + " ORDER BY ID;");
+        res.render('admin-view.ejs',renderOptions);
+      });
+    }
   });
 
   // =====================================
@@ -731,6 +758,9 @@ app.post('/emailResetLink', function(req,res)
 
 };
 
+
+
+//other functions
 function isLoggedIn(req, res, next)
 {
 
@@ -742,4 +772,34 @@ function isLoggedIn(req, res, next)
 function userIsAdmin(req, res, next){
   if (req.user.Admin) return next();
   res.redirect('/');
+}
+
+//helper
+function getProfileRenderOptions(req, sqlquery){
+  var query = require('../models/query.js');
+  query.newQuery(sqlquery, function(err, data)
+  {
+    var isReport;
+    if (data.length > 0)
+    {
+      isReport = true;
+    }
+    else
+    {
+      isReport = false;
+    }
+    for (var i = 0; i < data.length; i++)
+    {
+      data[i]['link'] = "/view-report" + "?thisFundingId=" + data[i]['ID'];
+      console.log("Data[i][link]: ");
+      console.log(data[i]['link']);
+    }
+    return{
+      user : req.user, // get the user out of session and pass to template
+      data: data,
+      isReport : isReport,
+      isValidated: true,
+      isAdmin : req.user.Admin
+    };
+  });
 }
