@@ -5,8 +5,7 @@ By Haoda Fan, Daniel Zhao, Yuting Shen, Ontario Ministry of Health and Long Term
 The purpose of this application is to demonstrate the capabilities of development on the IBM Cloud (also known as IBM Bluemix).
 
 
-Its secondary purpose is to be a prototype application for a future project to digitize first nations' spending reports. As many first nations'
-The Home and Community Care Branch administers $7.5M to $15M in program allocation funding in order to improve home and community care within 133 First Nations communities across Ontario. These stakeholders are expected to (self) report on spending and program outcomes.  A reporting solution is needed in order to identify how funds are used, to track allocations and to ensure accountability.
+Its secondary purpose is to be a prototype application for a future project to digitize first nations' spending reports. The Home and Community Care Branch administers $7.5M to $15M in program allocation funding in order to improve home and community care within 133 First Nations communities across Ontario. These stakeholders are expected to (self) report on spending and program outcomes.  A reporting solution is needed in order to identify how funds are used, to track allocations and to ensure accountability.
 
 
 This cloud-based form provides another, more efficient way to report income, if implemented properly.
@@ -14,7 +13,7 @@ This cloud-based form provides another, more efficient way to report income, if 
 
 # Application Development information
 ## Cloud
-This project is built for and depoloyed on the **IBM Cloud**, also known as **IBM Bluemix**. The application itself is a **Cloud Foundry Application** built on their **SDK for Node.js**. This application is connected to the **ClearDB Managed MySQL Database** service, also provided by the cloud.   
+This project is built for and deployed on the **IBM Cloud**, also known as **IBM Bluemix**. The application itself is a **Cloud Foundry Application** built on their **SDK for Node.js**. This application is connected to the **ClearDB Managed MySQL Database** service, also provided by the cloud.   
 
 ## Language
 The logic of this application is mainly done in Javascript. Tools used:

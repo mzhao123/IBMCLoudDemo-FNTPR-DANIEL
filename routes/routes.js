@@ -48,7 +48,9 @@ app.get('/downloadReport', function (req,res)
           admin : arrayOfSix[2],
           adminOther : arrayOfSix[3],
           use : arrayOfSix[4],
-          useOther: arrayOfSix[5]
+          useOther: arrayOfSix[5],
+          fundingid: req.query.thisFundingId,
+          userid: req.user.ID
       } , function(err, result)
          {
            if(err)
@@ -399,6 +401,8 @@ app.post('/emailResetLink', function(req,res)
         res.redirect('/profile');
       }
       else {
+        console.log("LETS SEE IF REQ.QUERY WORKS !@!@!@!@");
+        console.log(req.query.thisFundingId);
         res.render('view-report.ejs',
         {
           user : arrayOfSix[0],
@@ -406,7 +410,9 @@ app.post('/emailResetLink', function(req,res)
           admin : arrayOfSix[2],
           adminOther : arrayOfSix[3],
           use : arrayOfSix[4],
-          useOther: arrayOfSix[5]
+          useOther: arrayOfSix[5],
+          fundingid: req.query.thisFundingId,
+          userid: req.user.ID
         });
       }
     });
