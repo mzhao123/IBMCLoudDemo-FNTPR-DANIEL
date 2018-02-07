@@ -367,7 +367,7 @@ app.post('/emailResetLink', function(req,res)
   app.get('/admin-view', isLoggedIn, userIsAdmin, function(req, res){
     console.log(req.user.Admin);
     var query = require('../models/query.js');
-    query.newQuery("SELECT admin FROM user WHERE ID = " + req.user.Admin + ";", function(err, isAdmin){// a test query
+    query.newQuery("SELECT admin FROM user WHERE ID = " + req.user.ID + ";", function(err, isAdmin){// a test query
       console.log(isAdmin[0].Admin);
       if (isAdmin[0].Admin != req.user.Admin){
         console.log("Uhhhhhhhh wat?");
