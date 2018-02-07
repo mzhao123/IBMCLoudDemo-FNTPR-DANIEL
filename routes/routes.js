@@ -463,39 +463,6 @@ app.post('/emailResetLink', function(req,res)
   });
 
 
-  app.get('/save-report', isLoggedIn, function(req, res)
-  {
-    console.log("get /save-report");
-
-    var display = require('../models/displayall.js');
-    var savefile = require('../models/savefile.js');
-    savefile.savefile(req.query.userID+'testreport', "glhf", function(fileref){
-      res.download(fileref);
-    });
-
-    /*display.displayReport(req, function(arrayOfSix)
-    {
-      console.log("HERE IS THE RETURNED ARRAY");
-      console.log(arrayOfSix);
-      if (arrayOfSix.length === 0)
-      {
-        res.redirect('/profile');
-      }
-      else {
-        res.render('view-report.ejs',
-        {
-          user : arrayOfSix[0],
-          rep : arrayOfSix[1],
-          admin : arrayOfSix[2],
-          adminOther : arrayOfSix[3],
-          use : arrayOfSix[4],
-          useOther: arrayOfSix[5]
-        });
-      }
-    });*/
-  });
-
-
 
   app.get('/editReportPasswordConfirmation', isLoggedIn, function(req, res)
   {
