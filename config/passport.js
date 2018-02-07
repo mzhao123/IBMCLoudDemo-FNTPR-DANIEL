@@ -34,7 +34,7 @@ module.exports = function(passport) {
     */
     query.newQuery("SELECT * FROM user u WHERE u.id = '" + id + "';", function(err, data) {
       console.log("DESERIALIZE USER INVOKED.");
-      var user = data[0]
+      var user = data[0];
       console.log(user);
       done(err, user);
     });
@@ -231,4 +231,5 @@ module.exports = function(passport) {
       });
 
   }));
+
 };

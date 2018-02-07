@@ -352,10 +352,30 @@ app.post('/emailResetLink', function(req,res)
         user : req.user, // get the user out of session and pass to template
         data: data,
         isReport : isReport,
-        isValidated: isValidated
+        isValidated: isValidated,
+        isAdmin : req.user.Admin
       });
+
+
     });
 
+  });
+
+  //
+  // Admin Page
+  //
+  app.get('/admin-view', isLoggedIn, userIsAdmin, function(req, res){
+    console.log(req.user.Admin);
+    query.newQuery("SELECT admin FROM user WHERE ID = " + req.user.ID, function(err, isAdmin){// a test query
+      console.log(isAdmin[0]);
+      if (isAdmin[0] != req.user.Admin){
+        console.log("Uhhhhhhhh wat?");
+        res.redirect('/profile');
+      }
+      else{
+        res.render('admin-view.ejs',{username: req.user.UserName});
+      }
+    });
   });
 
   // =====================================
@@ -716,5 +736,10 @@ function isLoggedIn(req, res, next)
 
   // if the user is authenticated in the session, carry on
   if (req.isAuthenticated()) return next();
+  res.redirect('/');
+}
+
+function userIsAdmin(req, res, next){
+  if (req.user.Admin) return next();
   res.redirect('/');
 }

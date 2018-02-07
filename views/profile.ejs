@@ -51,6 +51,9 @@
               <% if (isValidated === true) { %>
                   <a href="/make-report" class="btn btn-default"><span class="fa fa-user"></span> Make a New Report </a>
               <% } %>
+              <% if (isAdmin) { %>
+                  <a href="/admin-view" class="btn btn-default"> <span class="fa fa-user"></span> Admin Link </a>
+              <% } %>
           </div>
         </div>
 
