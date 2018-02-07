@@ -367,11 +367,20 @@ app.post('/emailResetLink', function(req,res)
   app.get('/admin-view', isLoggedIn, userIsAdmin, function(req, res){
     console.log(req.user.Admin);
     var query = require('../models/query.js');
-    query.newQuery("SELECT admin FROM user WHERE ID = " + req.user.ID + ";", function(err, isAdmin){// a test query
-      console.log(isAdmin[0].Admin);
-      if (isAdmin[0].Admin != req.user.Admin){
+    query.newQuery("SELECT admin FROM user WHERE ID = " + req.user.ID + ";", function(err, data){// a test query
+      console.log("--debug--");
+      console.log(data[0].Admin);//getting undefined
+      console.log("--debug--");
+      if (!(data[0].Admin) && !(req.user.Admin)){
         console.log("Uhhhhhhhh wat?");
-        res.redirect('/profile');
+        res.render('admin-view.ejs',
+        {
+          user : req.user, // get the user out of session and pass to template
+          data: [],
+          isReport : false,
+          isValidated: true,
+          isAdmin : req.user.Admin
+        });
       }
       else{
         res.render('admin-view.ejs',
