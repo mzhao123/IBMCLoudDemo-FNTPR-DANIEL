@@ -7,7 +7,6 @@
 // });
 //
 // //module.exports = router;
-
 module.exports = function(app, passport)
 {
 
@@ -61,7 +60,7 @@ app.get('/downloadReport', function (req,res)
            {
              var html = result;
              //creating the pdf file, sending the file to the .pdf file in views
-             pdf.create(html, {border: {"left" : "0.5in", "right" : "0.5in"} } ).toFile('/home/vcap/app/views/viewPDFReport.pdf',
+             pdf.create(html, {border: {"left" : "0.5in", "right" : "0.5in", "top" : "0.25in"} } ).toFile('/home/vcap/app/views/viewPDFReport.pdf',
              function(error, success)
              {
                if(error)
@@ -119,7 +118,6 @@ app.post('/emailResetLink', function(req,res)
   var loginquery = require('../models/loginquery.js');
   var mail = require('../models/sendMail.js');
   var userEmail = req.body.userEmail;
-  console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
   query.newQuery("SELECT * FROM user WHERE user.Email = '" +   userEmail + "'  ;", function(err, emailLength) {
     if(emailLength.length !=1)
     {
@@ -137,7 +135,6 @@ app.post('/emailResetLink', function(req,res)
         loginquery.generateTokenObject(queriedID, 10, function(tokenObject)
         {
           console.log(tokenObject);
-          console.log("@@@@@@@@@");
           console.log(tokenObject.ID[0].ID);
           //inserts the token into the tokens database
           query.newQuery("INSERT INTO token (UserId, TokenContent, Expiry) VALUES (" + tokenObject.ID[0].ID + ", '" + tokenObject.token + "', '" + tokenObject.expiry + "');", function(err, data)
@@ -674,7 +671,6 @@ app.post('/emailResetLink', function(req,res)
     });
 
 };
-
 function isLoggedIn(req, res, next)
 {
 

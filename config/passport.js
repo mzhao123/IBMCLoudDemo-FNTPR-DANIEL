@@ -209,6 +209,16 @@ module.exports = function(passport) {
             //But if the account is not validated...
             if (data[0].validated != 1) {
               console.log("THIS ACCOUNT IS NOT VALID!");
+              //deletes invalid/expired tokens now
+              var darkLogin = require('../models/loginquery.js');
+              darkLogin.purgeTokens(function ()
+              {
+                console.log("The tokens have been purged!");
+                darkLogin.purgeAccounts(function ()
+                {
+                  console.log("The users have been purged!");
+                });
+              });
               return done(null, false, req.flash('loginMessage', 'Your account is not yet valid! Please validate at: https://demo-fntpr-2.mybluemix.net/validate'));
             }
 

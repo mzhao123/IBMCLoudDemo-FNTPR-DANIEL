@@ -37,7 +37,21 @@
 				document.getElementById("useOther").required = true;
 			}
 		}
+		function textCounter( field, countfield, maxlimit )
+		{
+		if ( field.value.length > maxlimit )
+		{
+		 field.value = field.value.substring( 0, maxlimit );
+		 field.blur();
+		 field.focus();
+		 return false;
+		} else
+		{
+		 countfield.value = maxlimit - field.value.length;
+		}
+	 }
 		</script>
+
 <div class = "col-sm-10 col-sm-offset-1 jumbotron">
 <h1 style = "text-align: center";>  <span class="fa fa-cloud"></span> First Nations Report Spending  <span class="fa fa-cloud"></span> </h1>
 <br>
@@ -97,9 +111,10 @@ and Community Care program?  </label></b>
 <input style = "text-align: center; margin-left: 2%;" type = "number" id = "numClients" name = "numClients" placeholder = "850" required/>
 <br>
 <br>
-<b><label for "priorities">Please outline priorities for home and community care investment in the next five years:</label> <br></b>
+<b><label for "priorities">Please outline priorities for home and community care investment in the next five years: Max. 5000 characters </label> <br></b>
 <br>
-<textarea id = "priorities" name = "priorities" style = "width: 100%" rows = "5"> </textarea>
+<input onblur="textCounter(this.form.recipients,this,5000);" disabled  onfocus="this.blur();" tabindex="999" maxlength="4" size="4" value="5000" name="counter"> <br>
+<textarea maxlength="5000" id = "priorities" name = "priorities" style = "width: 100%" rows = "5" onblur="textCounter(this,this.form.counter,5000);" onkeyup="textCounter(this,this.form.counter,5000);"> </textarea>
 </fieldset> <br>
 <fieldset id = "fundingSpent" style = "border-color: 	#000000;">
 	<legend> </legend>
@@ -116,17 +131,15 @@ and Community Care program?  </label></b>
  <input type="checkbox" name="useDirectOther"/> Direct Services for home or community care and/or palliative and end-of-life care
  (provided by another organization)<br>
  <input onclick= "updateAnother()" type="checkbox" name="other" /> Other (please specify below)<br>
-
-
  <br>
- <b> <label for "useOther">Any other home and community care or palliative and end-of-care priorities: </label> <br></b>
- <br>
- <textarea id = "useOther" name = "useOther" style = "width: 100%" rows = "5"></textarea>
+ <b> <label for "useOther">Any other home and community care or palliative and end-of-care priorities: Max. 5000 characters </b> </label><p>  </p>
+ <input onblur="textCounter(this.form.recipients,this,5000);" disabled  onfocus="this.blur();" tabindex="999" maxlength="4" size="4" value="5000" name="counter1"> <br>
+ <textarea maxlength="5000" id = "useOther" name = "useOther" style = "width: 100%" rows = "5" onblur="textCounter(this,this.form.counter1,5000);" onkeyup="textCounter(this,this.form.counter1,5000);" ></textarea>
 </fieldset> <br>
 <fieldset id = "commentsAndConfirm" style = "border-color: 	#000000;">
-<b><label for "comments">Please provide any other comments: </label> </b><br>
-<br>
-		<textarea id = "comments" name = "comments" style = "width: 100%" rows = "5"> </textarea>
+<b><label for "comments">Please provide any other comments: Max 5000 characters </label> </b><br>
+		<input onblur="textCounter(this.form.recipients,this,5000);" disabled  onfocus="this.blur();" tabindex="999" maxlength="4" size="4" value="5000" name="counter2"> <br>
+		<textarea maxlength="5000" id = "comments" name = "comments" style = "width: 100%" rows = "5" onblur="textCounter(this,this.form.counter2,5000);" onkeyup="textCounter(this,this.form.counter2,5000);"> </textarea>
 		<br>
 		<b><input type="checkbox" name="approval" required/> Check if the above information is approved by the Chief or the Chief's delegated authority
     to approve reports to the ministry. </b><br>
