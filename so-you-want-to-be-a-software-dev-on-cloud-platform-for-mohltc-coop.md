@@ -599,7 +599,7 @@ smtpTransport.sendMail(mailConfig, function(err, response) {
 **NOTE:** If you don't want to send from haodasdemo@gmail.com, you can use a different email source by configuring the data in `nodeMailer.createTransport({ data ... })`.
 ## 4.5 Creating, Viewing, Editing, And Downloading Reports
 As you know, the main goal of the project is to create an efficient solution that will allow First Nation communities to self-report their spending reports. This is done through an online form that a user can fill out. After the form is filled out, the information is sent and saved to the database. When the user visits the profile page, all of the reports filled out can be viewed by clicking buttons that have links to the reports. Once you click a button, you will be able to view the report and also have the option to delete, edit, and download the report. Here is an example:
-![View Report](https://raw.githubusercontent.com/mzhao123/IBMCLoud-Demo-FNTPR-DANIEL/master/viewReportPicture.png "Report Page")
+![View Report](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/viewReportPicture.png "Report Page")
 
 ## 4.6 Things I'm too dumb to figure out
 
