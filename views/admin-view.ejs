@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Admin View</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-header text-center">
+        <h1><span class="fa fa-anchor"></span> Admin Page</h1>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="well">
+            <h3><span class="fa fa-user"></span> User Information</h3>
+              <p>
+                <strong>id</strong>: <%= user.ID %><br>
+                <strong>Username</strong>: <%= user.UserName %><br>
+                <strong>Email</strong>: <%= user.Email %> <br>
+                <!--
+                <strong>password</strong>: <%//= user.password %>
+                -->
+              </p>
+          </div>
+        </div>
+
+    <!-- Database Information -->
+        <div class = "col-sm-6">
+          <div class = "well">
+            <h3><span class = "fa fa-user"></span> Report</h3>
+            <% if(isReport === true) { %>
+              <h3> View All Reports </h3> <br>
+              <% for (var i = 0; i < data.length; i++) { %>
+                <a style = "margin-left: 1.5%;" href="<%= data[i].link %>" class="btn btn-default"><span class="fa fa-user"></span> Report Date: <%= data[i].SubmitDate %> </a> <a style = "margin-left: 1.5%;" href ="deleteReport?fundingID=<%= data[i].ID %>&userID=<%= data[i].UserId %>" ><span class="glyphicon glyphicon-remove" style = "color: black;"></span> </a>
+                <a style = "margin-left: 1.5%;" href = "editReportPasswordConfirmation?thisFundingId=<%= data[i].ID %>&userID=<%= data[i].UserId %>" > <span class="fa fa-pencil" style = "color: black;"></span> </a>
+                <a style = "margin-left: 1.5%;" href = "downloadReport?thisFundingId=<%= data[i].ID %>&userID=<%= data[i].UserId %>"><span class = "glyphicon glyphicon-file" style = "color: black;"></span> </a>
+                <br>
+              <% } %>
+            <br><br>
+            <% } %>
+            <% else if { %>
+              <form action="/admin-view" method="post">
+              <label>Search by Username</label>
+              <input type="text" class="form-control" name="usernamesearch">
+              <button type="submit" class="btn btn-default">Submit</button>
+              </form>
+              <form action="/admin-view" method="post">
+                <button type="submit" class="btn btn-default" name="viewall" value="true">View All</button>
+              </form>
+            <% } %>
+            <% if (isValidated === true) { %>
+              <a href="/make-report" class="btn btn-default"><span class="fa fa-user"></span> Make a New Report </a>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

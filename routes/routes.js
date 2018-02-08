@@ -351,10 +351,66 @@ app.post('/emailResetLink', function(req,res)
         user : req.user, // get the user out of session and pass to template
         data: data,
         isReport : isReport,
-        isValidated: isValidated
+        isValidated: isValidated,
+        isAdmin : req.user.Admin
       });
+
+
     });
 
+  });
+
+  //
+  // Admin Page
+  //
+  app.get('/admin-view', isLoggedIn, userIsAdmin, function(req, res){
+    console.log(req.user.Admin);
+    var query = require('../models/query.js');
+    query.newQuery("SELECT admin FROM user WHERE ID = " + req.user.ID + ";", function(err, data){// a test query
+      console.log("--debug--");
+      console.log(data[0].Admin);//getting undefined
+      console.log("--debug--");
+      if (!(data[0].Admin) && !(req.user.Admin)){
+        console.log("Uhhhhhhhh wat?");
+        res.render('admin-view.ejs',
+        {
+          user : req.user, // get the user out of session and pass to template
+          data: [],
+          isReport : false,
+          isValidated: true,
+          isAdmin : req.user.Admin
+        });
+      }
+      else{
+        res.render('admin-view.ejs',
+        {
+          user : req.user, // get the user out of session and pass to template
+          data: [],
+          isReport : false,
+          isValidated: true,
+          isAdmin : req.user.Admin
+        });
+      }
+    });
+  });
+
+  app.post('/admin-view', isLoggedIn, userIsAdmin, function(req, res){
+    console.log(req.user.Admin);
+    var renderOptions = "";
+    var query = require('../models/query.js');
+    if (req.body.viewall) {
+      renderOptions = getProfileRenderOptions(req,"SELECT * FROM funding ORDER BY ID;");
+      res.render('admin-view.ejs',renderOptions);
+    }
+    else {
+      var queriedID = "";
+      query.newQuery("SELECT ID FROM user WHERE UserName = " + req.body.usernamesearch + " ORDER BY ID", function(err, data)
+      {
+        queriedID = data[0].ID;
+        renderOptions = getProfileRenderOptions(req,"SELECT * FROM funding f WHERE f.userId = " + queriedID + " ORDER BY ID;");
+        res.render('admin-view.ejs',renderOptions);
+      });
+    }
   });
 
   // =====================================
@@ -417,6 +473,9 @@ app.post('/emailResetLink', function(req,res)
       }
     });
   });
+
+
+
   app.get('/editReportPasswordConfirmation', isLoggedIn, function(req, res)
   {
     //checks to see if the userid in query matches with the userid in session
@@ -677,10 +736,47 @@ app.post('/emailResetLink', function(req,res)
     });
 
 };
+
+//other functions
 function isLoggedIn(req, res, next)
 {
 
   // if the user is authenticated in the session, carry on
   if (req.isAuthenticated()) return next();
   res.redirect('/');
+}
+
+function userIsAdmin(req, res, next){
+  if (req.user.Admin) return next();
+  res.redirect('/');
+}
+
+//helper
+function getProfileRenderOptions(req, sqlquery){
+  var query = require('../models/query.js');
+  query.newQuery(sqlquery, function(err, data)
+  {
+    var isReport;
+    if (data.length > 0)
+    {
+      isReport = true;
+    }
+    else
+    {
+      isReport = false;
+    }
+    for (var i = 0; i < data.length; i++)
+    {
+      data[i]['link'] = "/view-report" + "?thisFundingId=" + data[i]['ID'];
+      console.log("Data[i][link]: ");
+      console.log(data[i]['link']);
+    }
+    return{
+      user : req.user, // get the user out of session and pass to template
+      data: data,
+      isReport : isReport,
+      isValidated: true,
+      isAdmin : req.user.Admin
+    };
+  });
 }
