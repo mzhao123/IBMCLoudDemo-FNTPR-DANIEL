@@ -69,7 +69,7 @@ Sign up/ login features implemented through passportjs
 ![Login](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/login.png )
 
 ### Email Validation
-User will be asked to click on link in their email after trying to sign up for an accout or resetting their password
+User will be asked to click on link in their email after trying to sign up for an account or resetting their password
 ![Signup-Validation](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/validatesignup.png )
 ![ResetPass-Validation](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/validatechangepass.png )
 ### Basic Funding Report FORM
@@ -78,14 +78,15 @@ The user fills out this form and it is sent to the database
 
 ### View, Edit, Delete, and Download reports
 As you know, the main goal of the project is to create an efficient solution that will allow First Nation communities to self-report their spending reports. This is done through an online form that a user can fill out. After the form is filled out, the information is sent and saved to the database. When the user visits the profile page, all of the reports filled out can be viewed by clicking buttons that have links to the reports. Once you click a button, you will be able to view the report and also have the option to delete, edit, and download the report. Here are some examples:
+#### Profile
 ![Profile](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/profile.png)
-
+#### View-Report
 ![View Report](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/viewReportPicture.png)
-
+#### Edit
 ![Edit](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/edit.png)
-
+#### Download
 ![Download](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/download.png )
-
+#### Delete
 ![Delete](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/delete.png)
 
 # Credit where credit is due...
