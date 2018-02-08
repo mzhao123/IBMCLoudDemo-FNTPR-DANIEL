@@ -597,7 +597,6 @@ smtpTransport.sendMail(mailConfig, function(err, response) {
 ```
 
 **NOTE:** If you don't want to send from haodasdemo@gmail.com, you can use a different email source by configuring the data in `nodeMailer.createTransport({ data ... })`.
-
 ## 4.5 Things I'm too dumb to figure out
 
 ~~The main thing I have yet to implement successfully is a way to **get rid of unvalidated users** and their **expired tokens**. If you look in the file 'loginquery.js', you'll find a pair of purge functions. Neither of these really function properly. If you are continuing to work on this project, and can solve the token problem, then that would be **awesome**.~~ **This feature was completed**
@@ -622,5 +621,5 @@ Hopefully this document will ~~secure my legacy~~ help you with your job here.
 If you have any questions at all about this document, about your job here, the program I made, or even if you just want to have a nice chat, you can **contact me**! In most jobs, you're supposed to work with a team and have a mentor, but if you're like me and working solo on a cloud project, you won't be getting that luxury. If need be, I can be your mentor... for a price. And that price is apparently nothing. So yeah just contact me I guess. :)
 
 Contact Haoda via email at: 'haoda.fan@outlook.com'. You can also find Haoda through linkedin (http://linkedin.com/in/haodafan), or you can just text me that's fine too (226 979 9881).
-Contact Daniel via email at: 'mzhao8808@gmail.com'. You can also text Daniel at: (815-909-8761) but beware that my number is from the United States, so it might be best to just email me. (Daniel Zhao)
+Contact Daniel via email at: 'mzhao8808@gmail.com'. You can also text Daniel at: (815-909-9761) but beware that my number is from the United States, so it might be best to just email me. (Daniel Zhao)
 Thank you! GL HF!
