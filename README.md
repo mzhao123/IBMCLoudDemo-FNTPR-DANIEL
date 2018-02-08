@@ -78,15 +78,15 @@ The user fills out this form and it is sent to the database
 
 ### View, Edit, Delete, and Download reports
 As you know, the main goal of the project is to create an efficient solution that will allow First Nation communities to self-report their spending reports. This is done through an online form that a user can fill out. After the form is filled out, the information is sent and saved to the database. When the user visits the profile page, all of the reports filled out can be viewed by clicking buttons that have links to the reports. Once you click a button, you will be able to view the report and also have the option to delete, edit, and download the report. Here are some examples:
-![Profile](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pcitures/profile.png  )
+![Profile](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/profile.png)
 
-![View Report](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/viewReportPicture.png  )
+![View Report](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/viewReportPicture.png)
 
-![Edit](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pcitures/edit.png )
+![Edit](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/edit.png)
 
-![Download](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pcitures/download.png  )
+![Download](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/download.png )
 
-![Delete](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pcitures/delete.png  )
+![Delete](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/delete.png)
 
 # Credit where credit is due...
 ### Thanks to:
