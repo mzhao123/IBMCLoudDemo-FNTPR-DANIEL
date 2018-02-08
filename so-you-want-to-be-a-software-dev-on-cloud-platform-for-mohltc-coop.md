@@ -597,12 +597,15 @@ smtpTransport.sendMail(mailConfig, function(err, response) {
 ```
 
 **NOTE:** If you don't want to send from haodasdemo@gmail.com, you can use a different email source by configuring the data in `nodeMailer.createTransport({ data ... })`.
+## 4.5 Creating, Viewing, Editing, And Downloading Reports
+As you know, the main goal of the project is to create an efficient solution that will allow First Nation communities to self-report their spending reports. This is done through an online form that a user can fill out. After the form is filled out, the information is sent and saved to the database. When the user visits the profile page, all of the reports filled out can be viewed by clicking buttons that have links to the reports. Once you click a button, you will be able to view the report and also have the option to delete, edit, and download the report. Here is an example:
+![View Report](https://raw.githubusercontent.com/mzhao123/IBMCLoud-Demo-FNTPR-DANIEL/master/viewReportPicture.png "Report Page")
 
-## 4.5 Things I'm too dumb to figure out
+## 4.6 Things I'm too dumb to figure out
 
 ~~The main thing I have yet to implement successfully is a way to **get rid of unvalidated users** and their **expired tokens**. If you look in the file 'loginquery.js', you'll find a pair of purge functions. Neither of these really function properly. If you are continuing to work on this project, and can solve the token problem, then that would be **awesome**.~~ **This feature was completed**
 
-## 4.6 Other areas of improvement
+## 4.7 Other areas of improvement
 
 There are a few other things I would've liked to improve on my program.
 1. My program is blank and ugly! I did not spend much effort at all in the front end UI design.
@@ -622,5 +625,5 @@ Hopefully this document will ~~secure my legacy~~ help you with your job here.
 If you have any questions at all about this document, about your job here, the program I made, or even if you just want to have a nice chat, you can **contact me**! In most jobs, you're supposed to work with a team and have a mentor, but if you're like me and working solo on a cloud project, you won't be getting that luxury. If need be, I can be your mentor... for a price. And that price is apparently nothing. So yeah just contact me I guess. :)
 
 Contact Haoda via email at: 'haoda.fan@outlook.com'. You can also find Haoda through linkedin (http://linkedin.com/in/haodafan), or you can just text me that's fine too (226 979 9881).
-Contact Daniel via email at: 'mzhao8808@gmail.com'. You can also text Daniel at: (815-909-8761) but beware that my number is from the United States, so it might be best to just email me. (Daniel Zhao)
+Contact Daniel via email at: 'mzhao8808@gmail.com'. You can also text Daniel at: (815-909-9761) but beware that my number is from the United States, so it might be best to just email me. (Daniel Zhao)
 Thank you! GL HF!
