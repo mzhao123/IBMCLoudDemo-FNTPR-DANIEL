@@ -44,11 +44,10 @@ Note that an 'auth' table still exists, but it is an obsolete table that is no l
 # Current stage of development
 ### Completed features:
 - Simple signup/login/logout
-- Email validation upon registration
+- Email validation upon registration and password reset
 - Basic funding report form that saves to a database
 - A page to view your own report
 - The ability to make multiple reports under the same user
-- The ability to reset a user's password through email validation
 - The ability to delete reports after a confirmation page
 - Delete users that have not been validated
 - Ability to edit reports already created by the user
@@ -62,6 +61,28 @@ Note that an 'auth' table still exists, but it is an obsolete table that is no l
 
 ### Possible far-fetched future features:
 - Two types of users: first nations' users who create reports, and admin users who moniter them and have advanced priviledges
+
+# Current features that users can implement:
+### Simple Signup/Login/LOGOUT
+Sign up/ login features implemented through passportjs
+![Signup](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/signup.png =250x250)
+![Login](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/login.png =250x250)
+
+### Email Validation
+User will be asked to click on link in their email after trying to sign up for an accout or resetting their password
+![Signup-Validation](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/validatesignup.png =250x250)
+![ResetPass-Validation](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/validatechangepass.png =250x250)
+###Basic Funding Report FORM
+The user fills out this form and it is sent to the database
+![Form](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/reportform.png = 250x250)
+
+###View, Edit, Delete, and Download reports
+As you know, the main goal of the project is to create an efficient solution that will allow First Nation communities to self-report their spending reports. This is done through an online form that a user can fill out. After the form is filled out, the information is sent and saved to the database. When the user visits the profile page, all of the reports filled out can be viewed by clicking buttons that have links to the reports. Once you click a button, you will be able to view the report and also have the option to delete, edit, and download the report. Here are some examples:
+![Profile](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pcitures/profile.png  =250x250)
+![View Report](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/viewReportPicture.png  =250x250)
+![Edit](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pcitures/edit.png  =250x250)
+![Download](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pcitures/download.png  =250x250)
+![Delete](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pcitures/delete.png  =250x250)
 
 # Credit where credit is due...
 ### Thanks to:
