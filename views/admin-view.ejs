@@ -43,8 +43,7 @@
                 <br>
               <% } %>
             <br><br>
-            <% } %>
-            <% else if { %>
+            <% } else{ %>
               <form action="/admin-view" method="post">
               <label>Search by Username</label>
               <input type="text" class="form-control" name="usernamesearch">
@@ -55,9 +54,13 @@
               </form>
             <% } %>
             <% if (isValidated === true) { %>
-              <a href="/make-report" class="btn btn-default"><span class="fa fa-user"></span> Make a New Report </a>
+              <a href="/make-report" class="btn btn-default"><span class="fa fa-user"></span> Make a New Report </a>   <a href="/profile" class="btn btn-default"><span class="fa fa-user"></span> Back to Profile </a>
             <% } %>
           </div>
+          <% if (messages != "undefined"){ %>
+            <% var message = "Invalid Username!"%>
+              <div class="alert alert-danger"><%= message %></div>
+          <% } %>
         </div>
       </div>
     </div>

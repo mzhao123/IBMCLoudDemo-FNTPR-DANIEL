@@ -36,7 +36,7 @@ module.exports = {
             console.log(err);
           }
           //This is put in place to ensure the wrong user doesn't have access to someone else's report
-          else if (dataFunding[0].UserId != req.user.ID) {
+          else if (dataFunding[0].UserId != req.user.ID && req.user.admin == 0) {
             console.log(dataFunding[0].UserId);
             console.log(req.user.ID);
             console.log(dataFunding[0].UserId != req.user.ID); //If the user's credentials don't match up with the report's user ID credential

@@ -352,7 +352,7 @@ app.post('/emailResetLink', function(req,res)
         data: data,
         isReport : isReport,
         isValidated: isValidated,
-        isAdmin : req.user.Admin
+        isAdmin : req.user.admin
       });
 
 
@@ -364,38 +364,43 @@ app.post('/emailResetLink', function(req,res)
   // Admin Page
   //
   app.get('/admin-view', isLoggedIn, userIsAdmin, function(req, res){
-    console.log(req.user.Admin);
+    console.log(req.user.admin);
     var query = require('../models/query.js');
-    query.newQuery("SELECT admin FROM user WHERE ID = " + req.user.ID + ";", function(err, data){// a test query
+    query.newQuery("SELECT admin FROM user WHERE ID = " + req.user.ID + ";", function(err, admin){// a test query
       console.log("--debug--");
-      console.log(data[0].Admin);//getting undefined
+      if(!(admin[0])){
+        console.log("got false");
+      }
+      console.log(admin[0]);//getting undefined
       console.log("--debug--");
-      if (!(data[0].Admin) && !(req.user.Admin)){
+      if (!(admin[0]) && !(req.user.admin)){
         console.log("Uhhhhhhhh wat?");
         res.render('admin-view.ejs',
         {
+          messages: 'undefined',
           user : req.user, // get the user out of session and pass to template
           data: [],
           isReport : false,
           isValidated: true,
-          isAdmin : req.user.Admin
+          isAdmin : req.user.admin
         });
       }
       else{
         res.render('admin-view.ejs',
         {
+          messages: 'undefined',
           user : req.user, // get the user out of session and pass to template
           data: [],
           isReport : false,
           isValidated: true,
-          isAdmin : req.user.Admin
+          isAdmin : req.user.admin
         });
       }
     });
   });
 
   app.post('/admin-view', isLoggedIn, userIsAdmin, function(req, res){
-    console.log(req.user.Admin);
+    console.log(req.user.admin);
     var renderOptions = "";
     var query = require('../models/query.js');
     if (req.body.viewall) {
@@ -404,11 +409,38 @@ app.post('/emailResetLink', function(req,res)
     }
     else {
       var queriedID = "";
-      query.newQuery("SELECT ID FROM user WHERE UserName = " + req.body.usernamesearch + " ORDER BY ID", function(err, data)
+      query.newQuery("SELECT ID FROM user WHERE UserName = '" + req.body.usernamesearch + "' ORDER BY ID", function(err, data)
       {
-        queriedID = data[0].ID;
-        renderOptions = getProfileRenderOptions(req,"SELECT * FROM funding f WHERE f.userId = " + queriedID + " ORDER BY ID;");
-        res.render('admin-view.ejs',renderOptions);
+        if(data.length == 0)
+        { req.flash('invalid password', 'Invalid Password!');
+          res.render('admin-view.ejs',
+          {
+          messages:  req.flash('invalid username'),
+          user: req.user,
+          data: [],
+          isReport: false,
+          isValidated: true,
+          isAdmin: req.user.admin
+          })
+        }
+        else
+        {
+          queriedID = data[0].ID;
+          getProfileRenderOptions(req,"SELECT * FROM funding f WHERE f.userId = " + queriedID + " ORDER BY ID;", function (renderOptions)
+          {
+            console.log("Hello?!");
+            console.log(renderOptions.user);
+            res.render('admin-view.ejs',
+            {
+              messages: 'undefined',
+              user: renderOptions.user[0],
+              data: renderOptions.data,
+              isReport: renderOptions.isReport,
+              isValidated: renderOptions.isValidated,
+              isAdmin: req.user.admin
+            });
+          });
+        }
       });
     }
   });
@@ -447,7 +479,7 @@ app.post('/emailResetLink', function(req,res)
     // TBH THIS COULD PROBABLY BE ITS OWN MODULE BUT FOR NOW I'LL LEAVE IT HERE
     //var display = require('../models/displayall.js');
     var display = require('../models/displayall.js');
-
+    var query = require ('../models/query.js');
     display.displayReport(req, function(arrayOfSix)
     {
       console.log("HERE IS THE RETURNED ARRAY");
@@ -455,6 +487,27 @@ app.post('/emailResetLink', function(req,res)
       if (arrayOfSix.length === 0)
       {
         res.redirect('/profile');
+      }
+      else if(req.user.admin)
+      {
+        console.log("admin access invoked");
+        query.newQuery("SELECT UserId FROM funding WHERE ID = "+ req.query.thisFundingId +"", function(err, data1)
+        {
+          query.newQuery("SELECT * FROM user WHERE ID = "+data1[0].UserId+" ", function(err, data2)
+          {
+            res.render('view-report.ejs',
+            {
+              user: data2[0],
+              rep : arrayOfSix[1],
+              admin : arrayOfSix[2],
+              adminOther : arrayOfSix[3],
+              use : arrayOfSix[4],
+              useOther: arrayOfSix[5],
+              fundingid: req.query.thisFundingId,
+              userid: data1[0].UserId
+            });
+          });
+        });
       }
       else {
         console.log("LETS SEE IF REQ.QUERY WORKS !@!@!@!@");
@@ -747,36 +800,53 @@ function isLoggedIn(req, res, next)
 }
 
 function userIsAdmin(req, res, next){
-  if (req.user.Admin) return next();
+  if (req.user.admin)
+  {
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@");
+    console.log(req.user.admin);
+    return next();
+  }
+  console.log(req.user.admin);
   res.redirect('/');
 }
 
 //helper
-function getProfileRenderOptions(req, sqlquery){
+function getProfileRenderOptions(req, sqlquery, callback){
   var query = require('../models/query.js');
   query.newQuery(sqlquery, function(err, data)
   {
-    var isReport;
-    if (data.length > 0)
+    query.newQuery("SELECT UserId FROM funding WHERE ID = "+ data[0].ID+"", function(err, data1)
     {
-      isReport = true;
-    }
-    else
-    {
-      isReport = false;
-    }
-    for (var i = 0; i < data.length; i++)
-    {
+      var isReport;
+      query.newQuery("SELECT * FROM user WHERE ID = "+data1[0].UserId+" ", function(err, data2)
+      {
+        console.log("!!!!!!!!!!!!!!!!!");
+        console.log(data1);
+      if (data.length > 0)
+      {
+        isReport = true;
+      }
+      else
+      {
+        isReport = false;
+      }
+      for (var i = 0; i < data.length; i++)
+      {
       data[i]['link'] = "/view-report" + "?thisFundingId=" + data[i]['ID'];
       console.log("Data[i][link]: ");
       console.log(data[i]['link']);
-    }
-    return{
-      user : req.user, // get the user out of session and pass to template
+      }
+      userData = {
+      user : data2, // get the user out of session and pass to template
       data: data,
       isReport : isReport,
       isValidated: true,
-      isAdmin : req.user.Admin
+      isAdmin : req.user.admin
     };
+    console.log("@@@@@@@@@@@@@@@@@@@");
+    console.log(userData);
+      callback(userData);
+    });
+    });
   });
 }

@@ -4,7 +4,7 @@ module.exports = {
   deleteTheReport: function(req, res)
   {
     req.flash('invalid password', 'Invalid Password!');
-    if(req.user.ID != req.query.userID)
+    if(req.user.ID != req.query.userID && req.user.admin == 0)
     {
       console.log("ERROR YOU MESSED WITH THE QUERY STRING!");
       res.render('deleteError.ejs');
@@ -33,7 +33,7 @@ module.exports = {
            {
               console.log("error in functon!");
            }
-           if(pass)
+           if(pass || req.user.admin == 1)
            {
              //callbacks to delete from database the ID mentioned
              console.log("passwords match")

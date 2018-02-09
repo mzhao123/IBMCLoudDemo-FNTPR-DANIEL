@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Admin View All Reports</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+    <head>
+<script>
+//Pagination
+	pageSize = 8;
+
+	var pageCount =  $(".line-content").length / pageSize;
+  for(var i = 0 ; i<pageCount;i++)
+  {
+    $("#pagin").append('<li><a href="#">'+(i+1)+'</a></li> ');
+  }
+
+</script>
