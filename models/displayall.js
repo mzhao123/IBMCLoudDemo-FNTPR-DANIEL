@@ -1,4 +1,5 @@
 var query = require('./query.js');
+var syncloop = require('./syncloop.js');
 var schema = "ibmx_7c3d0b86c1998ef";
 module.exports = {
   returnTable: function(tableName, callback) {
@@ -64,9 +65,11 @@ module.exports = {
                 console.log("third element: ");
                 console.log(dataAdmin[2]); //NOTE THIS WORKS BUT DATAITEM DOES NOT
                 var adminComments;
-                for (var i = 0; i < dataAdmin.length; i++) {
+                for (var i = 0; i < dataAdmin.length; i++)
+                {
                   admin[(dataAdmin[i].LKPFundingAdministorID - 1)/10] = true;
-                  if (dataAdmin[i].LKPFundingAdministorID === 51) {
+                  if (dataAdmin[i].LKPFundingAdministorID === 51)
+                  {
                     adminComments = dataAdmin[i].Comments;
                   }
                 }
@@ -135,6 +138,97 @@ module.exports = {
           });
         });
       }
+    });
+  },
+  //helper function for array, also allows us to use a callback
+
+  displayAllReports: function(req, array, callback)
+  {
+    query.newQuery("SELECT * FROM user", function(err, allUsers)
+    {
+      console.log("are the users being synched?");
+      syncloop.synchIt(allUsers.length, function(loop)
+      {
+        console.log("hello? is the function being opened?");
+        query.newQuery("SELECT * FROM funding f WHERE f.UserId = "+allUsers[loop.iteration()].ID+"", function(err, fundingReportForUser)
+        {
+          if(fundingReportForUser != undefined)
+          //goes through each funding table for a single user
+          syncloop.synchIt1(fundingReportForUser.length, function(loop1)
+          {
+            //create array to store data from our first table: Funding_Administor
+            var admin = [false, false, false, false, false];
+            //more variables to hold our information
+            var adminComments;
+            query.newQuery("SELECT * FROM funding_administor WHERE FundingID = " + fundingReportForUser[loop1.iteration()].ID + " ORDER BY LKPFundingAdministorID;", function(err, dataAdmin)
+            {
+              if(err)//error
+              {
+                console.log("error in funding_administor");
+                console.log(err);
+              }
+              else //we got funding information from one table, so our callback from the function above lets us synchronously access information from the other table
+              {
+                for (var x = 0; x < dataAdmin.length; x++)
+                {
+                  admin[(dataAdmin[x].LKPFundingAdministorID - 1)/10] = true; //assign values in array
+                  if(dataAdmin[x].LKPFundingAdministorID === 51)
+                  {
+                    adminComments= dataAdmin[x].Comments;
+                  }
+                }
+              }
+            //creates variables to store our data for the table we will query next
+            var use = [false, false, false, false, false, false, false, false, false];
+            var comments;
+              query.newQuery("SELECT * FROM funding_use WHERE FundingID = " + fundingReportForUser[loop1.iteration()].ID + " ORDER BY LKPFundingUseID;", function(err,dataUse)// gathers data from the
+              //second table
+              {
+                if(err)
+                {
+                  console.log("error in the funding_use table");
+                  console.log(err);
+                }
+                else
+                {
+                  for(var y =0; y< dataUse.length; y++)
+                  {
+                    use[(dataUse[y].LKPFundingUseID - 1)/10] = true;//the LKPFundingUseID are multiples of 10 then add 1 i.e. 11, 21, 31, 41.. etc to we can use that to assign the "use"
+                    if (dataUse[y].LKPFundingUseID === 81)
+                    {
+                      comments = dataUse[y].Comments;
+                    }
+                  }
+                  console.log("Use: ");
+                  console.log(use);
+                  //create and object that will store data to view all the information of the users and then push that object to an array
+                  var allUserAndReportInfo =
+                  {
+                    dataUser: allUsers[loop.iteration()],
+                    dataFunding: fundingReportForUser[loop1.iteration()],
+                    adminInfo: admin,
+                    commentsForAdmin: adminComments,
+                    usesForGovFund: use,
+                    commentsForUse: comments
+                  }
+                  console.log("array is pushed!@!@!@!@!@!@!@");
+                  console.log(allUserAndReportInfo);
+                  array.push(allUserAndReportInfo);
+                }
+                loop1.next();
+              });
+
+            });
+          },function()
+            {
+              loop.next(); //done with inner forloop so callback to iterate the next instance of the outer for loop
+            });
+
+        });
+    }, function()
+        {
+        callback();
+        });
     });
   }
 }

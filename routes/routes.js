@@ -526,7 +526,30 @@ app.post('/emailResetLink', function(req,res)
       }
     });
   });
-
+app.get('/viewAllReports', isLoggedIn, function(req, res)
+{
+  var display = require('../models/displayall.js');
+    console.log("view all reports invoked");
+  if(req.user.admin)
+  {
+    var arrayOfAllReports = [];
+    display.displayAllReports(req, arrayOfAllReports, function()
+    {
+      if(arrayOfAllReports.length > 0)
+      {
+        console.log(arrayOfAllReports);
+        res.render('adminViewAllPages.ejs',
+        {
+          allReportData: arrayOfAllReports
+        });
+      }
+      else
+      {
+          res.redirect('/profile');
+      }
+    });
+  }
+});
 
 
   app.get('/editReportPasswordConfirmation', isLoggedIn, function(req, res)
@@ -537,6 +560,8 @@ app.post('/emailResetLink', function(req,res)
       console.log("ERROR YOU MESSED WITH THE QUERY STRING!");
       res.render('deleteError.ejs');
     }
+    else
+    {
       var display = require('../models/displayall.js');
       console.log("get edit report");
       //retrieving necessary info
@@ -568,6 +593,7 @@ app.post('/emailResetLink', function(req,res)
         }
       });
     });
+    }
   });
   app.post('/editReportPasswordConfirmation', isLoggedIn, function(req, res)
   {

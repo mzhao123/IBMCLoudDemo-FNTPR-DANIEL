@@ -23,7 +23,6 @@ module.exports = {
         }
         else {
           console.log("Query success: " + query);
-          console.log(data);
           connection.release();
           callback(error, data);
         }

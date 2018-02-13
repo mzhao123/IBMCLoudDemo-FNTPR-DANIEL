@@ -4,19 +4,49 @@
     <title>Admin View All Reports</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <style>
         body        { padding-top:80px; word-wrap:break-word; }
+        #pagin Li{
+          margin-left: 5%;
+          display: inline-block;
+        }
     </style>
     <head>
-<script>
-//Pagination
-	pageSize = 8;
 
-	var pageCount =  $(".line-content").length / pageSize;
-  for(var i = 0 ; i<pageCount;i++)
-  {
-    $("#pagin").append('<li><a href="#">'+(i+1)+'</a></li> ');
-  }
+<body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<h1 style = "text-align: center"><span class="fa fa-cloud"></span> View All Reports <span class="fa fa-cloud"></span></h1>
+  <div class = "col-sm-10 -sm-offset-1 ">
+    <% for (var i = 0; i < allReportData.length; i++) { %>
+    <div class = "line-content">  <a href = '/view-report?thisFundingId=<%=allReportData[i].dataFunding.ID%>' class = "btn btn-default" style= "margin-left: 1.5%;"> <span class="fa fa-user"></span>Username: <%=allReportData[i].dataUser.UserName %> Report Date: <%=allReportData[i].dataFunding.SubmitDate %> </a></div>
+    <%}%>
+    <ul id= "pagin">
+    </ul>
+<div>
+    <script>
+    //Pagination
+    	var pageSize = 15;
 
-</script>
+    	var pageCount =  $(".line-content").length / pageSize;
+      for(var i = 0 ; i<pageCount;i++)
+      {
+        $("#pagin").append('<li><a href="#">'+(i+1)+'</a></li> ');
+      }
+      $("#pagin li").first().find("a").addClass("current")
+        showPage = function(page) {
+    	    $(".line-content").hide();
+    	    $(".line-content").each(function(n) {
+    	        if (n >= pageSize * (page - 1) && n < pageSize * page)
+    	            $(this).show();
+    	    });
+    	}
+
+    	showPage(1);
+
+    	$("#pagin li a").click(function() {
+    	    $("#pagin li a").removeClass("current");
+    	    $(this).addClass("current");
+    	    showPage(parseInt($(this).text()))
+    	});
+    </script>
+</body>
