@@ -4,49 +4,71 @@
     <title>Admin View All Reports</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <style>
-        body        { padding-top:80px; word-wrap:break-word; }
-        #pagin Li{
-          margin-left: 5%;
+        body        { padding-top:40px; word-wrap:break-word; }
+        #pagin Li
+        {
           display: inline-block;
         }
+        #pagin Li:nth-child(1)
+        {
+          margin-left: 40%;
+        }
+        .current{
+          color : red;
+        }
+        div:nth-of-type(even) a{ background-color: #f2f2f2; !important}
     </style>
-    <head>
-
-<body>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<head>
+<body onload>
 <h1 style = "text-align: center"><span class="fa fa-cloud"></span> View All Reports <span class="fa fa-cloud"></span></h1>
-  <div class = "col-sm-10 -sm-offset-1 ">
+  <br>
+  <div class = "col-sm-10 col-sm-offset-1 ">
     <% for (var i = 0; i < allReportData.length; i++) { %>
-    <div class = "line-content">  <a href = '/view-report?thisFundingId=<%=allReportData[i].dataFunding.ID%>' class = "btn btn-default" style= "margin-left: 1.5%;"> <span class="fa fa-user"></span>Username: <%=allReportData[i].dataUser.UserName %> Report Date: <%=allReportData[i].dataFunding.SubmitDate %> </a></div>
+    <div class = "line-content">  <a  style = "width: 100%; font-size: 1vmax; text-align: left;" href = '/view-report?thisFundingId=<%=allReportData[i].dataFunding.ID%>' class = "line btn btn-default" style= "margin-left: 1.5%;"> <span class="fa fa-user"></span> Username: <%=allReportData[i].dataUser.UserName %> Report Date: <%=allReportData[i].dataFunding.SubmitDate %> </a></div>
     <%}%>
-    <ul id= "pagin">
-    </ul>
-<div>
+    <br>
+    <ul id= "pagin" style = "margin-left: -6.5%; font-size: 18px;"></ul>
+    <input type = "number" Id = "numPerPage" min = "5" max = "25" value = "15">
+    <input type = "submit" onclick = "showThePage()">
+    </div>
     <script>
     //Pagination
-    	var pageSize = 15;
-
-    	var pageCount =  $(".line-content").length / pageSize;
+    var pageSize = document.getElementById('numPerPage').value;
+    var pageCount =  $(".line-content").length / pageSize;
+    showPage = function(page) {
+       pageSize = document.getElementById('numPerPage').value;
+       pageCount =  $(".line-content").length / pageSize;
+      $(".line-content").hide();
+      $(".line-content").each(function(n) {
+          if (n >= pageSize * (page - 1) && n < pageSize * page)
+              $(this).show();
+              console.log("hi");
+      });
+    }
+    function showThePage()
+    {
+      pageSize = document.getElementById('numPerPage').value;
+      pageCount =  $(".line-content").length / pageSize;
+      $("#pagin").children("li").remove();
       for(var i = 0 ; i<pageCount;i++)
       {
         $("#pagin").append('<li><a href="#">'+(i+1)+'</a></li> ');
+
       }
       $("#pagin li").first().find("a").addClass("current")
-        showPage = function(page) {
-    	    $(".line-content").hide();
-    	    $(".line-content").each(function(n) {
-    	        if (n >= pageSize * (page - 1) && n < pageSize * page)
-    	            $(this).show();
-    	    });
-    	}
+
 
     	showPage(1);
+      $("#pagin li a").click(function() {
+          $("#pagin li a").removeClass("current");
+          $(this).addClass("current");
+          showPage(parseInt($(this).text()))
+      });
+    }
+    showThePage();
 
-    	$("#pagin li a").click(function() {
-    	    $("#pagin li a").removeClass("current");
-    	    $(this).addClass("current");
-    	    showPage(parseInt($(this).text()))
-    	});
+
     </script>
 </body>
