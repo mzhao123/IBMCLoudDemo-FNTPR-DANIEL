@@ -60,7 +60,7 @@ Note that an 'auth' table still exists, but it is an obsolete table that is no l
 - ~~A way to edit the contents of your report~~ **Already Completed**
 
 ### Possible far-fetched future features:
-- Two types of users: first nations' users who create reports, and admin users who moniter them and have advanced priviledges
+- Two types of users: first nations' users who create reports, and admin users who moniter them and have advanced privileges
 
 # Current features that users can implement:
 ### Simple Signup/Login/LOGOUT
