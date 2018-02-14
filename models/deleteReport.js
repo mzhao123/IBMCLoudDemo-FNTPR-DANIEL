@@ -22,12 +22,17 @@ module.exports = {
          }
          else
          {
-           console.log("hello");
-           console.log(userPassword[0]);
-           console.log(userPassword[0].password);
-           console.log(req.body.passwordProvided);
+           var password;
+          if(req.body.passwordProvided == "undefined")
+          {
+           password = "";
+          }
+          else
+          {
+            password= req.body.passwordProvided;
+          }
             //security measure, matches userID
-           bcrypt.compare(req.body.passwordProvided, userPassword[0].password, function(err, pass)
+           bcrypt.compare(password, userPassword[0].password, function(err, pass)
          {
            if(err)
            {

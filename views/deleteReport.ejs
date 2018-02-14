@@ -11,6 +11,7 @@
   <h1 id = "bottompager"> <span class="fa fa-cloud"></span>  First Nations' Online Funding Reports <span class="fa fa-cloud"></span>  </h1>
   <h2 id = "deleteYourReport"> Delete Your Report </h2>
   <br>
+  <%if(admin == 0){%>
   <h3 id= "deleteYourReport">Please enter your password below to confirm the deletion of your report. Please note that you will not be able to access the report you have just deleted.</h3>
 
   <% if (messages != "undefined") { %>
@@ -23,6 +24,9 @@
     <br>
     <input type = "password" id = "passwordProvided" name = "passwordProvided" style = "text-align: center;" required><br>
     <br>
+    <%} else {%>
+    <form method = "POST">
+      <%}%>
       <button class="btn btn-warning" type="submit" class="btn btn-danger" style "color: blue;">Submit</button>
   </form>
 </div>

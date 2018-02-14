@@ -7,16 +7,19 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
     <style>
         body        { padding-top:25px; }
+        .profile    { font-size: 0.775vmax;}
+        li          {font-size: : 0.775vmax;}
     </style>
 </head>
 <body>
 <div class="container">
   <!-- Database Information -->
 <div class="row">
-    <h1> YOUR COMPLETE REPORT DATA </h1>
+    <h1 style = "text-align: center; font-size: 2vmax;"> YOUR COMPLETE REPORT DATA </h1>
     <div class = "col-sm-12">
       <div class = "well">
-        <h3><span class = "fa fa-user"></span> Profile </h3>
+        <h3 style = "font-size: 1.5vmax;"><span class = "fa fa-user"></span> Profile </h3>
+        <div class = "profile">
         <strong>Username: </strong> <%= user.UserName %> <br>
         <strong>First Nation Name: </strong> <%= user.FirstNationName %> <br>
         <strong>Chief Name: </strong> <%= user.ChiefName %> <br>
@@ -24,23 +27,24 @@
         <strong>Phone Number: </strong> <%= user.PhoneNO %> <br>
         <strong>Email: </strong> <%= user.Email %> <br>
         <strong> Date of Creation: </strong> <%= user.CreateDate %> <br>
-
+      </div>
       </div>
     </div>
     <div class = "well">
-      <h3 style = "display: inline-block;"><span class = "fa fa-user"></span> This quarter's report </h3>
+      <h3 style = "display: inline-block; font-size: 1.5vmax;"><span class = "fa fa-user"></span> This quarter's report </h3>
       <div style = "text-align: right; display: inline;">
         <a style = "margin-left: 62%; font-size: 20px;" href = "downloadReport?thisFundingId=<%= fundingid %>&userID=<%= userid %>"><span class = "glyphicon glyphicon-file" style = "color: black;"></span> </a>
-        <a style = "margin-left: 4%; font-size: 20px;" href = "editReportPasswordConfirmation?thisFundingId=<%= fundingid %>&userID=<%= userid %>" > <span class="fa fa-pencil" style = "color: black;"></span> </a>
-        <a style = "margin-left: 4%; font-size: 20px;" href ="deleteReport?fundingID=<%= fundingid %>&userID=<%= userid %>"> <span class = "glyphicon glyphicon-remove" style = "color: black;"></span></a>
+        <a style = "margin-left: 3%; font-size: 20px;" href = "editReportPasswordConfirmation?thisFundingId=<%= fundingid %>&userID=<%= userid %>" > <span class="fa fa-pencil" style = "color: black;"></span> </a>
+        <a style = "margin-left: 3%; font-size: 20px;" href ="deleteReport?fundingID=<%= fundingid %>&userID=<%= userid %>"> <span class = "glyphicon glyphicon-remove" style = "color: black;"></span></a>
     </div>
       <br>
+      <div class = "profile">
       <strong>Funding Provided: </strong> <%= rep.FundingProvided %> <br>
       <strong>Funding Spent: </strong> <%= rep.FundingSpent %> <br>
       <strong>Funding Recovered: </strong> <%= rep.FundingProvided - rep.FundingSpent %> <br>
 
       <strong> List of Administrators of Home and Community Care Services: </strong> <br>
-      <ul>
+      <ul >
         <% if (admin[0] === true) { %>
           <li> Direct delivery by the community </li>
         <% } if (admin[1] === true) { %>
@@ -95,6 +99,7 @@
       <strong> Submit Date: </strong> <%= rep.SubmitDate %> <br>
       <br>
       <br>
+    </div>
     </div>
   </div>
 

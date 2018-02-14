@@ -12,11 +12,11 @@
     <div class="container">
       <div class="page-header text-center">
         <h1><span class="fa fa-anchor"></span> Admin Page</h1>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        <a href="/logout" class="btn btn-warning btn-sm">Logout</a>
       </div>
 
       <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-8 col-sm-offset-2">
           <div class="well">
             <h3><span class="fa fa-user"></span> User Information</h3>
               <p>
@@ -29,17 +29,15 @@
               </p>
           </div>
         </div>
-
+        <br>
     <!-- Database Information -->
-        <div class = "col-sm-6">
+        <div class = "col-sm-8 col-sm-offset-2">
           <div class = "well">
             <h3><span class = "fa fa-user"></span> Report</h3>
             <% if(isReport === true) { %>
               <h3> View All Reports </h3> <br>
               <% for (var i = 0; i < data.length; i++) { %>
-                <a style = "margin-left: 1.5%;" href="<%= data[i].link %>" class="btn btn-default"><span class="fa fa-user"></span> Report Date: <%= data[i].SubmitDate %> </a> <a style = "margin-left: 1.5%;" href ="deleteReport?fundingID=<%= data[i].ID %>&userID=<%= data[i].UserId %>" ><span class="glyphicon glyphicon-remove" style = "color: black;"></span> </a>
-                <a style = "margin-left: 1.5%;" href = "editReportPasswordConfirmation?thisFundingId=<%= data[i].ID %>&userID=<%= data[i].UserId %>" > <span class="fa fa-pencil" style = "color: black;"></span> </a>
-                <a style = "margin-left: 1.5%;" href = "downloadReport?thisFundingId=<%= data[i].ID %>&userID=<%= data[i].UserId %>"><span class = "glyphicon glyphicon-file" style = "color: black;"></span> </a>
+                <a style = "margin-left: 1.5%;" href="<%= data[i].link %>" class="btn btn-default"><span class="fa fa-user"></span> Report Date: <%= data[i].SubmitDate %> </a>
                 <br>
               <% } %>
             <br><br>
@@ -47,12 +45,14 @@
               <form action="/admin-view" method="post">
               <label>Search by Username</label>
               <input type="text" class="form-control" name="usernamesearch">
-              <button type="submit" class="btn btn-default">Submit</button>
+              <br>
+              <button type="submit" class="btn btn-warning">Submit</button>
               </form>
+              <br>
                 <a href = "/viewAllReports" class="btn btn-default" name="viewall" value="true">View All</a>
             <% } %>
             <% if (isValidated === true) { %>
-              <a href="/make-report" class="btn btn-default"><span class="fa fa-user"></span> Make a New Report </a>   <a href="/profile" class="btn btn-default"><span class="fa fa-user"></span> Back to Profile </a>
+              <a href="/make-report" class="btn btn-default"><span class="fa fa-pencil"></span> Make a New Report </a>   <a href="/profile" class="btn btn-default"><span class="fa fa-user"></span> Back to Profile </a>
             <% } %>
           </div>
           <% if (messages != "undefined"){ %>

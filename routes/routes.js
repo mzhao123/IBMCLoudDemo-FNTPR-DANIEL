@@ -90,12 +90,19 @@ app.get('/deleteReport', function(req, res)
 {
   console.log("Just testing to see if the req.user things works!!!!");
   console.log(req.user.ID);
-  if(req.user.ID != req.query.userID)
+  if(req.user.ID != req.query.userID && req.user.admin == 0)
   {
     console.log("ERROR YOU MESSED WITH THE QUERY STRING!");
     res.render('deleteError.ejs');
   }
-  res.render('deleteReport.ejs', {messages: 'undefined'});
+  else if(req.user.admin == 0)
+  {
+    res.render('deleteReport.ejs', {messages: 'undefined', admin: 0 });
+  }
+  else
+  {
+    res.render('deleteReport.ejs', {messages: 'undefined', admin: 1});
+  }
 
   });
 //CHECKS IF USER PASSWORD MATCHES ID IN QUERY STRING AND THEN DELETES THE REPORT ACCORDING TO THE REPORT ID
@@ -554,45 +561,81 @@ app.get('/viewAllReports', isLoggedIn, function(req, res)
 
   app.get('/editReportPasswordConfirmation', isLoggedIn, function(req, res)
   {
+    console.log("hello?");
+    var display = require('../models/displayall.js');
     //checks to see if the userid in query matches with the userid in session
-    if(req.user.ID != req.query.userID)
+    if((req.user.ID != req.query.userID) && req.admin == 0 )
     {
       console.log("ERROR YOU MESSED WITH THE QUERY STRING!");
       res.render('deleteError.ejs');
     }
-    else
+    else if(req.user.ID == req.query.userID && req.admin == 0)
     {
-      var display = require('../models/displayall.js');
       console.log("get edit report");
       //retrieving necessary info
-    display.getOtherFundingSources(req, function(otherFunding)
-    { console.log("get edit report1");
-      display.displayReport(req, function(arrayOfSix)
-      {
-        console.log("get edit report2");
-        //if nothing, redirect to homepage, shouldn't happen though
-        if (arrayOfSix.length === 0)
+      display.getOtherFundingSources(req, function(otherFunding)
+      { console.log("get edit report1");
+        display.displayReport(req, function(arrayOfSix)
         {
-          res.redirect('/profile');
-        }
-        else
-        {
-          console.log("getting the edit report page");
-          res.render('editReportPasswordConf.ejs',
+          console.log("get edit report2");
+          //if nothing, redirect to homepage, shouldn't happen though
+          if (arrayOfSix.length === 0)
           {
-            messages: "undefined",
-            user : arrayOfSix[0],
-            rep : arrayOfSix[1],
-            admin : arrayOfSix[2],
-            adminOther : arrayOfSix[3],
-            use : arrayOfSix[4],
-            useOther: arrayOfSix[5],
-            SourceFromHomeMaking: otherFunding[0],
-            SourceFromFirstNation: otherFunding[1]
-          });
-        }
+            res.redirect('/profile');
+          }
+          else
+          {
+            console.log("getting the edit report page");
+            res.render('editReportPasswordConf.ejs',
+            {
+              messages: "undefined",
+              user : arrayOfSix[0],
+              rep : arrayOfSix[1],
+              admin : arrayOfSix[2],
+              adminOther : arrayOfSix[3],
+              use : arrayOfSix[4],
+              useOther: arrayOfSix[5],
+              SourceFromHomeMaking: otherFunding[0],
+              SourceFromFirstNation: otherFunding[1],
+              adminCheck: 0
+            });
+          }
+        });
       });
-    });
+    }
+    else if( req.user.admin == 1)
+    {
+      console.log("get edit report");
+      //retrieving necessary info
+      display.getOtherFundingSources(req, function(otherFunding)
+      { console.log("get edit report1");
+        display.adminGetsInfo(req, function(arrayOfSix)
+        {
+          console.log("get edit report2");
+          //if nothing, redirect to homepage, shouldn't happen though
+          if (arrayOfSix.length === 0)
+          {
+            res.redirect('/profile');
+          }
+          else
+          {
+            console.log("getting the edit report page");
+            res.render('editReportPasswordConf.ejs',
+            {
+              messages: "undefined",
+              user : arrayOfSix[0],
+              rep : arrayOfSix[1],
+              admin : arrayOfSix[2],
+              adminOther : arrayOfSix[3],
+              use : arrayOfSix[4],
+              useOther: arrayOfSix[5],
+              SourceFromHomeMaking: otherFunding[0],
+              SourceFromFirstNation: otherFunding[1],
+              adminCheck: 1
+            });
+          }
+        });
+      });
     }
   });
   app.post('/editReportPasswordConfirmation', isLoggedIn, function(req, res)
@@ -626,7 +669,7 @@ app.get('/viewAllReports', isLoggedIn, function(req, res)
              console.log("error in the compare password function!")
            }
            //works!
-           if(pass)
+           if(pass || req.user.admin == 1)
            {
              var make = require('../models/make-report.js');
              console.log("passwords match!");
