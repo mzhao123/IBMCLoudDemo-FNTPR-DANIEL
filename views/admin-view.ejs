@@ -33,11 +33,12 @@
     <!-- Database Information -->
         <div class = "col-sm-8 col-sm-offset-2">
           <div class = "well">
-            <h3><span class = "fa fa-user"></span> Report</h3>
+            <h3 style="display: inline"><span class = "fa fa-user"></span> Reports</h3>
             <% if(isReport === true) { %>
+              <h3 style = 'display: inline'> for user: <%= user.UserName %> </h3>
               <h3> View All Reports </h3> <br>
               <% for (var i = 0; i < data.length; i++) { %>
-                <a style = "margin-left: 1.5%;" href="<%= data[i].link %>" class="btn btn-default"><span class="fa fa-user"></span> Report Date: <%= data[i].SubmitDate %> </a>
+                <a href="<%= data[i].link %>" class="btn btn-default"><span class="fa fa-user"></span> Report Date: <%= data[i].SubmitDate %> </a>
                 <br>
               <% } %>
             <br><br>
