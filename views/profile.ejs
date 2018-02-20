@@ -1,61 +1,124 @@
 <!-- views/profile.ejs -->
 <!doctype html>
 <html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
     <title>Your First Nations Account Information</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <style>
-        body        { padding-top:80px; word-wrap:break-word; }
+        body
+        {
+          word-wrap:break-word;
+        }
+        .btn-default a:hover
+        {
+          color: #ecf2f3;
+        }
+        .reportData
+        {
+          width: 91.5%;
+          border: 1px solid black;
+          background-color: #D3D3D3;
+          font-size: calc(9px + (16-9) * (100vw - 400px)/ (1600-450));
+          text-align: left;
+        }
+        strong
+        {
+          padding: 2px;
+          margin-top: 1%;
+          width: 35%;
+          font-size: calc(9px + (16-9) * (100vw - 400px)/ (1600-450));
+        }
+        .header
+        {
+          padding: 0.75%;
+          font-size: 2.6vmax;
+          margin-left: 4.25%;
+        }
+        .menu
+        {
+          padding: 0.65% 0 0.15% 0;
+          background: #3b7687;
+        }
+        .menu a
+        {
+            color: #c5d6db;
+            font-family: "Arial", "Myriad Pro";
+            margin-left: 4.25%;
+        }
+        #nav
+        {
+          font-size: calc(10px + (18-10) * (100vw - 400px)/ (1600-450));
+        }
+        .top
+        {
+          border: 2px solid black;
+          margin-bottom: 0
+
+        }
+        nav a
+        {
+          display: inline-block;
+
+        }
+        .button
+        {
+        border: 1px solid black;
+        background-color: 	#B0C4DE;
+        margin-left: 4.25%;
+        font-size: calc(7px + (18-7) * (100vw - 400px)/ (1600-450));
+        }
     </style>
 </head>
-<body>
+<body style = " background-color: 	#DCDCDC">
 <div class="container">
+    <div class= "top col-sm-10 col-sm-offset-1 well" style= "padding: 2% 0 1% 1.9%; background-color: 	#FFFFF0" >
+        <header class = "header" ><span class="fa fa-anchor"></span> Profile Page <span class="fa fa-anchor"></span></header>
+    </div>
+    <div class= "top col-sm-10 col-sm-offset-1" style = "background-color: #3b7687; margin-bottom: 3%; margin-top: -1px; " >
+    <nav class = "menu">
+      <a id = "nav"  href="/logout">Logout</a>
 
-    <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
-        <a href="/logout" class="btn btn-warning btn-sm">Logout</a>
+    </nav>
+  </div>
+  <br>
+    <div class= "col-sm-10 col-sm-offset-1 well" style= "border: 1px solid black; background-color: 	#FFFFF0; ">
+        <h3 style = "font-size: 1.8vmax; margin-left: 4.25%;"><span class="fa fa-user"></span> User Information</h3>
+            <p style = 'margin-left: 4.25%; padding: 0.25%;'>
+                <strong>ID: <%= user.ID %> </strong><br>
+                <strong>Username: <%= user.UserName %> </strong><br>
+                <strong>Email: <%= user.Email %> </strong> <br>
+                <!--
+                <strong>password</strong>: <%//= user.password %>
+                -->
+            </p>
     </div>
 
-    <div class="row">
 
         <!-- LOCAL INFORMATION -->
-        <div class="col-sm-8 col-sm-offset-2">
-            <div class="well">
-                <h3><span class="fa fa-user"></span> User Information</h3>
-                    <p>
-                        <strong>id</strong>: <%= user.ID %><br>
-                        <strong>Username</strong>: <%= user.UserName %><br>
-                        <strong>Email</strong>: <%= user.Email %> <br>
-                        <!--
-                        <strong>password</strong>: <%//= user.password %>
-                        -->
-                    </p>
-            </div>
-        </div>
         <br>
         <!-- Database Information -->
-        <div class = "col-sm-8 col-sm-offset-2">
-          <div class = "well">
-            <h3><span class = "fa fa-user"></span> Report</h3>
+        <div class = "col-sm-10 col-sm-offset-1 well" style= "border: 1px solid black; background-color: 	#FFFFF0;">
+            <h3 style = "margin-left: 4.25%; font-size: 1.8vmax; " ><span class = "fa fa-user"></span> Report</h3>
             <% if(isReport === true) { %>
-              <h3> View Your Reports </h3> <br>
+              <h3 style = " font-size: 1.8vmax; float: left; margin-left: 5%; margin-bottom: 3.5%; font-size: 1.8vmax;"> View Your Reports </h3> <br>
+              <div style = "margin-left: 4.25%; margin-bottom: 3%;">
                 <% for (var i = 0; i < data.length; i++) { %>
-                    <a href="<%= data[i].link %>" class="btn btn-default"><span class="fa fa-user"></span> Report Date: <%= data[i].SubmitDate %> </a>
+                    <a href="<%= data[i].link %>" class="btn btn-default reportData"><span class="fa fa-user"></span> Report Date: <%= data[i].SubmitDate %> </a>
                     <br>
                 <% } %>
-                <br><br>
+              </div>
+                <br>
               <% } %>
               <% if (isValidated === true) { %>
-                  <a href="/make-report" class="btn btn-default"><span class="fa fa-user"></span> Make a New Report </a>
+                  <a href="/make-report" class="btn btn-default button"><span class="fa fa-pencil"></span> Make a New Report </a>
               <% } %>
               <% if (isAdmin) { %>
-                  <a href="/admin-view" class="btn btn-default"> <span class="fa fa-user"></span> Admin Link </a>
+                  <a href="/admin-view" class="btn btn-default button"> <span class="fa fa-user"></span> Admin Link </a>
               <% } %>
-          </div>
         </div>
 
-    </div>
 
 </div>
 </body>

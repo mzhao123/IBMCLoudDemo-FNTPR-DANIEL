@@ -95,7 +95,7 @@ app.get('/deleteReport', function(req, res)
     console.log("ERROR YOU MESSED WITH THE QUERY STRING!");
     res.render('deleteError.ejs');
   }
-  else if(req.user.admin == 0)
+  else if(req.user.admin == null)
   {
     res.render('deleteReport.ejs', {messages: 'undefined', admin: 0 });
   }

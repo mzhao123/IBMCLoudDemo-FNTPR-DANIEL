@@ -80,7 +80,7 @@ module.exports = {
            else
            {
             res.render('deleteReport.ejs',
-             {   messages: req.flash('invalid password')});
+             {   messages: req.flash('invalid password'), admin: 0});
              console.log("passwords don't match");
            };
          });
