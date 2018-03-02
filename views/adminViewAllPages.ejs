@@ -102,12 +102,20 @@
     <br>
     <ul id= "pagin" style = "margin-left: -6.5%; font-size: calc(10px + (22-10) * (100vw - 300px)/ (2200-300));  "></ul>
     <div style = "margin-bottom: 3%;">
-    <input type = "number" Id = "numPerPage" min = "5" max = "25" value = "10" style = "display: inline-block; margin-left: 1%; font-size: calc(10px + (22-10) * (100vw - 300px)/ (2200-300)); ">
+    <select Id = "numPerPage" style = "display: inline-block; margin-left: 1%; font-size: calc(8px + (20-10) * (100vw - 300px)/ (2200-300)); ">
+      <option>5</option>
+      <option selected = "selected">10</option>
+      <option>15</option>
+      <option>20</option>
+      <option>25</option>
+    </select>
     <input class = "btn btn-warning btn-sm" style = "margin-left: 2%; font-size: calc(10px + (22-10) * (100vw - 300px)/ (2200-300)); " type = "submit" onclick = "showThePage()">
     </div>
     </div>
   </div>
     <script>
+    //slider
+
     //Pagination
     var pageSize = document.getElementById('numPerPage').value;
     var pageCount =  $(".line-content").length / pageSize;
