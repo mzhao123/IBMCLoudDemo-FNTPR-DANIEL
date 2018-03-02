@@ -20,7 +20,7 @@ The logic of this application is mainly done in Javascript. Tools used:
 - Server-side logic: *Node.JS*
 - Framework: *ExpressJS*
 - User authentication: *Passport*
-- Front-end templating engine: *Embedded JavaScript (ejs)*
+- Front-end templating engine: *Embedded JavaScript (ejs), VueJs*
 - Front-end CSS: *Bootstrap*
 
 ## Database
@@ -51,6 +51,8 @@ Note that an 'auth' table still exists, but it is an obsolete table that is no l
 - The ability to delete reports after a confirmation page
 - Delete users that have not been validated
 - Ability to edit reports already created by the user
+- Ability to download reports already created by the user
+- Admin accounts with the ability to review, download, and edit reports from other users
 ### Development features (to be removed in final release):
 - Make any query to any database
 - Delete all rows from both the user and funding tables
@@ -60,7 +62,7 @@ Note that an 'auth' table still exists, but it is an obsolete table that is no l
 - ~~A way to edit the contents of your report~~ **Already Completed**
 
 ### Possible far-fetched future features:
-- Two types of users: first nations' users who create reports, and admin users who moniter them and have advanced privileges
+- Two types of users: first nations' users who create reports, and admin users who monitor them and have advanced privileges **DONE **
 
 # Current features that users can implement:
 ### Simple Signup/Login/LOGOUT
@@ -84,7 +86,7 @@ As you know, the main goal of the project is to create an efficient solution tha
 ![View Report](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/viewReportPicture.png)
 #### Edit
 ![Edit](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/edit.png)
-#### Download
+#### Download (Works but is not ideal)
 ![Download](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/download.png )
 #### Delete
 ![Delete](https://raw.githubusercontent.com/mzhao123/IBMCLoudDemo-FNTPR-DANIEL/master/pictures/delete.png)

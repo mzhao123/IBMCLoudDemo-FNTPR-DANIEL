@@ -1,67 +1,146 @@
 <!doctype html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin View</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <style>
-        body        { padding-top:40px; word-wrap:break-word; background-color: 	#DCDCDC;}
+
+        body
+        {
+          padding-top:40px;
+          word-wrap:break-word;
+          background-color:#DCDCDC;
+        }
+        .well
+        {
+          background-color: #FFFFF0;
+          border: 2px solid black;
+        }
+        .page-header
+        {
+        }
+        #nav
+        {
+          font-size: calc(10px + (18-10) * (100vw - 400px)/ (1600-450));
+          color: white;
+        }
+        .top
+        {
+          margin-bottom: 0;
+        }
+        .header
+        {
+          padding: 0.75%;
+          font-size: 2.6vmax;
+          margin-left: 2%;
+        }
+        .btn
+        {
+            border: 1px solid black;
+        }
+        .menu
+        {
+            padding: 0.65% 0 0.15% 0;
+        }
+        .menu a
+        {
+            padding: 0px 5px 5px 5px;
+            padding-top: 1%;
+            text-decoration-line: none;
+            margin-left: 3.75%;
+
+        }
+        #info
+        {
+          margin-left: 3.5%;
+        }
+        .reportSearch
+        {
+          margin-left: 3.5%;
+        }
+        .input
+        {
+          margin-top: 2%;
+        }
+        .inputBox
+        {
+          width: 65%;
+          margin-left: 2%;
+        }
+        .submit
+        {
+          margin-top: 12%;
+        }
+        .menu a:hover
+        {
+          background-image: linear-gradient(#000000 95%, yellow 5% );
+        }
+        strong
+        {
+          padding: 2px;
+          margin-top: 1%;
+          width: 35%;
+          font-size: calc(9px + (16-9) * (100vw - 400px)/ (1600-450));
+        }
     </style>
   </head>
   <body >
     <div class="container">
-      <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Admin Page <span class="fa fa-anchor"></span></h1>
-        <a href="/logout" class="btn btn-default">Logout</a>
-      </div>
+          <div class= "top col-sm-10 col-sm-offset-1 well" style= "padding: 2% 0 1% 1.9%; background-color: 	#FFFFF0" >
+          <header class = "header" >Admin Page <span class="fa fa-anchor"></span></header>
+          </div>
+          <div class= "top col-sm-10 col-sm-offset-1" style = "background-color: #3b7687; margin-bottom: 3%; margin-top: -2px; border: 2px solid black; " >
+          <nav class = "menu">
+            <a id = "nav"  href="/logout">Logout</a>
+          </nav>
+        </div>
 
-      <div class="row">
-        <div class="col-sm-8 col-sm-offset-2">
-          <div class="well">
-            <h3><span class="fa fa-user"></span> User Information</h3>
-              <p>
-                <strong>id</strong>: <%= user.ID %><br>
-                <strong>Username</strong>: <%= user.UserName %><br>
-                <strong>Email</strong>: <%= user.Email %> <br>
+
+        <div class="col-sm-10 col-sm-offset-1 well">
+            <h3 class = "reportSearch" style = "font-size: 1.8vmax;"><span class="fa fa-user"></span> User Information</h3>
+              <p id = "info">
+                <strong>ID: <%= user.ID %></strong><br>
+                <strong>Username: <%= user.UserName %></strong><br>
+                <strong>Email: <%= user.Email %></strong> <br>
                 <!--
                 <strong>password</strong>: <%//= user.password %>
                 -->
               </p>
-          </div>
         </div>
         <br>
     <!-- Database Information -->
-        <div class = "col-sm-8 col-sm-offset-2">
-          <div class = "well">
-            <h3 style="display: inline"><span class = "fa fa-user"></span> Reports</h3>
+        <div class = "col-sm-10 col-sm-offset-1 well">
+            <h3 class = "reportSearch" style="font-size: 28px;"><span class = "fa fa-user"></span> Reports</h3>
             <% if(isReport === true) { %>
-              <h3 style = 'display: inline'> for user: <%= user.UserName %> </h3>
-              <h3> View All Reports </h3> <br>
+              <h3 class = "reportSearch" style = 'display: inline; font-size: 1.8vmax;'> for user: <%= user.UserName %> </h3>
+              <h3 class = "reportSearch">  View All Reports </h3> <br>
               <% for (var i = 0; i < data.length; i++) { %>
-                <a href="<%= data[i].link %>" class="btn btn-default"><span class="fa fa-user"></span> Report Date: <%= data[i].SubmitDate %> </a>
+                <a href="<%= data[i].link %>" class="btn btn-default reportSearch"><span class="fa fa-user"></span> Report Date: <%= data[i].SubmitDate %> </a>
                 <br>
               <% } %>
             <br><br>
             <% } else{ %>
               <form action="/admin-view" method="post">
-              <label>Search by Username</label>
-              <input type="text" class="form-control" name="usernamesearch">
-              <br>
-              <button type="submit" class="btn btn-default">Submit</button>
+              <label class = "reportSearch input" style = "font-size: calc(9px + (16-9) * (100vw - 400px)/ (1600-450));">Search by Username:</label>
+              <input class = "reportSearch inputBox" type="text" class="form-control" name="usernamesearch" style = "font-size: calc(9px + (16-9) * (100vw - 400px)/ (1600-450));">
+              <button type="submit" class="btn btn-default reportSearch submit" style = "font-size: calc(9px + (16-9) * (100vw - 400px)/ (1600-450)); display: inline-block;">Submit</button>
+                <a href = "/viewAllReports" class="btn btn-default reportSearch submit" name="viewall" value="true" style = "font-size: calc(9px + (16-9) * (100vw - 400px)/ (1600-450)); display: inline-block;">View All</a>
+              <% if (isValidated === true) { %>
+                <a href="/profile" class="btn btn-default reportSearch submit" style = "font-size: calc(9px + (16-9) * (100vw - 400px)/ (1600-450)); display: inline-block;"><span class="fa fa-user "></span> Back to Profile </a>
+                <a href="/make-report" class="btn btn-default reportSearch submit" style = "font-size: calc(9px + (16-9) * (100vw - 400px)/ (1600-450)); display: inline-block;"><span class="fa fa-pencil" ></span> Make a New Report </a>
+              <% } %>
               </form>
-              <br>
-                <a href = "/viewAllReports" class="btn btn-default" name="viewall" value="true">View All</a>
+              <% if (messages != "undefined"){ %>
+                <% var message = "Invalid Username!"%>
+                  <div class="alert alert-danger"><%= message %></div>
+              <% } %>
             <% } %>
-            <% if (isValidated === true) { %>
-              <a href="/make-report" class="btn btn-default"><span class="fa fa-pencil"></span> Make a New Report </a>   <a href="/profile" class="btn btn-default"><span class="fa fa-user"></span> Back to Profile </a>
-            <% } %>
-          </div>
-          <% if (messages != "undefined"){ %>
-            <% var message = "Invalid Username!"%>
-              <div class="alert alert-danger"><%= message %></div>
-          <% } %>
+
+
+
         </div>
-      </div>
     </div>
   </body>
 </html>

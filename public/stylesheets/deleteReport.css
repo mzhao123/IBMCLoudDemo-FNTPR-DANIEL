@@ -15,7 +15,16 @@
 }
 #passwordProvided
 {
-  margin-left: 42.5%;
   width: 15%;
   text-align: center;
+}
+body
+{
+  background-color:#DCDCDC;
+}
+#topblock
+{
+  margin-top: 5%;
+  border: 2px solid black;
+  background-color: #FFFFF0 !important;
 }

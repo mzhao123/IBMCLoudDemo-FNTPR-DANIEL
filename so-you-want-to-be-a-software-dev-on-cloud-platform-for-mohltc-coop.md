@@ -237,7 +237,11 @@ Maybe you could figure this one out?
 
 Even after setting a proxy, every so often, you are once again prevented from accessing the internet via command line because of an error that prompts you to authenticate yourself ("Proxy Authentication Required."). To this day, I still have no idea what causes it. I do know that it usually happens early in the morning (~9AM), at noon, and about an hour or so before I'm supposed to leave (~4pm).
 
-The problem usually goes away after simply waiting 5-10 minutes, although sometimes, this 'authentication required' block can last up to an hour. It's really not good for productivity, but I honestly have no clue what causes it and how to fix it, so I normally just wait it out.
+The problem usually goes away after simply waiting 5-10 minutes, although sometimes, this 'authentication required' block can last up to an hour. It's really not good for productivity, but I honestly have no clue what causes it and how to fix it, so I normally just wait it out. A possible solution to get rid of this "proxy authentication error" is to access the IBM cloud website on your browser. Immediately after accessing the webite, you will be able to use the command line again about 95% of them time.
+
+
+### 2.5.3 'connect ECONNREFUSED 169.47.70.118:3306'
+This is an error that started occurring since Feb. 26 2018. Reverting to a working version that was completed in Feb. 15 2018 did solve this problem, so I am guessing it is not a coding issue. In fact, I think it has to do with the connection with the database. This error usually occurs right after the project is pushed to cloud and because of it, all operations that have to deal with the database fail to work properly. Basically, the site is up and running, but any functionality that accesses/changes data from the database causes the program to crash. Usually, this error goes away on it's own after waiting 1-5 minutes, but it may resurface from time to time if you are inactive. I am unsure of how to fix this problem. Perhaps it might even go away on it's own just as quickly as it popped up.
 
 ¯\\ _ (ツ) _ /¯
 

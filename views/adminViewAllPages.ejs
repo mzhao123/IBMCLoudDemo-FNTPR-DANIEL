@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin View All Reports</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
@@ -17,32 +18,95 @@
           margin-left: 40%;
         }
         .current{
-          font-size: 20px;
+          font-size: calc(12px + (24-10) * (100vw - 300px)/ (2200-300));
           font-weight: bold;
         }
         .selected
         {
           color: black;
         }
+        .line-content
+        {
+          word-wrap: break-word; /* Internet Explorer 5.5+ */
+        }
+        .line-content a
+        {
+          border: 1px solid black;
+        }
+        nav a
+        {
+          font-size: calc(12px + (24-10) * (100vw - 300px)/ (2200-300));
+        }
+        .reportheader
+        {
+          font-size: 32px;
+          margin-top: 2.5%;
+          margin-bottom: 1.25%;
+          margin-left: 3%;
+          margin-right: 2.5%;
+        }
+        .back
+        {
+          text-decoration-line: none;
+          font-family: "Arial", "Myriad Pro";
+          padding: 0px 5px 5px 5px;
+          padding-top: 1%;
+          margin-left: 2.25%;
+        }
 
-        div:nth-of-type(even) a{ background-color: #f2f2f2; !important}
+        .line-content:nth-child(odd) a
+        {
+          background-color:	#D3D3D3;
+        }
+        .menu a:hover
+        {
+          text-decoration-line: none;
+          background-image: linear-gradient(#000000 95%, yellow 5% );
+        }
+        .menu
+        {
+            padding: 0.65% 0 0.15% 0;
+        }
+        .glyphicon.glyphicon-file
+        {
+          font-size: 1.45vmax;
+        }
+        .btn
+        {
+            white-space: normal !important;
+        }
+
     </style>
 <head>
-<body onload>
-  <div class = "col-sm-8 col-sm-offset-2 ">
-
-   <a href="/admin-view" class="btn btn-warning"><span class="fa fa-user"></span> Back to Admin View </a>
-    <h1 style = "text-align: center;"><span class="fa fa-cloud"></span> View All Reports <span class="fa fa-cloud"></span></h1>
-
+<body style = " background-color: 	#DCDCDC">
+  <div class="container">
+  <div class = "col-sm-10 col-sm-offset-1 " style= "padding: 1% 0 0.5% 0.95%; background-color: 	#FFFFF0; border: 2px solid black;">
+    <h1 style = "margin-left: 2%;">View All Reports <span class="fa fa-cloud"></span></h1>
+  </div>
+  <div class = "col-sm-10 col-sm-offset-1 "  style = "background-color: #3b7687; margin-top: -2px; border: 2px solid black; ">
+    <nav class = "menu">
+      <a style = "color: #FFFFF0" href="/admin-view" class=" back"></span> Back</a>&nbsp;
+      <a style = "color: #FFFFF0" id = "nav"  href="/logout" class = "back">Logout</a>
+    </nav>
+  </div>
+    <div>
     <br>
+    <br>
+    <div class = "col-sm-10 col-sm-offset-1" style = "background-color: #FFFFF0; border: 2px solid black;">
+      <p class = "reportheader" style = " display: inline-block;"> All Reports <span class = "glyphicon glyphicon-file" style = "color: black; font-size: 26px;"></span></p>
     <% for (var i = 0; i < allReportData.length; i++) { %>
-    <div class = "line-content">  <a  style = "width: 100%; font-size: 0.75vmax; text-align: left;" href = '/view-report?thisFundingId=<%=allReportData[i].dataFunding.ID%>' class = "line btn btn-default" style= "margin-left: 1.5%;"> <span class="fa fa-user"></span> Username: <%=allReportData[i].dataUser.UserName %> Report Date: <%=allReportData[i].dataFunding.SubmitDate %> </a></div>
+      <div class = "line-content">
+  <a style = "width: 100%; font-size: calc(10px + (18-10) * (100vw - 400px)/ (2400-400));  text-align: left; display: block;" href = '/view-report?thisFundingId=<%=allReportData[i].dataFunding.ID%>' class = "line btn btn-default" style= "margin-left: 1.5%;"> <span class="fa fa-user"></span> Username: <%=allReportData[i].dataUser.UserName %>, Report Date: <%=allReportData[i].dataFunding.SubmitDate %> </a>
+</div>
     <%}%>
     <br>
-    <ul id= "pagin" style = "margin-left: -6.5%; font-size: 18px; "></ul>
-    <input type = "number" Id = "numPerPage" min = "5" max = "25" value = "15">
-    <input class = "btn btn-warning btn-sm" style = "margin-left: 2%; " type = "submit" onclick = "showThePage()">
+    <ul id= "pagin" style = "margin-left: -6.5%; font-size: calc(10px + (22-10) * (100vw - 300px)/ (2200-300));  "></ul>
+    <div style = "margin-bottom: 3%;">
+    <input type = "number" Id = "numPerPage" min = "5" max = "25" value = "10" style = "display: inline-block; margin-left: 1%; font-size: calc(10px + (22-10) * (100vw - 300px)/ (2200-300)); ">
+    <input class = "btn btn-warning btn-sm" style = "margin-left: 2%; font-size: calc(10px + (22-10) * (100vw - 300px)/ (2200-300)); " type = "submit" onclick = "showThePage()">
     </div>
+    </div>
+  </div>
     <script>
     //Pagination
     var pageSize = document.getElementById('numPerPage').value;

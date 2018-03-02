@@ -65,7 +65,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 //Required for passport...
 app.use(session( {secret: 'thenamesovbyeahyouknowmeimtheironchancellorofgermanyyeahyoubetterbringthegameifyousteptomecauseimthemasterofforeignpolicywhat',
                   resave: true,
-                  saveUninitialized: true} ));
+                  saveUninitialized: true,
+                  cookie: {maxAge: 3600 * 1000}} ));
 // ^ session secret (why do I do this to myself...) is just to add random-ness to the password encryption
 app.use(passport.initialize());
 app.use(passport.session());

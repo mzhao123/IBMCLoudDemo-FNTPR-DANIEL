@@ -1,7 +1,7 @@
 <!-- views/profile.ejs -->
 <!doctype html>
 <html>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="wdith=420, initial-scale=1.0">
 <head>
     <title>Your First Nations Account Information</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
@@ -18,9 +18,9 @@
         .reportData
         {
           width: 91.5%;
-          border: 1px solid black;
+          border: 2px solid black;
           background-color: #D3D3D3;
-          font-size: calc(9px + (16-9) * (100vw - 400px)/ (1600-450));
+          font-size: calc(10px + (20-10) * (100vw - 300px)/ (2200-300));
           text-align: left;
         }
         strong
@@ -28,28 +28,36 @@
           padding: 2px;
           margin-top: 1%;
           width: 35%;
-          font-size: calc(9px + (16-9) * (100vw - 400px)/ (1600-450));
+          font-size: calc(10px + (20-10) * (100vw - 300px)/ (2200-300));
         }
         .header
         {
           padding: 0.75%;
           font-size: 2.6vmax;
-          margin-left: 4.25%;
+          margin-left: 3.5%;
         }
         .menu
         {
           padding: 0.65% 0 0.15% 0;
-          background: #3b7687;
         }
         .menu a
         {
+            text-decoration-line: none;
             color: #c5d6db;
             font-family: "Arial", "Myriad Pro";
             margin-left: 4.25%;
+            padding: 0px 5px 5px 5px;
+            padding-top: 1%;
+
+        }
+        .menu a:hover
+        {
+            padding: 5px 5px 5px 5px;
+            background-image: linear-gradient(#000000 95%, yellow 5% );
         }
         #nav
         {
-          font-size: calc(10px + (18-10) * (100vw - 400px)/ (1600-450));
+          font-size: calc(10px + (20-10) * (100vw - 300px)/ (2200-300));
         }
         .top
         {
@@ -57,34 +65,33 @@
           margin-bottom: 0
 
         }
-        nav a
-        {
-          display: inline-block;
-
-        }
         .button
         {
-        border: 1px solid black;
-        background-color: 	#B0C4DE;
+        border: 2px solid black;
+        background-color: 	#cfe1f9;
         margin-left: 4.25%;
-        font-size: calc(7px + (18-7) * (100vw - 400px)/ (1600-450));
+        font-size: calc(9px + (18-9) * (100vw - 300px)/ (2200-300));
+        }
+        .btn
+        {
+            white-space: normal !important;
         }
     </style>
 </head>
 <body style = " background-color: 	#DCDCDC">
 <div class="container">
-    <div class= "top col-sm-10 col-sm-offset-1 well" style= "padding: 2% 0 1% 1.9%; background-color: 	#FFFFF0" >
-        <header class = "header" ><span class="fa fa-anchor"></span> Profile Page <span class="fa fa-anchor"></span></header>
+    <div class= "top col-sm-10 col-sm-offset-1 well" style= "padding: 1.25% 0.15% 0.65% 1.2%; background-color: 	#FFFFF0" >
+        <header class = "header" >Profile Page <span class="fa fa-anchor"></span></header>
     </div>
-    <div class= "top col-sm-10 col-sm-offset-1" style = "background-color: #3b7687; margin-bottom: 3%; margin-top: -1px; " >
+    <div class= "top col-sm-10 col-sm-offset-1" style = "background-color: #3b7687; margin-bottom: 2%; margin-top: -2px; " >
     <nav class = "menu">
-      <a id = "nav"  href="/logout">Logout</a>
+      <a style = "color: #FFFFF0" id = "nav"  href="/logout">Logout</a>
 
     </nav>
   </div>
   <br>
-    <div class= "col-sm-10 col-sm-offset-1 well" style= "border: 1px solid black; background-color: 	#FFFFF0; ">
-        <h3 style = "font-size: 1.8vmax; margin-left: 4.25%;"><span class="fa fa-user"></span> User Information</h3>
+    <div class= "col-sm-10 col-sm-offset-1 well" style= "border: 2px solid black; background-color: 	#FFFFF0; ">
+        <h3 style = "font-size: 32px; margin-left: 4.25%;"><span class="fa fa-user"></span> User Information</h3>
             <p style = 'margin-left: 4.25%; padding: 0.25%;'>
                 <strong>ID: <%= user.ID %> </strong><br>
                 <strong>Username: <%= user.UserName %> </strong><br>
@@ -99,17 +106,16 @@
         <!-- LOCAL INFORMATION -->
         <br>
         <!-- Database Information -->
-        <div class = "col-sm-10 col-sm-offset-1 well" style= "border: 1px solid black; background-color: 	#FFFFF0;">
-            <h3 style = "margin-left: 4.25%; font-size: 1.8vmax; " ><span class = "fa fa-user"></span> Report</h3>
+        <div class = "col-sm-10 col-sm-offset-1 well" style= "border: 2px solid black; background-color: 	#FFFFF0;">
+            <h3 style = "margin-left: 4.25%; font-size: 32px; " ><span class = "fa fa-user"></span> Report</h3>
             <% if(isReport === true) { %>
-              <h3 style = " font-size: 1.8vmax; float: left; margin-left: 5%; margin-bottom: 3.5%; font-size: 1.8vmax;"> View Your Reports </h3> <br>
+              <h3 style = " font-size: 30px; float: left; margin-left: 4.25%; margin-bottom: 3.5%;"> View Your Reports </h3> <br>
               <div style = "margin-left: 4.25%; margin-bottom: 3%;">
                 <% for (var i = 0; i < data.length; i++) { %>
                     <a href="<%= data[i].link %>" class="btn btn-default reportData"><span class="fa fa-user"></span> Report Date: <%= data[i].SubmitDate %> </a>
                     <br>
                 <% } %>
               </div>
-                <br>
               <% } %>
               <% if (isValidated === true) { %>
                   <a href="/make-report" class="btn btn-default button"><span class="fa fa-pencil"></span> Make a New Report </a>

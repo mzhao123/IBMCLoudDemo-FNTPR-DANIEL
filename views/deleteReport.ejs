@@ -3,11 +3,11 @@
 <head>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <link rel = "stylesheet" href = "../public/stylesheets/deleteReport.css">
+    <link rel = "stylesheet" href = "stylesheets/deleteReport.css">
     <title> Password-Reset  </title>
 </head>
 <body>
-  <div id = "topblock" class = "jumbotron text-center">
+  <div id = "topblock" class = "jumbotron text-center col-sm-10 col-sm-offset-1">
   <h1 id = "bottompager"> <span class="fa fa-cloud"></span>  First Nations' Online Funding Reports <span class="fa fa-cloud"></span>  </h1>
   <h2 id = "deleteYourReport"> Delete Your Report </h2>
   <br>
@@ -19,12 +19,13 @@
       <div class="alert alert-danger"><%= message %></div>
   <% } %>
 
-  <form method = "POST">
+  <form method = "POST" style = "text-align:center">
     <b><label id = "enterYourPassword" for "confirmYourPassword">Your Password:</label></b><br>
     <br>
     <input type = "password" id = "passwordProvided" name = "passwordProvided" style = "text-align: center;" required><br>
     <br>
     <%} else {%>
+      <p style = "text-align: center; font-size: 22px;"> You are an admin. <br> Click on the submit button to delete the report. </p>
     <form method = "POST">
       <%}%>
       <button class="btn btn-warning" type="submit" class="btn btn-danger" style "color: blue;">Submit</button>

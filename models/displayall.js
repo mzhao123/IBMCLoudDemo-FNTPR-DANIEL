@@ -156,9 +156,9 @@ module.exports = {
       }
     });
   },
-  adminGetsInfo: function(req, callback)
+  adminGetsInfo: function(req, callback)// get all of the user info for an admin
   {
-    query.newQuery("SELECT * FROM user WHERE user.ID = " + req.query.userID + ";", function(err, dataUser)
+    query.newQuery("SELECT * FROM user WHERE user.ID = " + req.query.userID + ";", function(err, dataUser) //get the user id
     {
       if (err)
       {
@@ -166,7 +166,7 @@ module.exports = {
       }
       else
       {
-        query.newQuery("SELECT * FROM funding WHERE funding.ID = " + req.query.thisFundingId + ";", function(err, dataFunding)
+        query.newQuery("SELECT * FROM funding WHERE funding.ID = " + req.query.thisFundingId + ";", function(err, dataFunding) // get the funding id
         {
           if (err)
           {
@@ -175,7 +175,7 @@ module.exports = {
           else
           {
             var admin = [false, false, false, false, false];
-            query.newQuery("SELECT * FROM funding_administor WHERE FundingID = " + dataFunding[0].ID + " ORDER BY LKPFundingAdministorID;", function(err, dataAdmin)
+            query.newQuery("SELECT * FROM funding_administor WHERE FundingID = " + dataFunding[0].ID + " ORDER BY LKPFundingAdministorID;", function(err, dataAdmin) //more stuff from database
             {
               if (err)
               {
@@ -202,7 +202,7 @@ module.exports = {
                 console.log("admin: ");
                 console.log(admin);
                 //4 - Funding Use
-                var use = [false, false, false, false, false, false, false, false, false]
+                var use = [false, false, false, false, false, false, false, false, false] //initialize an array to store some funding data
                 var comments;
                 query.newQuery("SELECT * FROM funding_use WHERE FundingID = " + dataFunding[0].ID + " ORDER BY LKPFundingUseID;", function(err, dataUse)
                 {
@@ -212,7 +212,7 @@ module.exports = {
                   }
                   else
                   {
-                    for (var i = 0; i < dataUse.length; i++)
+                    for (var i = 0; i < dataUse.length; i++) //for loop that helps us go through each element in an array we obtained from the database (funding help)
                     {
                       use[(dataUse[i].LKPFundingUseID - 1) / 10] = true;
                       if (dataUse[i].LKPFundingUseID === 81)
@@ -223,7 +223,7 @@ module.exports = {
                     console.log("Use: ");
                     console.log(use);
 
-                    var superArray = [dataUser[0], dataFunding[0], admin, adminComments, use, comments];
+                    var superArray = [dataUser[0], dataFunding[0], admin, adminComments, use, comments]; //assigning the contents of the array
                     callback(superArray);
                   }
                 });

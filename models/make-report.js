@@ -11,7 +11,7 @@ module.exports =
         //if there is an error from the query
         console.log(err);
       }
-      else 
+      else
       {
         console.log(data);
         return callback(data);

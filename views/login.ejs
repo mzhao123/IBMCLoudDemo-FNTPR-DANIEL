@@ -2,20 +2,48 @@
 <!doctype html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=2.0">
     <title>Login</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
     <style>
-        body        { padding-top:80px; }
+        body
+        {
+          padding-top:125px;
+          background-color: 	#DCDCDC;
+        }
+        .loginBox
+        {
+          left: 0;
+          right: 0;
+          background-color: #3b7687;
+          border: 2px solid black;
+        }
+        .loginText
+        {
+          color: white;
+          padding: 0.5% 0.5% 0.5% 0.5%;
+        }
+        .box
+        {
+            border: 2px solid black;
+            margin-top: -2px;
+            padding-top: 1.8%;
+            padding-bottom: 1.8%;
+            background-color: #FFFFF0;
+        }
+        label
+        {
+          font-size: 16px;
+        }
     </style>
 </head>
 <body>
 <div class="container">
-
-<div class="col-sm-6 col-sm-offset-3">
-
-    <h1><span class="fa fa-sign-in"></span> Login</h1>
-
+  <div class = "col-sm-8 col-sm-offset-2 loginBox">
+    <h1 class = "loginText"><span class="fa fa-sign-in"></span> Login</h1>
+  </div>
+  <div class="col-sm-8 col-sm-offset-2 box">
     <!-- show any messages that come back with authentication -->
     <% if (message.length > 0) { %>
         <div class="alert alert-danger"><%= message %></div>

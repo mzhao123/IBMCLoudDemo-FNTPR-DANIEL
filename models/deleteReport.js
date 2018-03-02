@@ -55,7 +55,11 @@ module.exports = {
                      console.log(theThingDeleted);
                      query.newQuery("DELETE FROM funding WHERE ID = '" + req.query.fundingID + "' AND UserId = '" + req.query.userID + "' ; ", function(err, reportDeleted)
                      {
-                       if(req.user.admin == 1)
+                       if(req.user.admin == 1 && req.user.ID == req.query.userID)
+                       {
+                         res.redirect('/profile');
+                       }
+                       else if(req.user.admin == 1)
                        {
                          res.redirect('/viewAllReports');
                        }

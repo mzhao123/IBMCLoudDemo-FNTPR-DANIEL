@@ -1,56 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
 	<title>First Nations Report Spending</title>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
 	<link rel = "stylesheet" href = "stylesheets/formStyling.css">
+  <script src = "javascriptsheets/form.js"></script>
 
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
 <!--formatting for the first three labels on the form-->
 <style>
 
 </style>
-<head>
+</head>
 	<body>
-		<script>
-		function updateOther() //makes sure that certain text boxes are required if a certain checkbox is filled
-		{
-
-			if(document.getElementById("adminSpecify").required == true)
-			{
-				document.getElementById("adminSpecify").required = false;
-			}
-			else
-			{
-				document.getElementById("adminSpecify").required = true;
-			}
-
-		}
-		function updateAnother()
-		{
-			if(document.getElementById("useOther").required == true)
-			{
-				document.getElementById("useOther").required = false;
-			}
-			else
-			{
-				document.getElementById("useOther").required = true;
-			}
-		}
-		function textCounter( field, countfield, maxlimit )
-		{
-		if ( field.value.length > maxlimit )
-		{
-		 field.value = field.value.substring( 0, maxlimit );
-		 field.blur();
-		 field.focus();
-		 return false;
-		} else
-		{
-		 countfield.value = maxlimit - field.value.length;
-		}
-	 }
-		</script>
 
 <div class = "col-sm-10 col-sm-offset-1 jumbotron">
 <h1 style = "text-align: center";>  <span class="fa fa-cloud"></span> First Nations Report Spending  <span class="fa fa-cloud"></span> </h1>
@@ -60,18 +23,18 @@
 <fieldset id = "theFirstThreeLinesCombined" style = "border-color: 	#000000;" >
 	<legend> </legend>
     <p class = "theFirstThreeLines">
-    <b><label class = "hello" for "fundProvided">Funding Provided:    </label></b>
-<input class = "centerTextAllign" type = "number" id = "fundProvided" name = "fundProvided" placeholder = "25000"/ required>
+    <b><label class = "hello" for "fundProvided">Funding Provided: </label></b>
+<input class = "centerTextAllign" onchange = "getRemainingFunds()" type = "number" id = "fundProvided" name = "fundProvided" placeholder = "25000"/ required>
 </p>
-    <p class = "theFirstThreeLines">
+  <p class = "theFirstThreeLines">
     <b><label class = "hello" for "fundSpent">Funding Spent: </label></b>
-<input class= "centerTextAllign" type = "number" id = "fundSpent" name = "fundSpent" placeholder = "20000"/>
+<input class= "centerTextAllign" onchange = "getRemainingFunds()" type = "number" id = "fundSpent" name = "fundSpent" placeholder = "20000"/ required>
  </p>
-    <p class = "theFirstThreeLines">
-    <b><label class = "hello" for "fundRecovered">Funding to be Recovered : </label></b>
-<input class = "centerTextAllign" type = "number" id = "fundRecovered" name = "fundRecovered" placeholder = "5000">
-<p style= "font-size: 12px; margin-top: -0.75%; ">(Funding Provided Minus Funding Spent)</p>
-    </p>
+ <p class = "theFirstThreeLines">
+	<b> <label class = "hello" for "fundSpent">Funding Recovered: </label><b>
+		<input class = "centerTextAllign" id = "fundRecovered" type = "number" placeholder = "5000" readonly></input>
+</p>
+			<br>
 </fieldset>
 <br>
 <fieldset id = "whoGaveService" style = "border-color: 	#000000;">
@@ -111,9 +74,12 @@ and Community Care program?  </label></b>
 <input style = "text-align: center; margin-left: 2%;" type = "number" id = "numClients" name = "numClients" placeholder = "850" required/>
 <br>
 <br>
-<b><label for "priorities">Please outline priorities for home and community care investment in the next five years: Max. 5000 characters </label> <br></b>
-<input onblur="textCounter(this.form.recipients,this,5000);" disabled  onfocus="this.blur();" tabindex="999" maxlength="4" size="4" value="5000" name="counter"> <br>
-<textarea maxlength="5000" id = "priorities" name = "priorities" style = "width: 100%" rows = "5" onblur="textCounter(this,this.form.counter,5000);" onkeyup="textCounter(this,this.form.counter,5000);"> </textarea>
+<div id = "charsLeft">
+	<!--@@@@@@@@@@@@@@ -->
+<b><label for = "priorities" >Please outline priorities for home and community care investment in the next five years: </label> <br></b>
+<textarea maxlength="2000" id = "priorities" name = "priorities" style = "width: 100%" rows = "5" v-model = "theCharactersLeft" > </textarea>
+<p> You have <b>{{ answer }}</b> characters left.</p>
+</div>
 </fieldset> <br>
 <fieldset id = "fundingSpent" style = "border-color: 	#000000;">
 	<legend> </legend>
@@ -131,15 +97,21 @@ and Community Care program?  </label></b>
  (provided by another organization)<br>
  <input onclick= "updateAnother()" type="checkbox" name="other" /> Other (please specify below)<br>
  <br>
- <b> <label for "useOther">Any other home and community care or palliative and end-of-care priorities: Max. 5000 characters </b> </label><p>  </p>
- <input onblur="textCounter(this.form.recipients,this,5000);" disabled  onfocus="this.blur();" tabindex="999" maxlength="4" size="4" value="5000" name="counter1"> <br>
- <textarea maxlength="5000" id = "useOther" name = "useOther" style = "width: 100%" rows = "5" onblur="textCounter(this,this.form.counter1,5000);" onkeyup="textCounter(this,this.form.counter1,5000);" ></textarea>
+ <!--@@@@@@@@@@@@@@ -->
+  <div id = "charsLeft3">
+ <b> <label for = "useOther">Any other home and community care or palliative and end-of-care priorities:</b> </label><p>  </p>
+ <textarea maxlength="2000" id = "useOther" name = "useOther" style = "width: 100%" rows = "5" v-model = "theCharactersLeft"  ></textarea>
+ <p> You have <b>{{ answer }}</b> characters left.</p>
+</div>
 </fieldset> <br>
 <fieldset id = "commentsAndConfirm" style = "border-color: 	#000000;">
-<b><label for "comments">Please provide any other comments: Max 5000 characters </label> </b><br>
-		<input onblur="textCounter(this.form.recipients,this,5000);" disabled  onfocus="this.blur();" tabindex="999" maxlength="4" size="4" value="5000" name="counter2"> <br>
-		<textarea maxlength="5000" id = "comments" name = "comments" style = "width: 100%" rows = "5" onblur="textCounter(this,this.form.counter2,5000);" onkeyup="textCounter(this,this.form.counter2,5000);"> </textarea>
+	<!--@@@@@@@@@@@@@@ -->
+	<div id = "charsLeft2">
+<b><label for = "comments">Please provide any other comments:</label> </b><br>
+		<textarea maxlength="2000" id = "comments" name = "comments" style = "width: 100%" rows = "5" v-model = "theCharactersLeft" > </textarea>
+		<p> You have <b>{{ answer }}</b> characters left.</p>
 		<br>
+	</div>
 		<b><input type="checkbox" name="approval" required/> Check if the above information is approved by the Chief or the Chief's delegated authority
     to approve reports to the ministry. </b><br>
 	</fieldset> <br>
@@ -162,26 +134,10 @@ and Community Care program?  </label></b>
 		<br>
 		<h4>Examples of Direct Services</h4>
 		<u>Community Support Services</u>
-		<ol>
-			<li>Meal Services</li>
-			<li>Transportation Services</li>
-			<li>Caregiver support services</li>
-			<li>Adult day programs</li>
-			<li>Home maintenance and repair services</li>
-			<li>Friendly visiting services</li>
-			<li>Security checks or reassurance services</li>
-			<li>Social or recreational services</li>
-			<li>First Nations/Indigenous support</li>
-			<li>Client intervention and assistance</li>
-			<li>Emergency response</li>
-			<li>Foot care</li>
-			<li>Home help referral</li>
-			<li>Independence training</li>
-			<li>Palliative care education and consultation</li>
-			<li>Psycho-geriatric consulting services related to Alzheimer disease and dementia</li>
-			<li>Public education services relating to Alzheimer disease and dementia</li>
-			<li>Services for persons with blindness/visual impairment</li>
-			<li>Services for persons with deafness/congenital/acquired hearing loss</li>
+		<ol id = "vueList">
+	<li v-for = "(item) in items">
+		{{item.example}}
+	</li>
 			<br><br>
 		</ol>
 		</div>

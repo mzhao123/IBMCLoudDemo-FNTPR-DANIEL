@@ -1,8 +1,8 @@
 #invalidMessage
 {
-  font-size: 20px;
+  font-size: 24px;
   text-align: center;
-
+  font-weight: bold;
 }
 #reEnterAddress
 {
@@ -14,4 +14,14 @@
   margin-top: 5%;
   color: #01a1b5;
 
+}
+body
+{
+  background-color: #DCDCDC;
+}
+.jumbotron
+{
+  margin-top: 5%;
+  background-color: #FFFFF0 !important;
+  border: 2px solid black;
 }

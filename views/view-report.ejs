@@ -6,19 +6,46 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
     <style>
-        body        { padding-top:25px; }
-        .profile    { font-size: 0.775vmax;}
-        li          {font-size: : 0.775vmax;}
+        body
+        {
+          padding-top:40px;  background-color: 	#DCDCDC;
+        }
+        .profile
+        {
+          font-size: calc(10px + (18-10) * (100vw - 300px)/ (2400-300));
+        }
+        li
+        {
+          font-size: :calc(10px + (18-10) * (100vw - 300px)/ (2400-300));
+        }
+        .well
+        {
+          background-color: 	#FFFFF0;
+            border: 2px solid black;
+        }
+        .row
+        {
+          margin-top: 3%;
+        }
+        .reportSearch
+        {
+          font-size: calc(8px + (16-10) * (100vw - 300px)/ (2200-300));
+          margin-top: -1.35%;
+          margin-left: 1.65%;
+          margin-right: 3%;
+          display: inline-block;
+        }
     </style>
 </head>
 <body>
 <div class="container">
   <!-- Database Information -->
 <div class="row">
-    <h1 style = "text-align: center; font-size: 2vmax;"> YOUR COMPLETE REPORT DATA </h1>
+  <a href="/profile" class="glyphicon glyphicon-arrow-left reportSearch submit" style = "font-size: 32px; color:black;"></a> &nbsp;
+  <p style = "text-align:center; font-size: 42px; display:inline-block;"> <b>YOUR COMPLETE REPORT DATA</b> &nbsp; <span class="glyphicon glyphicon-list-alt" style = "font-size: 32px;"></span> </p>
     <div class = "col-sm-12">
       <div class = "well">
-        <h3 style = "font-size: 1.5vmax;"><span class = "fa fa-user"></span> Profile </h3>
+        <h3 style = "font-size: 34px; display: inline-block;"><span class = "fa fa-user"></span> <b> Profile </b> </h3>
         <div class = "profile">
         <strong>Username: </strong> <%= user.UserName %> <br>
         <strong>First Nation Name: </strong> <%= user.FirstNationName %> <br>
@@ -30,10 +57,11 @@
       </div>
       </div>
     </div>
+    <div class = "col-sm-12">
     <div class = "well">
-      <h3 style = "display: inline-block; font-size: 1.5vmax;"><span class = "fa fa-user"></span> This quarter's report </h3>
+      <h3 style = "display: inline-block; font-size: 34px;"><span class = "fa fa-user"></span><b> This quarter's report</b> </h3>
       <div style = "text-align: right; display: inline;">
-        <a style = "margin-left: 62%; font-size: 20px;" href = "downloadReport?thisFundingId=<%= fundingid %>&userID=<%= userid %>"><span class = "glyphicon glyphicon-file" style = "color: black;"></span> </a>
+        <a style = "margin-left: 52%; font-size: 20px; margin-top: 0.1%;" href = "downloadReport?thisFundingId=<%= fundingid %>&userID=<%= userid %>"><span class = "glyphicon glyphicon-download" style = "color: black;"></span> </a>
         <a style = "margin-left: 3%; font-size: 20px;" href = "editReportPasswordConfirmation?thisFundingId=<%= fundingid %>&userID=<%= userid %>" > <span class="fa fa-pencil" style = "color: black;"></span> </a>
         <a style = "margin-left: 3%; font-size: 20px;" href ="deleteReport?fundingID=<%= fundingid %>&userID=<%= userid %>"> <span class = "glyphicon glyphicon-remove" style = "color: black;"></span></a>
     </div>
@@ -98,9 +126,9 @@
       <%  } %> <br>
       <strong> Submit Date: </strong> <%= rep.SubmitDate %> <br>
       <br>
-      <br>
     </div>
     </div>
+  </div>
   </div>
 
 </div>

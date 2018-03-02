@@ -6,19 +6,43 @@
     <link rel = "stylesheet" href = "stylesheets/enterEmailPage.css">
     <title> Password-Reset  </title>
     <style>
-        body        { padding-top:80px; word-wrap:break-word; }
+        body
+        {
+          padding-top:80px;
+          word-wrap:break-word;
+          background-color: #DCDCDC;
+        }
+        .jumbotron
+        {
+          background-color: #FFFFF0 !important;
+          border: 2px solid black;
+        }
+        .loginBox
+        {
+          left: 0;
+          right: 0;
+          background-color: #3b7687;
+          border: 2px solid black;
+        }
+        .loginText
+        {
+          color: white;
+          padding: 0.5% 0.5% 0.5% 0.5%;
+          font-size: 40px;
+          text-align: center;
+
+        }
     </style>
 </head>
 <body>
-  <div id = "topblock" class = "jumbotron text-center">
-  <h1 id = "bottompager"> <span class="fa fa-cloud"></span>  First Nations' Online Funding Reports <span class="fa fa-cloud"></span>  </h1>
-
+  <div class = "col-sm-8 col-sm-offset-2 loginBox">
+    <h1 class = "loginText"><span class="fa fa-sign-in"></span> First Nations' Online Funding Reports </h1>
+  </div>
+  <div id = "topblock" class = "jumbotron text-center col-sm-8 col-sm-offset-2">
 <div id = "thebiggraybox">
-  <h1 style = "text-align: center";> Reset Password </h1>
+  <h1 style = "text-align: center font-size: 28px; margin-top: -2%; margin-bottom: 2.5%;"> Reset Password </h1>
   <br>
   <p id = "emailthelink"> Please enter the email address associated with your account. We will send you a link to click so you can reset your password</p>
-  <br>
-  <br>
     <form action= "/emailResetLink" method = "post">
       <div class="form-group">
         <label for="usr">Email:</label id = "emailbox">

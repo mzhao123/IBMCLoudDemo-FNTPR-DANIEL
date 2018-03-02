@@ -128,7 +128,7 @@ app.post('/emailResetLink', function(req,res)
   var mail = require('../models/sendMail.js');
   var userEmail = req.body.userEmail;
   query.newQuery("SELECT * FROM user WHERE user.Email = '" +   userEmail + "'  ;", function(err, emailLength) {
-    if(emailLength.length !=1)
+    if(emailLength.length < 1)
     {
         console.log("email address not found!");
         res.render('invalidEmail.ejs');
