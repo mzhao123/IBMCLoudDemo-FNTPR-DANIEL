@@ -20,7 +20,7 @@ The logic of this application is mainly done in Javascript. Tools used:
 - Server-side logic: *Node.JS*
 - Framework: *ExpressJS*
 - User authentication: *Passport*
-- Front-end templating engine: *Embedded JavaScript (ejs), VueJs*
+- Front-end templating engine: *Embedded JavaScript (ejs)
 - Front-end CSS: *Bootstrap*
 
 ## Database
