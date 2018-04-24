@@ -18,7 +18,7 @@ This project is built for and deployed on the **IBM Cloud**, also known as **IBM
 ## Language
 The logic of this application is mainly done in Javascript. Tools used:
 - Server-side logic: *Node.JS*
-- Framework: *ExpressJS*
+- Framework: *ExpressJS,* * VueJs*
 - User authentication: *Passport*
 - Front-end templating engine: *Embedded JavaScript (ejs)
 - Front-end CSS: *Bootstrap*
